@@ -21,6 +21,7 @@ Inverse link function.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-NormalGLM-new}{\code{NormalGLM$new()}}
+\item \href{#method-NormalGLM-fit}{\code{NormalGLM$fit()}}
 \item \href{#method-NormalGLM-f_yx}{\code{NormalGLM$f_yx()}}
 \item \href{#method-NormalGLM-F_yx}{\code{NormalGLM$F_yx()}}
 \item \href{#method-NormalGLM-sample_yx}{\code{NormalGLM$sample_yx()}}
@@ -28,13 +29,6 @@ Inverse link function.}
 \item \href{#method-NormalGLM-clone}{\code{NormalGLM$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="fit"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-fit'><code>gofreg::ParamRegrModel$fit()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NormalGLM-new"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-new}{}}}
@@ -48,6 +42,27 @@ Initialize an object of class NormalGLM
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{linkinv}}{inverse link function}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NormalGLM-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-NormalGLM-fit}{}}}
+\subsection{Method \code{fit()}}{
+Calculates the maximum likelihood estimator for the model parameters based on given data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$fit(x, y, params_init)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{vector of covariates}
+
+\item{\code{y}}{response variable}
+
+\item{\code{params_init}}{initial value of the model parameters to use for the optimization}
 }
 \if{html}{\out{</div>}}
 }

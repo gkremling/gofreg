@@ -18,6 +18,20 @@ NormalGLM <- R6::R6Class(
       self$linkinv <- linkinv
     },
 
+    #' @description Calculates the maximum likelihood estimator for the model parameters based on given data
+    #'
+    #' @param x vector of covariates
+    #' @param y response variable
+    #' @param params_init initial value of the model parameters to use for the optimization
+    #'
+    #' @export
+    fit = function(x, y, params_init) {
+      checkmate::check_list(params_init, len=2)
+      checkmate::check_names(names(params_init), identical.to = c("beta", "sd"))
+      params_opt <- super$fit(x, y, unlist(params_init, use.names=FALSE))
+      self$params <- list(beta = params_opt[-length(params_opt)], sd = params_opt[length(params_opt)])
+    },
+
     #' @description Evaluates the conditional density function
     #'
     #' @param t value(s) at which the conditional density shall be evaluated
@@ -30,8 +44,11 @@ NormalGLM <- R6::R6Class(
       if(anyNA(params)) {
         params <- self$params
       }
+      else if(checkmate::test_vector(params, len=1+dim(x)[1])) {
+        params <- list(beta = params[-length(params)], sd = params[length(params)])
+      }
       mean = self$mean_yx(x, params)
-      sd = self$params$sd
+      sd = params$sd
       return(dnorm(t, mean=mean, sd=sd))
     },
 

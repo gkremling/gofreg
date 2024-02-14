@@ -15,25 +15,17 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #'
   #' @export
   fit = function(x, y, params_init) {
-    # Log likelihood function
-    loglik <- function(params) {
-      lik <- model$fyx(y, x, params)
-      if(any(is.nan(lik))) return(1e100)
-      if(any(lik==0)) return(1e100)
-      return(-sum(log(lik)))
-    }
     # maximize log likelihood function
     if(length(params_init)==1) {
       params_opt <- optim( par=params_init,
-                    fn=log.like,
+                    fn=private$loglik, x=x, y=y,
                     lower=0, upper=20, method="Brent")
     } else {
       params_opt <- optim( par=params_init,
-                    fn=log.like,
+                    fn=private$loglik, x=x, y=y,
                     method="Nelder-Mead")
     }
-    self$params <- params_opt
-    invisible(self)
+    return(params_opt$par)
   },
 
   #' @description Evaluates the conditional density function
@@ -78,4 +70,10 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   mean_yx = function(x) {
     stop("Abstract method. Needs to be implemented.")
   }), private = list(
+    loglik = function(x, y, params) {
+      lik <- self$f_yx(y, x, params)
+      if(any(is.nan(lik))) return(1e100)
+      if(any(lik==0)) return(1e100)
+      return(-sum(log(lik)))
+    }
 ))

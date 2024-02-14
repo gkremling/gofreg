@@ -1,0 +1,19 @@
+Package: gofreg
+Title: Bootstrap-based Goodness-of-Fit Tests for Parametric Regression
+Version: 0.0.0.9000
+Authors@R: 
+    person("Gitte", "Kremling", , "kremling@fh-aachen.de", role = c("aut", "cre"))
+Description: The package provides statistical methods to check if a chosen model family fits to given data
+  in the context of parametric regression. The model family contains parametric conditional density 
+  functions and the data consists of a response variable (Y) and a vector of covariates (X). Different 
+  test statistics can be used to verify the validity of the assumed model. The corresponding p-values
+  are determined using a parametric bootstrap method.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    R6

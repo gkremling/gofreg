@@ -99,14 +99,12 @@ value(s) of the conditional distribution function
 \subsection{Method \code{sample_yx()}}{
 Generates a new sample of response variables with the same conditional distribution
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$sample_yx(n, x)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$sample_yx(x)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n}}{number of observations}
-
 \item{\code{x}}{vector of covariates}
 }
 \if{html}{\out{</div>}}

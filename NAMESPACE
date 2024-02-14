@@ -2,3 +2,4 @@
 
 export(NormalGLM)
 export(ParamRegrModel)
+export(TestStatistic)

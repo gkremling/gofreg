@@ -12,6 +12,7 @@ This class contains an abstract methods to calculate the test statistic (and x-y
 \item \href{#method-TestStatistic-get_value}{\code{TestStatistic$get_value()}}
 \item \href{#method-TestStatistic-calc_stat}{\code{TestStatistic$calc_stat()}}
 \item \href{#method-TestStatistic-get_plot_xy}{\code{TestStatistic$get_plot_xy()}}
+\item \href{#method-TestStatistic-print}{\code{TestStatistic$print()}}
 \item \href{#method-TestStatistic-clone}{\code{TestStatistic$clone()}}
 }
 }
@@ -61,6 +62,16 @@ Returns vectors of x and y that can be used to plot the process corresponding to
 \subsection{Returns}{
 list with plot.x and plot.y
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TestStatistic-print"></a>}}
+\if{latex}{\out{\hypertarget{method-TestStatistic-print}{}}}
+\subsection{Method \code{print()}}{
+Overrides print-method for objects of type \code{TestStatistic} to only print its value
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TestStatistic$print()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TestStatistic-clone"></a>}}

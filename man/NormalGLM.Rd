@@ -9,14 +9,6 @@ This class implements functions of \code{ParamRegrModel} that, for example, eval
 \section{Super class}{
 \code{\link[gofreg:ParamRegrModel]{gofreg::ParamRegrModel}} -> \code{NormalGLM}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{linkinv}}{(\code{function})
-Inverse link function.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -29,6 +21,14 @@ Inverse link function.}
 \item \href{#method-NormalGLM-clone}{\code{NormalGLM$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="get_params"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-get_params'><code>gofreg::ParamRegrModel$get_params()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="set_params"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-set_params'><code>gofreg::ParamRegrModel$set_params()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NormalGLM-new"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-new}{}}}
@@ -52,7 +52,7 @@ Initialize an object of class NormalGLM
 \subsection{Method \code{fit()}}{
 Calculates the maximum likelihood estimator for the model parameters based on given data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$fit(x, y, params_init)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$fit(x, y, params_init = private$params, inplace = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -63,8 +63,13 @@ Calculates the maximum likelihood estimator for the model parameters based on gi
 \item{\code{y}}{response variable}
 
 \item{\code{params_init}}{initial value of the model parameters to use for the optimization}
+
+\item{\code{inplace}}{logical; if TRUE, default model parameters are set accordingly and parameter estimator is not returned}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+MLE of the model parameters for the given data
 }
 }
 \if{html}{\out{<hr>}}
@@ -73,7 +78,7 @@ Calculates the maximum likelihood estimator for the model parameters based on gi
 \subsection{Method \code{f_yx()}}{
 Evaluates the conditional density function
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$f_yx(t, x, params = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$f_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -97,7 +102,7 @@ value(s) of the conditional density function
 \subsection{Method \code{F_yx()}}{
 Evaluates the conditional distribution function
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$F_yx(t, x)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$F_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -106,6 +111,8 @@ Evaluates the conditional distribution function
 \item{\code{t}}{value(s) at which the conditional distribution shall be evaluated}
 
 \item{\code{x}}{vector of covariates}
+
+\item{\code{params}}{use different model parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -119,13 +126,15 @@ value(s) of the conditional distribution function
 \subsection{Method \code{sample_yx()}}{
 Generates a new sample of response variables with the same conditional distribution
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$sample_yx(x)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$sample_yx(x, params = private$params)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{x}}{vector of covariates}
+
+\item{\code{params}}{use different model parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -139,7 +148,7 @@ vector of sampled response variables
 \subsection{Method \code{mean_yx()}}{
 Evaluates the regression function or in other terms the expected value of Y given X=x
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$mean_yx(x, params = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$mean_yx(x, params = private$params)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

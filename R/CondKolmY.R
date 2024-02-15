@@ -31,6 +31,7 @@ CondKolmY <- R6::R6Class(
       private$value <- max(abs(proc))
       private$plot.x <- t.vals
       private$plot.y <- proc
+      invisible(self)
     }
   )
 )

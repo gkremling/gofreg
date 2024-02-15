@@ -21,6 +21,7 @@ This class implements a function of \code{TestStatistic} to calculate the test s
 <ul>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="get_plot_xy"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-get_plot_xy'><code>gofreg::TestStatistic$get_plot_xy()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="get_value"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-get_value'><code>gofreg::TestStatistic$get_value()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="print"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-print'><code>gofreg::TestStatistic$print()</code></a></span></li>
 </ul>
 </details>
 }}

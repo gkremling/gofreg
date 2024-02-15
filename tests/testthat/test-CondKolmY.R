@@ -8,7 +8,7 @@ test_that("calc_stat works", {
   y <- rnorm(n, mean=g1(beta %*% x), sd=sd)
 
   model <- NormalGLM$new(g1)
-  model$fit(x,y, params_init=list(beta=c(1,2,3), sd=2))
+  model$fit(x,y, params_init=list(beta=c(1,2,3), sd=2), inplace=TRUE)
 
   test_stat <- CondKolmY$new()
   test_stat$calc_stat(x, y, model)

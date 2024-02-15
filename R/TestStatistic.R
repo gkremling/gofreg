@@ -33,6 +33,12 @@ TestStatistic <- R6::R6Class(
         return(list(plot.x=plot.x, plot.y=plot.y))
       }
       stop("The values of plot.x and plot.y are not assigned yet. Call calc_stat(x, y, model) first!")
+    },
+    #' @description Overrides print-method for objects of type \code{TestStatistic} to only print its value
+    #'
+    #' @export
+    print = function() {
+      cat("Test statistic with value", private$value)
     }
   ),
   private = list(

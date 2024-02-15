@@ -5,17 +5,14 @@ NormalGLM <- R6::R6Class(
   classname = "NormalGLM",
   inherit = ParamRegrModel,
   public = list(
-    #' @field linkinv (`function`)
-    #' Inverse link function.
-    linkinv = NA,
-
     #' @description Initialize an object of class NormalGLM
     #'
     #' @param linkinv inverse link function
     #'
     #' @export
     initialize = function(linkinv) {
-      self$linkinv <- linkinv
+      checkmate::check_function(linkinv, nargs=1)
+      private$linkinv <- linkinv
     },
 
     #' @description Calculates the maximum likelihood estimator for the model parameters based on given data
@@ -23,13 +20,20 @@ NormalGLM <- R6::R6Class(
     #' @param x vector of covariates
     #' @param y response variable
     #' @param params_init initial value of the model parameters to use for the optimization
+    #' @param inplace logical; if TRUE, default model parameters are set accordingly and parameter estimator is not returned
     #'
+    #' @return MLE of the model parameters for the given data
     #' @export
-    fit = function(x, y, params_init) {
+    fit = function(x, y, params_init=private$params, inplace = FALSE) {
       checkmate::check_list(params_init, len=2)
       checkmate::check_names(names(params_init), identical.to = c("beta", "sd"))
       params_opt <- super$fit(x, y, unlist(params_init, use.names=FALSE))
-      self$params <- list(beta = params_opt[-length(params_opt)], sd = params_opt[length(params_opt)])
+      params_opt <- list(beta = params_opt[-length(params_opt)], sd = params_opt[length(params_opt)])
+      if (inplace) {
+        private$params <- params_opt
+      } else {
+        return(params_opt)
+      }
     },
 
     #' @description Evaluates the conditional density function
@@ -40,15 +44,15 @@ NormalGLM <- R6::R6Class(
     #'
     #' @return value(s) of the conditional density function
     #' @export
-    f_yx = function(t, x, params=NA) {
+    f_yx = function(t, x, params=private$params) {
       if(anyNA(params)) {
-        params <- self$params
+        stop("Model parameters need to be defined. Use set_params(params) to set default values.")
       }
-      else if(checkmate::test_vector(params, len=1+dim(x)[1])) {
+      if(checkmate::test_vector(params, len=1+dim(x)[1])) {
         params <- list(beta = params[-length(params)], sd = params[length(params)])
       }
-      mean = self$mean_yx(x, params)
-      sd = params$sd
+      mean <- self$mean_yx(x, params)
+      sd <- params$sd
       return(dnorm(t, mean=mean, sd=sd))
     },
 
@@ -56,24 +60,32 @@ NormalGLM <- R6::R6Class(
     #'
     #' @param t value(s) at which the conditional distribution shall be evaluated
     #' @param x vector of covariates
+    #' @param params use different model parameters
     #'
     #' @return value(s) of the conditional distribution function
     #' @export
-    F_yx = function(t,x) {
-      mean = self$mean_yx(x)
-      sd = self$params$sd
+    F_yx = function(t, x, params=private$params) {
+      if(anyNA(params)) {
+        stop("Model parameters need to be defined. Use set_params(params) to set default values.")
+      }
+      mean <- self$mean_yx(x, params)
+      sd <- params$sd
       return(pnorm(t, mean=mean, sd=sd))
     },
 
     #' @description Generates a new sample of response variables with the same conditional distribution
     #'
     #' @param x vector of covariates
+    #' @param params use different model parameters
     #'
     #' @return vector of sampled response variables
     #' @export
-    sample_yx = function(x) {
-      mean = self$mean_yx(x)
-      sd = self$params$sd
+    sample_yx = function(x, params=private$params) {
+      if(anyNA(params)) {
+        stop("Model parameters need to be defined. Use set_params(params) to set default values.")
+      }
+      mean <- self$mean_yx(x, params)
+      sd <- params$sd
       return(rnorm(dim(x)[2], mean=mean, sd=sd))
     },
 
@@ -84,11 +96,14 @@ NormalGLM <- R6::R6Class(
     #'
     #' @return value of the regression function
     #' @export
-    mean_yx = function(x, params=NA) {
+    mean_yx = function(x, params=private$params) {
       if(anyNA(params)) {
-        params <- self$params
+        stop("Model parameters need to be defined. Use set_params(params) to set default values.")
       }
-      mean = self$linkinv(params$beta %*% x)
+      mean <- private$linkinv(params$beta %*% x)
       return(mean)
-    })
+    }),
+  private = list(
+    linkinv = NA
+  )
 )

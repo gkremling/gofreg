@@ -1,17 +1,17 @@
-##' @title ParamRegrModel Class
+##' @title Parametric Regression Model
 ##' @description This is the abstract base class for parametric regression model
 ##'   objects like [NormalGLM].
 ##'
 ##'   Parametric regression models are built around the following key tasks:
-##'   * Fitting the model to given data, i.e.\ computing the MLE for the model
-##'     parameters
+##'   * A method `fit()` to fit the model to given data, i.e. compute the MLE
+##'     for the model parameters
 ##'   * Methods `f_yx()`, `F_yx()` and `mean_yx()` to evaluate the conditional
 ##'     density, distribution and regression function
 ##'   * A method `sample_yx()` to generate a random sample of response variables
 ##'     following the model given a vector of covariates
 ##' @param x vector of covariates
-##' @param params model parameters to use (defaults to the fitted parameter
-##'   values)
+##' @param params model parameters to use, defaults to the fitted parameter
+##'   values
 ##' @export
 ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #' @description Set the value of the model parameters used as default for the
@@ -51,9 +51,9 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     if(anyNA(params_init)) {
       stop("Starting value of model parameters needs to be defined for the optimization.")
     }
-    lik_init <- self$f_yx(y, x, params_init)
+    lik_init <- suppressWarnings(self$f_yx(y, x, params_init))
     if(any(lik_init == 0) || checkmate::anyNaN(lik_init)) {
-      stop("Starting value of model parameters not feasible fo the given data.")
+      stop("Starting value of model parameters not feasible for the given data.")
     }
     if(length(params_init)==1) {
       params_opt <- optim(par=params_init,
@@ -111,9 +111,7 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     # @description Negative log-likelihood function that is minimized to
     #   determine the MLE.
     #
-    # @param x vector of covariates
     # @param y response variable
-    # @param params model parameters
     #
     # @return Value of the negative log-likelihood function
     loglik = function(x, y, params) {
@@ -121,5 +119,13 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
       if(any(is.nan(lik))) return(1e100)
       if(any(lik==0)) return(1e100)
       return(-sum(log(lik)))
-  })
+    },
+
+    # @description Check that `params` are not NA, otherwise throw an error.
+    check_params = function(params) {
+      if(anyNA(params)) {
+        stop("Model parameters need to be defined. Use fit(x, y, model) or set_params(params) to set default values.")
+      }
+    }
+  )
 )

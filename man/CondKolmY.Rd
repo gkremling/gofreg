@@ -7,7 +7,7 @@ of Y}
 \description{
 This class inherits from \link{TestStatistic} and implements a
 function to calculate the test statistic (and x-y-values that can be used
-to plot it).
+to plot the underlying process).
 
 The process underlying the test statistic is given in Kremling & Dikta (2024) and defined by
 \deqn{\tilde{\alpha}_n(t) = \frac{1}{\sqrt{n}} \sum_{i=1}^n \left( I_{\{Y_i \le t\}} -

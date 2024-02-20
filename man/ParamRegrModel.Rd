@@ -2,15 +2,15 @@
 % Please edit documentation in R/ParamRegrModel.R
 \name{ParamRegrModel}
 \alias{ParamRegrModel}
-\title{ParamRegrModel Class}
+\title{Parametric Regression Model}
 \description{
 This is the abstract base class for parametric regression model
 objects like \link{NormalGLM}.
 
 Parametric regression models are built around the following key tasks:
 \itemize{
-\item Fitting the model to given data, i.e.\ computing the MLE for the model
-parameters
+\item A method \code{fit()} to fit the model to given data, i.e. compute the MLE
+for the model parameters
 \item Methods \code{f_yx()}, \code{F_yx()} and \code{mean_yx()} to evaluate the conditional
 density, distribution and regression function
 \item A method \code{sample_yx()} to generate a random sample of response variables
@@ -108,8 +108,8 @@ Evaluates the conditional density function.
 
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{model parameters to use (defaults to the fitted parameter
-values)}
+\item{\code{params}}{model parameters to use, defaults to the fitted parameter
+values}
 }
 \if{html}{\out{</div>}}
 }
@@ -134,8 +134,8 @@ evaluated}
 
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{model parameters to use (defaults to the fitted parameter
-values)}
+\item{\code{params}}{model parameters to use, defaults to the fitted parameter
+values}
 }
 \if{html}{\out{</div>}}
 }
@@ -159,8 +159,8 @@ conditional distribution.
 \describe{
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{model parameters to use (defaults to the fitted parameter
-values)}
+\item{\code{params}}{model parameters to use, defaults to the fitted parameter
+values}
 }
 \if{html}{\out{</div>}}
 }
@@ -183,8 +183,8 @@ expected value of Y given X=x.
 \describe{
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{model parameters to use (defaults to the fitted parameter
-values)}
+\item{\code{params}}{model parameters to use, defaults to the fitted parameter
+values}
 }
 \if{html}{\out{</div>}}
 }

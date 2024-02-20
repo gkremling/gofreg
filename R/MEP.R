@@ -1,6 +1,7 @@
 ##' @title Marked empirical process test statistic for a given GLM
-##' @description This class implements a function of \code{TestStatistic} to
-##'   calculate the test statistic (and x-y-values that can be used to plot it).
+##' @description This class inherits from [TestStatistic] and implements a
+##'   function to calculate the test statistic (and x-y-values that can be used
+##'   to plot the underlying process).
 ##'
 ##'   The process underlying the test statistic is given in Dikta & Scheer
 ##'   (2021) and defined by \deqn{\bar{R}^1_n(u) = \frac{1}{\sqrt{n}}

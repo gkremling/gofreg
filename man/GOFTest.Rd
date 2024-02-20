@@ -2,11 +2,37 @@
 % Please edit documentation in R/GOFTest.R
 \name{GOFTest}
 \alias{GOFTest}
-\title{Goodness-of-fit test for parametric regressin}
+\title{Goodness-of-fit test for parametric regression}
 \description{
-This class implements functions to calculate the test statistic for the original data
-as well as the statistics for bootstrap samples. It also offers the possibilitz to computate the
-corresponding bootstrap p-value.
+This class implements functions to calculate the test statistic
+for the original data as well as the statistics for bootstrap samples. It
+also offers the possibility to compute the corresponding bootstrap
+p-value.
+}
+\examples{
+# Create an example dataset
+set.seed(123)
+n <- 100
+x <- rbind(runif(n), rbinom(n, 1, 0.5))
+model <- NormalGLM$new()
+y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
+
+# Fit the correct model
+model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+
+# Calculate the bootstrap p-value and plot the corresponding processes
+goftest <- GOFTest$new(x, y, model, test_stat = CondKolmY$new(), nboot = 100)
+goftest$get_pvalue()
+goftest$plot_procs()
+
+# Fit a wrong model
+model2 <- NormalGLM$new(linkinv = function(u) {return(u+10)})
+model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+
+# Calculate the bootstrap p-value and plot the corresponding processes
+goftest2 <- GOFTest$new(x, y, model2, test_stat = CondKolmY$new(), nboot = 100)
+goftest2$get_pvalue()
+goftest2$plot_procs()
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -15,6 +41,7 @@ corresponding bootstrap p-value.
 \item \href{#method-GOFTest-get_stat_orig}{\code{GOFTest$get_stat_orig()}}
 \item \href{#method-GOFTest-get_stats_boot}{\code{GOFTest$get_stats_boot()}}
 \item \href{#method-GOFTest-get_pvalue}{\code{GOFTest$get_pvalue()}}
+\item \href{#method-GOFTest-plot_procs}{\code{GOFTest$plot_procs()}}
 \item \href{#method-GOFTest-clone}{\code{GOFTest$clone()}}
 }
 }
@@ -22,9 +49,9 @@ corresponding bootstrap p-value.
 \if{html}{\out{<a id="method-GOFTest-new"></a>}}
 \if{latex}{\out{\hypertarget{method-GOFTest-new}{}}}
 \subsection{Method \code{new()}}{
-Initialize an object of class GOFTest
+Initialize an instance of class \link{GOFTest}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(x, y, model_fitted, test_stat, boot_type, nboot)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(x, y, model_fitted, test_stat, boot_type = "keep", nboot)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -34,11 +61,16 @@ Initialize an object of class GOFTest
 
 \item{\code{y}}{response variables}
 
-\item{\code{model_fitted}}{object of class ParamRegrModel with defined default parameters}
+\item{\code{model_fitted}}{object of class \link{ParamRegrModel} with fitted
+parameters}
 
-\item{\code{test_stat}}{object of class TestStatistic}
+\item{\code{test_stat}}{object of class \link{TestStatistic}}
 
-\item{\code{boot_type}}{a specification for the type of resampling scheme: "rsmpl" if covariates shall resampled or "keep" if they shall be kept the same}
+\item{\code{boot_type}}{a specification for the type of resampling scheme:
+\itemize{
+\item "keep" (default) if covariates shall be kept the same
+\item "rsmpl" if covariates shall be resampled
+}}
 
 \item{\code{nboot}}{number of bootstrap iterations}
 }
@@ -49,40 +81,55 @@ Initialize an object of class GOFTest
 \if{html}{\out{<a id="method-GOFTest-get_stat_orig"></a>}}
 \if{latex}{\out{\hypertarget{method-GOFTest-get_stat_orig}{}}}
 \subsection{Method \code{get_stat_orig()}}{
-Calculates the test statistic for the original data and model
+Calculates the test statistic for the original data and
+model.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GOFTest$get_stat_orig()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-object of class \code{TestStatistic}
+object of class \link{TestStatistic}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-GOFTest-get_stats_boot"></a>}}
 \if{latex}{\out{\hypertarget{method-GOFTest-get_stats_boot}{}}}
 \subsection{Method \code{get_stats_boot()}}{
-Calculates the test statistics for the resampled data and corresponding models
+Calculates the test statistics for the resampled data and
+corresponding models.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GOFTest$get_stats_boot()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-vector of objects of class \code{TestStatistic}
+vector of length \code{nboot} containing objects of class
+\link{TestStatistic}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-GOFTest-get_pvalue"></a>}}
 \if{latex}{\out{\hypertarget{method-GOFTest-get_pvalue}{}}}
 \subsection{Method \code{get_pvalue()}}{
-Calculates the bootstrap p-value for the given model
+Calculates the bootstrap p-value for the given model.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GOFTest$get_pvalue()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-p-value for the null hypothesis that \code{y} was generated according to \code{model}
+p-value for the null hypothesis that \code{y} was generated according
+to \code{model}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-GOFTest-plot_procs"></a>}}
+\if{latex}{\out{\hypertarget{method-GOFTest-plot_procs}{}}}
+\subsection{Method \code{plot_procs()}}{
+Plots the processes underlying the bootstrap test statistics
+(gray) and the original test statistic (red)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GOFTest$plot_procs()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-GOFTest-clone"></a>}}

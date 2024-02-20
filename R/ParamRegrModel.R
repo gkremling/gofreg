@@ -1,9 +1,21 @@
-##' @title R6 Class representing a parametric regression model
-##' @description This class implements the maximum likelihood estimator for the model parameters
-##'   as well as abstract methods to, for example, evaluate the conditional density and distribution functions.
+##' @title ParamRegrModel Class
+##' @description This is the abstract base class for parametric regression model
+##'   objects like [NormalGLM].
+##'
+##'   Parametric regression models are built around the following key tasks:
+##'   * Fitting the model to given data, i.e.\ computing the MLE for the model
+##'     parameters
+##'   * Methods `f_yx()`, `F_yx()` and `mean_yx()` to evaluate the conditional
+##'     density, distribution and regression function
+##'   * A method `sample_yx()` to generate a random sample of response variables
+##'     following the model given a vector of covariates
+##' @param x vector of covariates
+##' @param params model parameters to use (defaults to the fitted parameter
+##'   values)
 ##' @export
 ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
-  #' @description Set the value of the model parameters used as default for the class functions
+  #' @description Set the value of the model parameters used as default for the
+  #'   class functions.
   #'
   #' @param params model parameters to use as default
   #'
@@ -13,7 +25,8 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     invisible(self)
   },
 
-  #' @description Returns the value of the model parameters used as default for the class functions
+  #' @description Returns the value of the model parameters used as default for
+  #'   the class functions.
   #'
   #' @return model parameters used as default
   #'
@@ -22,18 +35,25 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     return(private$params)
   },
 
-  #' @description Calculates the maximum likelihood estimator for the model parameters based on given data
+  #' @description Calculates the maximum likelihood estimator for the model
+  #'   parameters based on given data.
   #'
-  #' @param x vector of covariates
   #' @param y response variable
-  #' @param params_init initial value of the model parameters to use for the optimization
-  #' @param inplace logical; if TRUE, default model parameters are set accordingly
+  #' @param params_init initial value of the model parameters to use for the
+  #'   optimization (defaults to the fitted parameter values)
+  #' @param inplace `logical`; if `TRUE`, default model parameters are set
+  #'   accordingly and parameter estimator is not returned
   #'
-  #' @return MLE of the model parameters for the given data
+  #' @return MLE of the model parameters for the given data, same shape as
+  #'   `params_init`
   #' @export
   fit = function(x, y, params_init = private$params) {
     if(anyNA(params_init)) {
       stop("Starting value of model parameters needs to be defined for the optimization.")
+    }
+    lik_init <- self$f_yx(y, x, params_init)
+    if(any(lik_init == 0) || checkmate::anyNaN(lik_init)) {
+      stop("Starting value of model parameters not feasible fo the given data.")
     }
     if(length(params_init)==1) {
       params_opt <- optim(par=params_init,
@@ -47,45 +67,39 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     return(params_opt$par)
   },
 
-  #' @description Evaluates the conditional density function
+  #' @description Evaluates the conditional density function.
   #'
   #' @param t value(s) at which the conditional density shall be evaluated
-  #' @param x vector of covariates
-  #' @param params use different model parameters
   #'
-  #' @return value(s) of the conditional density function
+  #' @return value(s) of the conditional density function, same shape as `t`
   #' @export
   f_yx = function(t, x, params = private$params) {
     stop("Abstract method. Needs to be implemented.")
   },
 
-  #' @description Evaluates the conditional distribution function
+  #' @description Evaluates the conditional distribution function.
   #'
-  #' @param t value(s) at which the conditional distribution shall be evaluated
-  #' @param x vector of covariates
-  #' @param params use different model parameters
+  #' @param t value(s) at which the conditional distribution shall be
+  #'   evaluated
   #'
-  #' @return value(s) of the conditional distribution function
+  #' @return value(s) of the conditional distribution function,  same shape as
+  #'   `t`
   #' @export
   F_yx = function(t, x, params = private$params) {
     stop("Abstract method. Needs to be implemented.")
   },
 
-  #' @description Generates a new sample of response variables with the same conditional distribution
+  #' @description Generates a new sample of response variables with the same
+  #'   conditional distribution.
   #'
-  #' @param x vector of covariates
-  #' @param params use different model parameters
-  #'
-  #' @return vector of sampled response variables
+  #' @return vector of sampled response variables, same length as `x`
   #' @export
   sample_yx = function(x, params = private$params) {
     stop("Abstract method. Needs to be implemented.")
   },
 
-  #' @description Evaluates the regression function or in other terms the expected value of Y given X=x
-  #'
-  #' @param x vector of covariates
-  #' @param params use different model parameters
+  #' @description Evaluates the regression function or in other terms the
+  #'   expected value of Y given X=x.
   #'
   #' @return value of the regression function
   #' @export
@@ -94,7 +108,14 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   }), private = list(
     params = NA,
 
-    # negative log-likelihood function that is minimized to determine the MLE
+    # @description Negative log-likelihood function that is minimized to
+    #   determine the MLE.
+    #
+    # @param x vector of covariates
+    # @param y response variable
+    # @param params model parameters
+    #
+    # @return Value of the negative log-likelihood function
     loglik = function(x, y, params) {
       lik <- self$f_yx(y, x, params)
       if(any(is.nan(lik))) return(1e100)

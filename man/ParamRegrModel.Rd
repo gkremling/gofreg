@@ -2,10 +2,20 @@
 % Please edit documentation in R/ParamRegrModel.R
 \name{ParamRegrModel}
 \alias{ParamRegrModel}
-\title{R6 Class representing a parametric regression model}
+\title{ParamRegrModel Class}
 \description{
-This class implements the maximum likelihood estimator for the model parameters
-as well as abstract methods to, for example, evaluate the conditional density and distribution functions.
+This is the abstract base class for parametric regression model
+objects like \link{NormalGLM}.
+
+Parametric regression models are built around the following key tasks:
+\itemize{
+\item Fitting the model to given data, i.e.\ computing the MLE for the model
+parameters
+\item Methods \code{f_yx()}, \code{F_yx()} and \code{mean_yx()} to evaluate the conditional
+density, distribution and regression function
+\item A method \code{sample_yx()} to generate a random sample of response variables
+following the model given a vector of covariates
+}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -24,7 +34,8 @@ as well as abstract methods to, for example, evaluate the conditional density an
 \if{html}{\out{<a id="method-ParamRegrModel-set_params"></a>}}
 \if{latex}{\out{\hypertarget{method-ParamRegrModel-set_params}{}}}
 \subsection{Method \code{set_params()}}{
-Set the value of the model parameters used as default for the class functions
+Set the value of the model parameters used as default for the
+class functions.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$set_params(params)}\if{html}{\out{</div>}}
 }
@@ -41,7 +52,8 @@ Set the value of the model parameters used as default for the class functions
 \if{html}{\out{<a id="method-ParamRegrModel-get_params"></a>}}
 \if{latex}{\out{\hypertarget{method-ParamRegrModel-get_params}{}}}
 \subsection{Method \code{get_params()}}{
-Returns the value of the model parameters used as default for the class functions
+Returns the value of the model parameters used as default for
+the class functions.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$get_params()}\if{html}{\out{</div>}}
 }
@@ -54,7 +66,8 @@ model parameters used as default
 \if{html}{\out{<a id="method-ParamRegrModel-fit"></a>}}
 \if{latex}{\out{\hypertarget{method-ParamRegrModel-fit}{}}}
 \subsection{Method \code{fit()}}{
-Calculates the maximum likelihood estimator for the model parameters based on given data
+Calculates the maximum likelihood estimator for the model
+parameters based on given data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$fit(x, y, params_init = private$params)}\if{html}{\out{</div>}}
 }
@@ -66,21 +79,24 @@ Calculates the maximum likelihood estimator for the model parameters based on gi
 
 \item{\code{y}}{response variable}
 
-\item{\code{params_init}}{initial value of the model parameters to use for the optimization}
+\item{\code{params_init}}{initial value of the model parameters to use for the
+optimization (defaults to the fitted parameter values)}
 
-\item{\code{inplace}}{logical; if TRUE, default model parameters are set accordingly}
+\item{\code{inplace}}{\code{logical}; if \code{TRUE}, default model parameters are set
+accordingly and parameter estimator is not returned}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-MLE of the model parameters for the given data
+MLE of the model parameters for the given data, same shape as
+\code{params_init}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ParamRegrModel-f_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-ParamRegrModel-f_yx}{}}}
 \subsection{Method \code{f_yx()}}{
-Evaluates the conditional density function
+Evaluates the conditional density function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$f_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -92,19 +108,20 @@ Evaluates the conditional density function
 
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-value(s) of the conditional density function
+value(s) of the conditional density function, same shape as \code{t}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ParamRegrModel-F_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-ParamRegrModel-F_yx}{}}}
 \subsection{Method \code{F_yx()}}{
-Evaluates the conditional distribution function
+Evaluates the conditional distribution function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$F_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -112,23 +129,27 @@ Evaluates the conditional distribution function
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{t}}{value(s) at which the conditional distribution shall be evaluated}
+\item{\code{t}}{value(s) at which the conditional distribution shall be
+evaluated}
 
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-value(s) of the conditional distribution function
+value(s) of the conditional distribution function,  same shape as
+\code{t}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ParamRegrModel-sample_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-ParamRegrModel-sample_yx}{}}}
 \subsection{Method \code{sample_yx()}}{
-Generates a new sample of response variables with the same conditional distribution
+Generates a new sample of response variables with the same
+conditional distribution.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$sample_yx(x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -138,19 +159,21 @@ Generates a new sample of response variables with the same conditional distribut
 \describe{
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-vector of sampled response variables
+vector of sampled response variables, same length as \code{x}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ParamRegrModel-mean_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-ParamRegrModel-mean_yx}{}}}
 \subsection{Method \code{mean_yx()}}{
-Evaluates the regression function or in other terms the expected value of Y given X=x
+Evaluates the regression function or in other terms the
+expected value of Y given X=x.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$mean_yx(x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -160,7 +183,8 @@ Evaluates the regression function or in other terms the expected value of Y give
 \describe{
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }

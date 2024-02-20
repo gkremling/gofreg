@@ -4,7 +4,36 @@
 \alias{NormalGLM}
 \title{Generalized linear model with normal distribution}
 \description{
-This class implements functions of \code{ParamRegrModel} that, for example, evaluate the conditional density and distribution functions.
+This class inherits from \link{ParamRegrModel} and implements its
+functions that, for example, evaluate the conditional density and
+distribution functions.
+}
+\examples{
+# Use the built-in cars dataset
+x <- datasets::cars$speed
+y <- datasets::cars$dist
+
+# Create an instance of a NormalGLM
+model <- NormalGLM$new()
+
+# Fit a Normal GLM to the cars dataset
+model$fit(x, y, params_init = list(beta=3, sd=2), inplace=TRUE)
+params_opt <- model$get_params()
+
+# Plot the resulting regression function
+plot(datasets::cars)
+abline(a = 0, b = params_opt$beta)
+
+# Generate a sample for y for given x following the same distribution
+x.new <- seq(min(x), max(x), by=2)
+y.smpl <- model$sample_yx(x.new)
+points(x.new, y.smpl, col="red")
+
+# Evaluate the conditional density, distribution and regression function at given values
+model$f_yx(y.smpl, x.new)
+model$F_yx(y.smpl, x.new)
+y.pred <- model$mean_yx(x.new)
+points(x.new, y.pred, col="blue")
 }
 \section{Super class}{
 \code{\link[gofreg:ParamRegrModel]{gofreg::ParamRegrModel}} -> \code{NormalGLM}
@@ -33,15 +62,19 @@ This class implements functions of \code{ParamRegrModel} that, for example, eval
 \if{html}{\out{<a id="method-NormalGLM-new"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-new}{}}}
 \subsection{Method \code{new()}}{
-Initialize an object of class NormalGLM
+Initialize an object of class NormalGLM.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$new(linkinv)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$new(
+  linkinv = function(u) {
+     return(u)
+ }
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{linkinv}}{inverse link function}
+\item{\code{linkinv}}{inverse link function, defaults to identity function}
 }
 \if{html}{\out{</div>}}
 }
@@ -50,7 +83,8 @@ Initialize an object of class NormalGLM
 \if{html}{\out{<a id="method-NormalGLM-fit"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-fit}{}}}
 \subsection{Method \code{fit()}}{
-Calculates the maximum likelihood estimator for the model parameters based on given data
+Calculates the maximum likelihood estimator for the model
+parameters based on given data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NormalGLM$fit(x, y, params_init = private$params, inplace = FALSE)}\if{html}{\out{</div>}}
 }
@@ -62,21 +96,24 @@ Calculates the maximum likelihood estimator for the model parameters based on gi
 
 \item{\code{y}}{response variable}
 
-\item{\code{params_init}}{initial value of the model parameters to use for the optimization}
+\item{\code{params_init}}{initial value of the model parameters to use for the
+optimization (defaults to the fitted parameter values)}
 
-\item{\code{inplace}}{logical; if TRUE, default model parameters are set accordingly and parameter estimator is not returned}
+\item{\code{inplace}}{\code{logical}; if \code{TRUE}, default model parameters are set
+accordingly and parameter estimator is not returned}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-MLE of the model parameters for the given data
+MLE of the model parameters for the given data, same shape as
+\code{params_init}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NormalGLM-f_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-f_yx}{}}}
 \subsection{Method \code{f_yx()}}{
-Evaluates the conditional density function
+Evaluates the conditional density function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NormalGLM$f_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -88,19 +125,20 @@ Evaluates the conditional density function
 
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-value(s) of the conditional density function
+value(s) of the conditional density function, same shape as \code{t}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NormalGLM-F_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-F_yx}{}}}
 \subsection{Method \code{F_yx()}}{
-Evaluates the conditional distribution function
+Evaluates the conditional distribution function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NormalGLM$F_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -108,23 +146,27 @@ Evaluates the conditional distribution function
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{t}}{value(s) at which the conditional distribution shall be evaluated}
+\item{\code{t}}{value(s) at which the conditional distribution shall be
+evaluated}
 
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-value(s) of the conditional distribution function
+value(s) of the conditional distribution function,  same shape as
+\code{t}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NormalGLM-sample_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-sample_yx}{}}}
 \subsection{Method \code{sample_yx()}}{
-Generates a new sample of response variables with the same conditional distribution
+Generates a new sample of response variables with the same
+conditional distribution.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NormalGLM$sample_yx(x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -134,19 +176,21 @@ Generates a new sample of response variables with the same conditional distribut
 \describe{
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-vector of sampled response variables
+vector of sampled response variables, same length as \code{x}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NormalGLM-mean_yx"></a>}}
 \if{latex}{\out{\hypertarget{method-NormalGLM-mean_yx}{}}}
 \subsection{Method \code{mean_yx()}}{
-Evaluates the regression function or in other terms the expected value of Y given X=x
+Evaluates the regression function or in other terms the
+expected value of Y given X=x.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NormalGLM$mean_yx(x, params = private$params)}\if{html}{\out{</div>}}
 }
@@ -156,7 +200,8 @@ Evaluates the regression function or in other terms the expected value of Y give
 \describe{
 \item{\code{x}}{vector of covariates}
 
-\item{\code{params}}{use different model parameters}
+\item{\code{params}}{model parameters to use (defaults to the fitted parameter
+values)}
 }
 \if{html}{\out{</div>}}
 }

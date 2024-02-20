@@ -17,6 +17,7 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     checkmate,
+    ggplot2,
     R6
 URL: https://github.com/gkremling/gofreg
 BugReports: https://github.com/gkremling/gofreg/issues

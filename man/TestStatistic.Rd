@@ -2,9 +2,14 @@
 % Please edit documentation in R/TestStatistic.R
 \name{TestStatistic}
 \alias{TestStatistic}
-\title{R6 Class representing a test statistic}
+\title{TestStatistic Class}
 \description{
-This class contains an abstract methods to calculate the test statistic (and x-y-values that can be used to plot it).
+This is the abstract base class for test statistic objects like
+\link{CondKolmY} or \link{MEP}.
+
+Test statistics are built around the key method
+\code{calc_stat()} which calculates the particular test statistic (and
+x-y-values that can be used to plot the underlying process).
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -13,6 +18,7 @@ This class contains an abstract methods to calculate the test statistic (and x-y
 \item \href{#method-TestStatistic-calc_stat}{\code{TestStatistic$calc_stat()}}
 \item \href{#method-TestStatistic-get_plot_xy}{\code{TestStatistic$get_plot_xy()}}
 \item \href{#method-TestStatistic-print}{\code{TestStatistic$print()}}
+\item \href{#method-TestStatistic-geom_ts_proc}{\code{TestStatistic$geom_ts_proc()}}
 \item \href{#method-TestStatistic-clone}{\code{TestStatistic$clone()}}
 }
 }
@@ -20,7 +26,7 @@ This class contains an abstract methods to calculate the test statistic (and x-y
 \if{html}{\out{<a id="method-TestStatistic-get_value"></a>}}
 \if{latex}{\out{\hypertarget{method-TestStatistic-get_value}{}}}
 \subsection{Method \code{get_value()}}{
-Returns the value of the test statistic
+Returns the value of the test statistic.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TestStatistic$get_value()}\if{html}{\out{</div>}}
 }
@@ -33,7 +39,8 @@ value of the test statistic
 \if{html}{\out{<a id="method-TestStatistic-calc_stat"></a>}}
 \if{latex}{\out{\hypertarget{method-TestStatistic-calc_stat}{}}}
 \subsection{Method \code{calc_stat()}}{
-Calculate the value of the test statistic for given data (x,y) and a model to test for
+Calculate the value of the test statistic for given data
+(x,y) and a model to test for.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TestStatistic$calc_stat(x, y, model)}\if{html}{\out{</div>}}
 }
@@ -45,7 +52,7 @@ Calculate the value of the test statistic for given data (x,y) and a model to te
 
 \item{\code{y}}{response variable}
 
-\item{\code{model}}{model of type ParamRegrModel to test for}
+\item{\code{model}}{\link{ParamRegrModel} to test for}
 }
 \if{html}{\out{</div>}}
 }
@@ -54,24 +61,46 @@ Calculate the value of the test statistic for given data (x,y) and a model to te
 \if{html}{\out{<a id="method-TestStatistic-get_plot_xy"></a>}}
 \if{latex}{\out{\hypertarget{method-TestStatistic-get_plot_xy}{}}}
 \subsection{Method \code{get_plot_xy()}}{
-Returns vectors of x and y that can be used to plot the process corresponding to the test statistic
+Returns vectors of x and y that can be used to plot the
+process corresponding to the test statistic.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TestStatistic$get_plot_xy()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-list with plot.x and plot.y
+list with plot.x and plot.y being vectors of the same length
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TestStatistic-print"></a>}}
 \if{latex}{\out{\hypertarget{method-TestStatistic-print}{}}}
 \subsection{Method \code{print()}}{
-Overrides print-method for objects of type \code{TestStatistic} to only print its value
+Overrides the print-method for objects of type
+\code{TestStatistic} to only print its value.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TestStatistic$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TestStatistic-geom_ts_proc"></a>}}
+\if{latex}{\out{\hypertarget{method-TestStatistic-geom_ts_proc}{}}}
+\subsection{Method \code{geom_ts_proc()}}{
+Creates a line plot showing the underlying process of the
+test statistic.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TestStatistic$geom_ts_proc(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments passed on to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+\code{colour = "red"} or \code{size = 3}.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TestStatistic-clone"></a>}}

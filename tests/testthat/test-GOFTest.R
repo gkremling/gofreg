@@ -1,17 +1,14 @@
 test_that("get_stat_orig works", {
   set.seed(123)
-  g1 <- function(u) {return(exp(u))}
-  beta <- c(1,2,3)
-  sd <- 2
-  n <- 100
-  x <- rbind(runif(n), runif(n), rnorm(n))
-  y <- rnorm(n, mean=g1(beta %*% x), sd=sd)
 
-  model <- NormalGLM$new(g1)
-  model$fit(x,y, params_init = list(beta=c(1,2,3), sd=2), inplace = TRUE)
+  dummy <- dummy_xymodel()
+  x <- dummy$x
+  y <- dummy$y
+  model <- dummy$model
 
   test_stat <- CondKolmY$new()
   goftest <- GOFTest$new(x, y, model, test_stat, boot_type="keep", nboot=10)
+
   ts1 <- goftest$get_stat_orig()
   expect_error(test_stat$get_value())
   ts2 <- test_stat$calc_stat(x, y, model)
@@ -20,15 +17,11 @@ test_that("get_stat_orig works", {
 
 test_that("get_stat_boot and get_pvalue work", {
   set.seed(123)
-  g1 <- function(u) {return(exp(u))}
-  beta <- c(1,2,3)
-  sd <- 2
-  n <- 100
-  x <- rbind(runif(n), runif(n), rnorm(n))
-  y <- rnorm(n, mean=g1(beta %*% x), sd=sd)
 
-  model <- NormalGLM$new(g1)
-  model$fit(x,y, params_init = list(beta=c(1,2,3), sd=2), inplace = TRUE)
+  dummy <- dummy_xymodel()
+  x <- dummy$x
+  y <- dummy$y
+  model <- dummy$model
 
   test_stat <- CondKolmY$new()
   goftest <- GOFTest$new(x, y, model, test_stat, boot_type="keep", nboot=10)
@@ -49,15 +42,11 @@ test_that("get_stat_boot and get_pvalue work", {
 
 test_that("get_pvalue works alone", {
   set.seed(123)
-  g1 <- function(u) {return(exp(u))}
-  beta <- c(1,2,3)
-  sd <- 2
-  n <- 100
-  x <- rbind(runif(n), runif(n), rnorm(n))
-  y <- rnorm(n, mean=g1(beta %*% x), sd=sd)
 
-  model <- NormalGLM$new(g1)
-  model$fit(x,y, params_init = list(beta=c(1,2,3), sd=2), inplace = TRUE)
+  dummy <- dummy_xymodel()
+  x <- dummy$x
+  y <- dummy$y
+  model <- dummy$model
 
   test_stat <- CondKolmY$new()
   goftest <- GOFTest$new(x, y, model, test_stat, boot_type="keep", nboot=10)

@@ -2,6 +2,7 @@
 
 export(CondKolmY)
 export(GOFTest)
+export(MEP)
 export(NormalGLM)
 export(ParamRegrModel)
 export(TestStatistic)

@@ -4,9 +4,10 @@
 \alias{GLM}
 \title{Generalized Linear Model}
 \description{
-This class specializes \link{ParamRegrModel} and is the abstract
-base class for generalized linear model objects like \link{NormalGLM}. It
-handles the (inverse) link function.
+This class specializes \link{ParamRegrModel}. It is the abstract
+base class for parametric generalized linear model objects with specific
+distribution family such as \link{NormalGLM} and handles the (inverse) link
+function.
 }
 \section{Super class}{
 \code{\link[gofreg:ParamRegrModel]{gofreg::ParamRegrModel}} -> \code{GLM}

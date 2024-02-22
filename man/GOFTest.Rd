@@ -26,7 +26,7 @@ goftest$get_pvalue()
 goftest$plot_procs()
 
 # Fit a wrong model
-model2 <- NormalGLM$new(linkinv = function(u) {return(u+10)})
+model2 <- NormalGLM$new(linkinv = function(u) {u+10})
 model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 
 # Calculate the bootstrap p-value and plot the corresponding processes

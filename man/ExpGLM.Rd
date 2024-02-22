@@ -46,7 +46,6 @@ points(x.new, y.pred, col="blue")
 \item \href{#method-ExpGLM-f_yx}{\code{ExpGLM$f_yx()}}
 \item \href{#method-ExpGLM-F_yx}{\code{ExpGLM$F_yx()}}
 \item \href{#method-ExpGLM-sample_yx}{\code{ExpGLM$sample_yx()}}
-\item \href{#method-ExpGLM-mean_yx}{\code{ExpGLM$mean_yx()}}
 \item \href{#method-ExpGLM-clone}{\code{ExpGLM$clone()}}
 }
 }
@@ -56,6 +55,7 @@ points(x.new, y.pred, col="blue")
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="get_params"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-get_params'><code>gofreg::ParamRegrModel$get_params()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="set_params"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-set_params'><code>gofreg::ParamRegrModel$set_params()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="GLM" data-id="initialize"><a href='../../gofreg/html/GLM.html#method-GLM-initialize'><code>gofreg::GLM$initialize()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="gofreg" data-topic="GLM" data-id="mean_yx"><a href='../../gofreg/html/GLM.html#method-GLM-mean_yx'><code>gofreg::GLM$mean_yx()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -163,30 +163,6 @@ the fitted parameter values}
 }
 \subsection{Returns}{
 vector of sampled response variables, same length as \code{x}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ExpGLM-mean_yx"></a>}}
-\if{latex}{\out{\hypertarget{method-ExpGLM-mean_yx}{}}}
-\subsection{Method \code{mean_yx()}}{
-Evaluates the regression function or in other terms the
-expected value of Y given X=x.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ExpGLM$mean_yx(x, params = private$params)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{vector of covariates}
-
-\item{\code{params}}{model parameters to use (\code{list()} with tag beta), defaults to
-the fitted parameter values}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-value of the regression function
 }
 }
 \if{html}{\out{<hr>}}

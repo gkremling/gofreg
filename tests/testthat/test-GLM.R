@@ -5,6 +5,6 @@ test_that("GLM.new works", {
   expect_equal(GLM.new(distr="gamma"),   GammaGLM$new())
 })
 
-test_that("GLM.new throws error for unknown distr", {
+test_that("GLM.new throws an error for unknown distr", {
   expect_error(GLM.new(distr="unknown"))
 })

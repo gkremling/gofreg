@@ -22,7 +22,7 @@
 ##' goftest$plot_procs()
 ##'
 ##' # Fit a wrong model
-##' model2 <- NormalGLM$new(linkinv = function(u) {return(u+10)})
+##' model2 <- NormalGLM$new(linkinv = function(u) {u+10})
 ##' model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Calculate the bootstrap p-value and plot the corresponding processes
@@ -67,7 +67,7 @@ GOFTest <- R6::R6Class(
         private$stat_orig <- private$test_stat$clone(deep = TRUE)
         private$stat_orig$calc_stat(private$x, private$y, private$model)
       }
-      return(private$stat_orig)
+      private$stat_orig
     },
 
     #' @description Calculates the test statistics for the resampled data and
@@ -80,7 +80,7 @@ GOFTest <- R6::R6Class(
       if(!checkmate::test_class(private$stats_boot, "TestStatistic") && anyNA(private$stats_boot)) {
         private$stats_boot <- replicate(private$nboot, private$bootstrap())
       }
-      return(private$stats_boot)
+      private$stats_boot
     },
 
     #' @description Calculates the bootstrap p-value for the given model.
@@ -93,12 +93,12 @@ GOFTest <- R6::R6Class(
       stats_boot <- self$get_stats_boot()
 
       get_val <- function(stat) {
-        return(stat$get_value())
+        stat$get_value()
       }
 
       val_orig <- stat_orig$get_value()
       val_boot <- sapply(stats_boot, get_val)
-      return(mean(val_orig < val_boot))
+      mean(val_orig < val_boot)
     },
 
     #' @description Plots the processes underlying the bootstrap test statistics
@@ -112,6 +112,7 @@ GOFTest <- R6::R6Class(
       }
       gpl <- gpl + private$stat_orig$geom_ts_proc(col="red")
       print(gpl)
+      invisible(self)
     }
   ),
   private = list(
@@ -151,7 +152,7 @@ GOFTest <- R6::R6Class(
       stat.b$calc_stat(x.b, y.b, model.b)
 
       # return requested statistic
-      return(stat.b)
+      stat.b
     }
   )
 )

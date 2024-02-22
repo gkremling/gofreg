@@ -16,6 +16,7 @@ function.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-GLM-new}{\code{GLM$new()}}
+\item \href{#method-GLM-mean_yx}{\code{GLM$mean_yx()}}
 \item \href{#method-GLM-clone}{\code{GLM$clone()}}
 }
 }
@@ -26,7 +27,6 @@ function.
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="f_yx"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-f_yx'><code>gofreg::ParamRegrModel$f_yx()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="fit"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-fit'><code>gofreg::ParamRegrModel$fit()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="get_params"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-get_params'><code>gofreg::ParamRegrModel$get_params()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="mean_yx"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-mean_yx'><code>gofreg::ParamRegrModel$mean_yx()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="sample_yx"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-sample_yx'><code>gofreg::ParamRegrModel$sample_yx()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="set_params"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-set_params'><code>gofreg::ParamRegrModel$set_params()</code></a></span></li>
 </ul>
@@ -40,7 +40,7 @@ Initialize an object of class GLM.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GLM$new(
   linkinv = function(u) {
-     return(u)
+     u
  }
 )}\if{html}{\out{</div>}}
 }
@@ -51,6 +51,30 @@ Initialize an object of class GLM.
 \item{\code{linkinv}}{inverse link function, defaults to identity function}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-GLM-mean_yx"></a>}}
+\if{latex}{\out{\hypertarget{method-GLM-mean_yx}{}}}
+\subsection{Method \code{mean_yx()}}{
+Evaluates the regression function or in other terms the
+expected value of Y given X=x.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GLM$mean_yx(x, params = private$params)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{vector of covariates}
+
+\item{\code{params}}{model parameters to use, defaults to the fitted parameter
+values}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+value of the regression function
 }
 }
 \if{html}{\out{<hr>}}

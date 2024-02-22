@@ -14,10 +14,10 @@ TestStatistic <- R6::R6Class(
     #' @return value of the test statistic
     #' @export
     get_value = function() {
-      if(!is.na(private$value)) {
-        return(private$value)
+      if(is.na(private$value)) {
+        stop("Value of the test statistic is not assigned yet. Call calc_stat(x, y, model) first!")
       }
-      stop("Value of the test statistic is not assigned yet. Call calc_stat(x, y, model) first!")
+      private$value
     },
 
     #' @description Calculate the value of the test statistic for given data
@@ -41,7 +41,7 @@ TestStatistic <- R6::R6Class(
       if(anyNA(c(private$plot.x, private$plot.y))) {
         stop("The values of plot.x and plot.y are not assigned yet. Call calc_stat(x, y, model) first!")
       }
-      return(list(plot.x=private$plot.x, plot.y=private$plot.y))
+      list(plot.x=private$plot.x, plot.y=private$plot.y)
     },
 
     #' @description Overrides the print-method for objects of type
@@ -50,6 +50,7 @@ TestStatistic <- R6::R6Class(
     #' @export
     print = function() {
       cat("Test statistic with value", private$value)
+      invisible(self)
     },
 
     #' @description Creates a line plot showing the underlying process of the

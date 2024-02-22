@@ -51,15 +51,14 @@ ExpGLM <- R6::R6Class(
     #'   `params_init`
     #' @export
     fit = function(x, y, params_init = private$params, inplace = FALSE) {
-      checkmate::assert_list(params_init, len=1)
-      checkmate::assert_names(names(params_init), identical.to = c("beta"))
-      checkmate::assert_vector(params_init$beta, len=ifelse(is.matrix(x), nrow(x), 1))
+      private$check_params(params_init, x)
       params_opt <- super$fit(x, y, unlist(params_init, use.names=FALSE))
       params_opt <- list(beta = params_opt)
       if (inplace) {
         private$params <- params_opt
+        invisible(self)
       } else {
-        return(params_opt)
+        params_opt
       }
     },
 
@@ -70,13 +69,13 @@ ExpGLM <- R6::R6Class(
     #' @return value(s) of the conditional density function, same shape as `t`
     #' @export
     f_yx = function(t, x, params=private$params) {
-      private$check_params(params)
+      super$check_params(params)
       # when computing the MLE, params is a plain vector and needs to be reshaped
       if(checkmate::test_atomic_vector(params, len=ifelse(is.matrix(x), nrow(x), 1))) {
         params <- list(beta = params)
       }
       mean <- self$mean_yx(x, params)
-      return(dexp(t, rate=1/mean))
+      dexp(t, rate=1/mean)
     },
 
     #' @description Evaluates the conditional distribution function.
@@ -88,9 +87,9 @@ ExpGLM <- R6::R6Class(
     #'   `t`
     #' @export
     F_yx = function(t, x, params=private$params) {
-      private$check_params(params)
+      private$check_params(params, x)
       mean <- self$mean_yx(x, params)
-      return(pexp(t, rate=1/mean))
+      pexp(t, rate=1/mean)
     },
 
     #' @description Generates a new sample of response variables with the same
@@ -99,19 +98,18 @@ ExpGLM <- R6::R6Class(
     #' @return vector of sampled response variables, same length as `x`
     #' @export
     sample_yx = function(x, params=private$params) {
-      private$check_params(params)
+      private$check_params(params, x)
       mean <- self$mean_yx(x, params)
-      return(rexp(length(mean), rate=1/mean))
-    },
-
-    #' @description Evaluates the regression function or in other terms the
-    #'   expected value of Y given X=x.
-    #'
-    #' @return value of the regression function
-    #' @export
-    mean_yx = function(x, params=private$params) {
-      private$check_params(params)
-      mean <- private$linkinv(params$beta %*% x)
-      return(mean)
-    })
+      rexp(length(mean), rate=1/mean)
+    }
+  ),
+  private = list(
+    # @description Check that `params` have the correct form
+    check_params = function(params, x) {
+      super$check_params(params)
+      checkmate::assert_list(params, len=1)
+      checkmate::assert_names(names(params), identical.to = c("beta"))
+      checkmate::assert_vector(params$beta, len=ifelse(is.matrix(x), nrow(x), 1))
+    }
+  )
 )

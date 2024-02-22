@@ -1,7 +1,7 @@
 test_that("get_stat_orig works", {
   set.seed(123)
 
-  dummy <- dummy_xymodel()
+  dummy <- dummy_xymodel_fitted()
   x <- dummy$x
   y <- dummy$y
   model <- dummy$model
@@ -18,7 +18,7 @@ test_that("get_stat_orig works", {
 test_that("get_stat_boot and get_pvalue work", {
   set.seed(123)
 
-  dummy <- dummy_xymodel()
+  dummy <- dummy_xymodel_fitted()
   x <- dummy$x
   y <- dummy$y
   model <- dummy$model
@@ -28,7 +28,7 @@ test_that("get_stat_boot and get_pvalue work", {
   ts_boot <- goftest$get_stats_boot()
 
   get_val <- function(ts) {
-    return(ts$get_value())
+    ts$get_value()
   }
 
   ts_boot_vals <- sapply(ts_boot, get_val)
@@ -43,7 +43,7 @@ test_that("get_stat_boot and get_pvalue work", {
 test_that("get_pvalue works alone", {
   set.seed(123)
 
-  dummy <- dummy_xymodel()
+  dummy <- dummy_xymodel_fitted()
   x <- dummy$x
   y <- dummy$y
   model <- dummy$model

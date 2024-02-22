@@ -32,7 +32,7 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #'
   #' @export
   get_params = function() {
-    return(private$params)
+    private$params
   },
 
   #' @description Calculates the maximum likelihood estimator for the model
@@ -51,11 +51,11 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     if(anyNA(params_init)) {
       stop("Starting value of model parameters needs to be defined for the optimization.")
     }
-    lik_init <- suppressWarnings(self$f_yx(y, x, params_init))
-    if(any(lik_init == 0) || checkmate::anyNaN(lik_init)) {
+    lik_init <- private$loglik(x, y, params_init)
+    if(lik_init == 1e100) {
       stop("Starting value of model parameters not feasible for the given data.")
     }
-    if(length(params_init)==1) {
+    if(length(params_init) == 1) {
       params_opt <- optim(par=params_init,
                           fn=private$loglik, x=x, y=y,
                           lower=0, upper=20, method="Brent")
@@ -64,7 +64,7 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
                           fn=private$loglik, x=x, y=y,
                           method="Nelder-Mead")
     }
-    return(params_opt$par)
+    params_opt$par
   },
 
   #' @description Evaluates the conditional density function.
@@ -115,10 +115,9 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     #
     # @return Value of the negative log-likelihood function
     loglik = function(x, y, params) {
-      lik <- self$f_yx(y, x, params)
-      if(any(is.nan(lik))) return(1e100)
-      if(any(lik==0)) return(1e100)
-      return(-sum(log(lik)))
+      suppressWarnings(lik <- self$f_yx(y, x, params))
+      if(any(lik==0) || checkmate::anyNaN(lik)) return(1e100)
+      -sum(log(lik))
     },
 
     # @description Check that `params` are not NA, otherwise throw an error.

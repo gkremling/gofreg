@@ -50,15 +50,14 @@ NormalGLM <- R6::R6Class(
     #'   `params_init`
     #' @export
     fit = function(x, y, params_init = private$params, inplace = FALSE) {
-      checkmate::assert_list(params_init, len=2)
-      checkmate::assert_names(names(params_init), identical.to = c("beta", "sd"))
-      checkmate::assert_vector(params_init$beta, len=ifelse(is.matrix(x), nrow(x), 1))
+      private$check_params(params_init, x)
       params_opt <- super$fit(x, y, unlist(params_init, use.names=FALSE))
       params_opt <- list(beta = params_opt[-length(params_opt)], sd = params_opt[length(params_opt)])
       if (inplace) {
         private$params <- params_opt
+        invisible(self)
       } else {
-        return(params_opt)
+        params_opt
       }
     },
 
@@ -69,14 +68,14 @@ NormalGLM <- R6::R6Class(
     #' @return value(s) of the conditional density function, same shape as `t`
     #' @export
     f_yx = function(t, x, params=private$params) {
-      private$check_params(params)
+      super$check_params(params)
       # when computing the MLE, params is a plain vector and needs to be reshaped
       if(checkmate::test_atomic_vector(params, len=1+ifelse(is.matrix(x), nrow(x), 1))) {
         params <- list(beta = params[-length(params)], sd = params[length(params)])
       }
       mean <- self$mean_yx(x, params)
       sd <- params$sd
-      return(dnorm(t, mean=mean, sd=sd))
+      dnorm(t, mean=mean, sd=sd)
     },
 
     #' @description Evaluates the conditional distribution function.
@@ -88,10 +87,10 @@ NormalGLM <- R6::R6Class(
     #'   `t`
     #' @export
     F_yx = function(t, x, params=private$params) {
-      private$check_params(params)
+      private$check_params(params, x)
       mean <- self$mean_yx(x, params)
       sd <- params$sd
-      return(pnorm(t, mean=mean, sd=sd))
+      pnorm(t, mean=mean, sd=sd)
     },
 
     #' @description Generates a new sample of response variables with the same
@@ -100,20 +99,19 @@ NormalGLM <- R6::R6Class(
     #' @return vector of sampled response variables, same length as `x`
     #' @export
     sample_yx = function(x, params=private$params) {
-      private$check_params(params)
+      private$check_params(params, x)
       mean <- self$mean_yx(x, params)
       sd <- params$sd
-      return(rnorm(length(mean), mean=mean, sd=sd))
-    },
-
-    #' @description Evaluates the regression function or in other terms the
-    #'   expected value of Y given X=x.
-    #'
-    #' @return value of the regression function
-    #' @export
-    mean_yx = function(x, params=private$params) {
-      private$check_params(params)
-      mean <- private$linkinv(params$beta %*% x)
-      return(mean)
-    })
+      rnorm(length(mean), mean=mean, sd=sd)
+    }
+  ),
+  private = list(
+    # @description Check that `params` have the correct form
+    check_params = function(params, x) {
+      super$check_params(params)
+      checkmate::assert_list(params, len=2)
+      checkmate::assert_names(names(params), identical.to = c("beta", "sd"))
+      checkmate::assert_vector(params$beta, len=ifelse(is.matrix(x), nrow(x), 1))
+    }
+  )
 )

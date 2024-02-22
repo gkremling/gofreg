@@ -7,7 +7,7 @@
 GLM.new(
   distr,
   linkinv = function(u) {
-     return(u)
+     u
  }
 )
 }

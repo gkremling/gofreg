@@ -38,30 +38,30 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #' @description Calculates the maximum likelihood estimator for the model
   #'   parameters based on given data.
   #'
-  #' @param y response variable
+  #' @param data list containing the data to fit the model to
   #' @param params_init initial value of the model parameters to use for the
   #'   optimization (defaults to the fitted parameter values)
-  #' @param inplace `logical`; if `TRUE`, default model parameters are set
-  #'   accordingly and parameter estimator is not returned
+  #' @param loglik `function(data, model, params)` defaults to [loglik_xy()]
   #'
   #' @return MLE of the model parameters for the given data, same shape as
   #'   `params_init`
   #' @export
-  fit = function(x, y, params_init = private$params) {
+  fit = function(data, params_init = private$params, loglik = loglik_xy) {
     if(anyNA(params_init)) {
       stop("Starting value of model parameters needs to be defined for the optimization.")
     }
-    lik_init <- private$loglik(x, y, params_init)
+    checkmate::assert_function(loglik, nargs = 3, args = c("data", "model", "params"), ordered = TRUE)
+    lik_init <- loglik(data, model=self, params_init)
     if(lik_init == 1e100) {
       stop("Starting value of model parameters not feasible for the given data.")
     }
     if(length(params_init) == 1) {
       params_opt <- optim(par=params_init,
-                          fn=private$loglik, x=x, y=y,
+                          fn=loglik, data=data, model=self,
                           lower=0, upper=20, method="Brent")
     } else {
       params_opt <- optim(par=params_init,
-                          fn=private$loglik, x=x, y=y,
+                          fn=loglik, data=data, model=self,
                           method="Nelder-Mead")
     }
     params_opt$par
@@ -107,18 +107,6 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
     stop("Abstract method. Needs to be implemented.")
   }), private = list(
     params = NA,
-
-    # @description Negative log-likelihood function that is minimized to
-    #   determine the MLE.
-    #
-    # @param y response variable
-    #
-    # @return Value of the negative log-likelihood function
-    loglik = function(x, y, params) {
-      suppressWarnings(lik <- self$f_yx(y, x, params))
-      if(any(lik==0) || checkmate::anyNaN(lik)) return(1e100)
-      -sum(log(lik))
-    },
 
     # @description Check that `params` are not NA, otherwise throw an error.
     check_params = function(params) {

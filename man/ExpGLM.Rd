@@ -13,12 +13,13 @@ distribution functions.
 # Use the built-in cars dataset
 x <- datasets::cars$speed
 y <- datasets::cars$dist
+data <- list(x=x, y=y)
 
 # Create an instance of ExpGLM
 model <- ExpGLM$new()
 
 # Fit an Exponential GLM to the cars dataset
-model$fit(x, y, params_init = list(beta=3), inplace=TRUE)
+model$fit(data, params_init = list(beta=3), inplace=TRUE)
 params_opt <- model$get_params()
 
 # Plot the resulting regression function
@@ -66,18 +67,23 @@ points(x.new, y.pred, col="blue")
 Calculates the maximum likelihood estimator for the model
 parameters based on given data.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ExpGLM$fit(x, y, params_init = private$params, inplace = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ExpGLM$fit(
+  data,
+  params_init = private$params,
+  loglik = loglik_xy,
+  inplace = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{vector of covariates}
-
-\item{\code{y}}{response variable}
+\item{\code{data}}{list containing the data to fit the model to}
 
 \item{\code{params_init}}{initial value of the model parameters to use for the
 optimization (defaults to the fitted parameter values)}
+
+\item{\code{loglik}}{\verb{function(data, model, params)} defaults to \code{\link[=loglik_xy]{loglik_xy()}}}
 
 \item{\code{inplace}}{\code{logical}; if \code{TRUE}, default model parameters are set
 accordingly and parameter estimator is not returned}

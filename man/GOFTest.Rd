@@ -18,7 +18,7 @@ y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
 data <- list(x = x, y = y)
 
 # Fit the correct model
-model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 
 # Calculate the bootstrap p-value and plot the corresponding processes
 goftest <- GOFTest$new(data, model, test_stat = CondKolmY$new(), nboot = 100)
@@ -27,7 +27,7 @@ goftest$plot_procs()
 
 # Fit a wrong model
 model2 <- NormalGLM$new(linkinv = function(u) {u+10})
-model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+model2$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 
 # Calculate the bootstrap p-value and plot the corresponding processes
 goftest2 <- GOFTest$new(data, model2, test_stat = CondKolmY$new(), nboot = 100)
@@ -51,7 +51,14 @@ goftest2$plot_procs()
 \subsection{Method \code{new()}}{
 Initialize an instance of class \link{GOFTest}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(data, model_fitted, test_stat, nboot, resample = resample_param)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(
+  data,
+  model_fitted,
+  test_stat,
+  nboot,
+  resample = resample_param,
+  loglik = loglik_xy
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -66,8 +73,12 @@ parameters}
 
 \item{\code{nboot}}{number of bootstrap iterations}
 
-\item{\code{resample}}{function with arguments \code{data} and \code{model}, defaults to
-\code{\link[=resample_param]{resample_param()}}}
+\item{\code{resample}}{\verb{function(data, model)} used to resample data in
+bootstrap iterations, defaults to \code{\link[=resample_param]{resample_param()}}}
+
+\item{\code{loglik}}{\verb{function(data, model, params)} negative log-likelihood
+function used to fit model to resampled data in bootstrap iterations,
+defaults to \code{\link[=loglik_xy]{loglik_xy()}}}
 }
 \if{html}{\out{</div>}}
 }

@@ -78,21 +78,20 @@ test_glm_fit <- function(distr, params_true, params_error, tol, multi) {
 
   # create data and model
   dummy <- do.call(dummy_xymodel, args=list(params_true=params_true, distr=distr))
-  x <- dummy$x
-  y <- dummy$y
+  data <- list(x = dummy$x, y = dummy$y)
   model <- dummy$model
 
   # no initial parameter values
-  expect_error(model$fit(x, y))
+  expect_error(model$fit(data))
 
   # wrong shape of initial parameters
-  expect_error(model$fit(x, y, params_init=list(useless_param = 3)))
+  expect_error(model$fit(data, params_init=list(useless_param = 3)))
 
   # non-feasible initial parameter values
-  expect_error(model$fit(x, y, params_init = params_error))
+  expect_error(model$fit(data, params_init = params_error))
 
   # estimated parameters are close to true values
-  params_est <- model$fit(x, y, params_init = params_true)
+  params_est <- model$fit(data, params_init = params_true)
 
   expect_params_range(params_est, params_true, tol)
 
@@ -100,6 +99,6 @@ test_glm_fit <- function(distr, params_true, params_error, tol, multi) {
   expect(is.na(model$get_params()), "Model parameters should not be defined yet.")
 
   # model parameters are set if inplace=TRUE
-  model$fit(x, y, params_init = params_true, inplace = TRUE)
+  model$fit(data, params_init = params_true, inplace = TRUE)
   expect_equal(model$get_params(), params_est)
 }

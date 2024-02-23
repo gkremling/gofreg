@@ -58,8 +58,9 @@ test_that("default linkinv in constructor works", {
   x <- rbind(runif(n), runif(n), rbinom(n, 1, 0.5))
   model <- GLM.new(distr)
   y <- model$sample_yx(x, params_true)
+  data <- list(x=x, y=y)
 
   # estimated parameters are close to true values
-  params_est <- model$fit(x, y, params_init = params_true)
+  params_est <- model$fit(data, params_init = params_true)
   expect_params_range(params_est, params_true, tol)
 })

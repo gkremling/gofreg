@@ -14,7 +14,7 @@
 ##' data <- list(x = x, y = y)
 ##'
 ##' # Fit the correct model
-##' model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+##' model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Calculate the bootstrap p-value and plot the corresponding processes
 ##' goftest <- GOFTest$new(data, model, test_stat = CondKolmY$new(), nboot = 100)
@@ -23,7 +23,7 @@
 ##'
 ##' # Fit a wrong model
 ##' model2 <- NormalGLM$new(linkinv = function(u) {u+10})
-##' model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+##' model2$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Calculate the bootstrap p-value and plot the corresponding processes
 ##' goftest2 <- GOFTest$new(data, model2, test_stat = CondKolmY$new(), nboot = 100)
@@ -39,19 +39,24 @@ GOFTest <- R6::R6Class(
     #'   parameters
     #' @param test_stat object of class [TestStatistic]
     #' @param nboot number of bootstrap iterations
-    #' @param resample function with arguments `data` and `model`, defaults to
-    #'   [resample_param()]
+    #' @param resample `function(data, model)` used to resample data in
+    #'   bootstrap iterations, defaults to [resample_param()]
+    #' @param loglik `function(data, model, params)` negative log-likelihood
+    #'   function used to fit model to resampled data in bootstrap iterations,
+    #'   defaults to [loglik_xy()]
     #'
     #' @export
-    initialize = function(data, model_fitted, test_stat, nboot, resample = resample_param) {
+    initialize = function(data, model_fitted, test_stat, nboot, resample = resample_param, loglik = loglik_xy) {
        checkmate::assert_class(model_fitted, "ParamRegrModel")
        checkmate::assert_class(test_stat, "TestStatistic")
        checkmate::assert_function(resample, nargs = 2, args = c("data", "model"), ordered=TRUE)
+       checkmate::assert_function(loglik, nargs = 3, args = c("data", "model", "params"), ordered=TRUE)
        private$data <- data
        private$model <- model_fitted
        private$test_stat <- test_stat
-       private$resample <- resample
        private$nboot <- nboot
+       private$resample <- resample
+       private$loglik <- loglik
     },
 
     #' @description Calculates the test statistic for the original data and
@@ -116,8 +121,9 @@ GOFTest <- R6::R6Class(
     data = NA,
     model = NA,
     test_stat = NA,
-    resample = NA,
     nboot = NA,
+    resample = NA,
+    loglik = NA,
     stat_orig = NA,
     stats_boot = NA,
 
@@ -133,7 +139,7 @@ GOFTest <- R6::R6Class(
 
       # find MLE and test statistic for bootstrap data
       model.b <- private$model$clone(deep = TRUE)
-      model.b$fit(data.b$x, data.b$y, inplace=TRUE)
+      model.b$fit(data.b, loglik=private$loglik, inplace=TRUE)
 
       stat.b <- private$test_stat$clone(deep = TRUE)
       stat.b$calc_stat(data.b, model.b)

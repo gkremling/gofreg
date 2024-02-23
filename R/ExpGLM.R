@@ -12,12 +12,13 @@
 ##' # Use the built-in cars dataset
 ##' x <- datasets::cars$speed
 ##' y <- datasets::cars$dist
+##' data <- list(x=x, y=y)
 ##'
 ##' # Create an instance of ExpGLM
 ##' model <- ExpGLM$new()
 ##'
 ##' # Fit an Exponential GLM to the cars dataset
-##' model$fit(x, y, params_init = list(beta=3), inplace=TRUE)
+##' model$fit(data, params_init = list(beta=3), inplace=TRUE)
 ##' params_opt <- model$get_params()
 ##'
 ##' # Plot the resulting regression function
@@ -41,18 +42,20 @@ ExpGLM <- R6::R6Class(
     #' @description Calculates the maximum likelihood estimator for the model
     #'   parameters based on given data.
     #'
-    #' @param y response variable
+    #' @param data list containing the data to fit the model to
     #' @param params_init initial value of the model parameters to use for the
     #'   optimization (defaults to the fitted parameter values)
+    #' @param loglik `function(data, model, params)` defaults to [loglik_xy()]
     #' @param inplace `logical`; if `TRUE`, default model parameters are set
     #'   accordingly and parameter estimator is not returned
     #'
     #' @return MLE of the model parameters for the given data, same shape as
     #'   `params_init`
     #' @export
-    fit = function(x, y, params_init = private$params, inplace = FALSE) {
-      private$check_params(params_init, x)
-      params_opt <- super$fit(x, y, unlist(params_init, use.names=FALSE))
+    fit = function(data, params_init = private$params, loglik = loglik_xy, inplace = FALSE) {
+      checkmate::assert_names(names(data), must.include = c("x"))
+      private$check_params(params_init, data$x)
+      params_opt <- super$fit(data, params_init = unlist(params_init, use.names=FALSE), loglik = loglik)
       params_opt <- list(beta = params_opt)
       if (inplace) {
         private$params <- params_opt

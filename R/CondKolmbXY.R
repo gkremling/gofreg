@@ -20,7 +20,7 @@
 ##' data <- list(x = x, y = y)
 ##'
 ##' # Fit the correct model
-##' model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+##' model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Print value of test statistic and plot corresponding process
 ##' ts <- CondKolmbXY$new()
@@ -30,7 +30,7 @@
 ##'
 ##' # Fit a wrong model
 ##' model2 <- NormalGLM$new(linkinv = function(u) {u+10})
-##' model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
+##' model2$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Print value of test statistic and plot corresponding process
 ##' ts2 <- CondKolmbXY$new()

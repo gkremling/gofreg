@@ -29,7 +29,7 @@ y <- model$sample_yx(x, params=params)
 data <- list(x=x, y=y)
 
 # Fit the model to the data
-model$fit(x, y, params_init=params, inplace=TRUE)
+model$fit(data, params_init=params, inplace=TRUE)
 
 # Resample from the model given data
 resample_param(data, model)

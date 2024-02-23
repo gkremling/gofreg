@@ -30,11 +30,14 @@ dummy_xymodel_x3 <- function(params_true, distr, n = 1000) {
   list(x=x, y=y, model=model)
 }
 
+#' Create dummy GLM data and model (with 3-dim x) and fit it to the data
+#'
+#' @return `list()` with tags `x`, `y` `model`
 dummy_xymodel_fitted <- function() {
   params_true <- list(beta=c(1,2,3), sd=2)
   distr = "normal"
 
   dummy <- dummy_xymodel_x3(params_true, distr, n=100)
-  dummy$model$fit(dummy$x, dummy$y, params_init=params_true, inplace=TRUE)
+  dummy$model$fit(list(x=dummy$x, y=dummy$y), params_init=params_true, inplace=TRUE)
   dummy
 }

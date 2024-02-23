@@ -16,7 +16,6 @@ defined by \deqn{\nu_n(x,y) = \frac{1}{\sqrt{n}} \sum_{i=1}^n \left(
 }
 \examples{
 # Create an example dataset
-set.seed(123)
 n <- 100
 x <- rbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()

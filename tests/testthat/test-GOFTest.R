@@ -60,6 +60,6 @@ test_that("default resampling scheme works", {
 
   test_stat <- CondKolmY$new()
   goftest1 <- GOFTest$new(data, model, test_stat, nboot=10)
-  goftest2 <- GOFTest$new(data, model, test_stat, nboot=10, resampling_scheme=ParamResamplingScheme$new())
+  goftest2 <- GOFTest$new(data, model, test_stat, nboot=10, resample=resample_param)
   expect_equal(goftest1$get_stats_boot(), goftest2$get_stats_boot())
 })

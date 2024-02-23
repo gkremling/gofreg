@@ -15,7 +15,6 @@ The process underlying the test statistic is given in Dikta & Scheer
 }
 \examples{
 # Create an example dataset
-set.seed(123)
 n <- 100
 x <- rbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()

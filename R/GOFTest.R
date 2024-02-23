@@ -7,7 +7,6 @@
 ##'
 ##' @examples
 ##' # Create an example dataset
-##' set.seed(123)
 ##' n <- 100
 ##' x <- rbind(runif(n), rbinom(n, 1, 0.5))
 ##' model <- NormalGLM$new()
@@ -40,17 +39,18 @@ GOFTest <- R6::R6Class(
     #'   parameters
     #' @param test_stat object of class [TestStatistic]
     #' @param nboot number of bootstrap iterations
-    #' @param resampling_scheme object of class [ResamplingScheme]
+    #' @param resample function with arguments `data` and `model`, defaults to
+    #'   [resample_param()]
     #'
     #' @export
-    initialize = function(data, model_fitted, test_stat, nboot, resampling_scheme = ParamResamplingScheme$new()) {
+    initialize = function(data, model_fitted, test_stat, nboot, resample = resample_param) {
        checkmate::assert_class(model_fitted, "ParamRegrModel")
        checkmate::assert_class(test_stat, "TestStatistic")
-       checkmate::assert_class(resampling_scheme, "ResamplingScheme")
+       checkmate::assert_function(resample, nargs = 2, args = c("data", "model"), ordered=TRUE)
        private$data <- data
        private$model <- model_fitted
        private$test_stat <- test_stat
-       private$resampling_scheme <- resampling_scheme
+       private$resample <- resample
        private$nboot <- nboot
     },
 
@@ -116,7 +116,7 @@ GOFTest <- R6::R6Class(
     data = NA,
     model = NA,
     test_stat = NA,
-    resampling_scheme = NA,
+    resample = NA,
     nboot = NA,
     stat_orig = NA,
     stats_boot = NA,
@@ -129,7 +129,7 @@ GOFTest <- R6::R6Class(
     # @returns object of class [TestStatistic]
     bootstrap = function() {
       # create bootstrap data
-      data.b <- private$resampling_scheme$resample(private$data, private$model)
+      data.b <- private$resample(private$data, private$model)
 
       # find MLE and test statistic for bootstrap data
       model.b <- private$model$clone(deep = TRUE)

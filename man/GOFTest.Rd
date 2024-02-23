@@ -11,7 +11,6 @@ p-value.
 }
 \examples{
 # Create an example dataset
-set.seed(123)
 n <- 100
 x <- rbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
@@ -52,13 +51,7 @@ goftest2$plot_procs()
 \subsection{Method \code{new()}}{
 Initialize an instance of class \link{GOFTest}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(
-  data,
-  model_fitted,
-  test_stat,
-  nboot,
-  resampling_scheme = ParamResamplingScheme$new()
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(data, model_fitted, test_stat, nboot, resample = resample_param)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -73,7 +66,8 @@ parameters}
 
 \item{\code{nboot}}{number of bootstrap iterations}
 
-\item{\code{resampling_scheme}}{object of class \link{ResamplingScheme}}
+\item{\code{resample}}{function with arguments \code{data} and \code{model}, defaults to
+\code{\link[=resample_param]{resample_param()}}}
 }
 \if{html}{\out{</div>}}
 }

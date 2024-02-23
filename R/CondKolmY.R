@@ -17,13 +17,14 @@
 ##' x <- rbind(runif(n), rbinom(n, 1, 0.5))
 ##' model <- NormalGLM$new()
 ##' y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
+##' data <- list(x = x, y = y)
 ##'
 ##' # Fit the correct model
 ##' model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Print value of test statistic and plot corresponding process
 ##' ts <- CondKolmY$new()
-##' ts$calc_stat(x, y, model)
+##' ts$calc_stat(data, model)
 ##' print(ts)
 ##' ggplot2::ggplot() + ts$geom_ts_proc()
 ##'
@@ -33,7 +34,7 @@
 ##'
 ##' # Print value of test statistic and plot corresponding process
 ##' ts2 <- CondKolmY$new()
-##' ts2$calc_stat(x, y, model2)
+##' ts2$calc_stat(data, model2)
 ##' print(ts2)
 ##' ggplot2::ggplot() + ts2$geom_ts_proc()
 CondKolmY <- R6::R6Class(
@@ -41,27 +42,29 @@ CondKolmY <- R6::R6Class(
   inherit = TestStatistic,
   public = list(
     #' @description Calculate the value of the test statistic for given data
-    #'   (x,y) and a model to test for.
+    #'  and a model to test for.
     #'
-    #' @param x vector of covariates
-    #' @param y response variable
+    #' @param data `list()` with tags x and y containing the data
     #' @param model [ParamRegrModel] to test for, already fitted to the data
     #'
     #' @export
-    calc_stat = function(x, y, model) {
+    calc_stat = function(data, model) {
+      # check for correct shape of data and definedness of model params
+      checkmate::assert_names(names(data), must.include = c("x", "y"))
       if(anyNA(model$get_params())) {
         stop("Model first needs to be fitted to the data.")
       }
-      n <- length(y)
+
       # compute ECDF of Y (non-parametric estimator for distribution of Y)
-      Fyn <- ecdf(y)
+      Fyn <- ecdf(data$y)
 
       # determine jump points and value of the ECDF at these points
       t.vals <- knots(Fyn)
       Fyn.vals <- Fyn(t.vals)
 
       # determine semi-parametric estimator for distribution of Y evaluated at the same (jump) points
-      Fypar.vals <- sapply(t.vals, function(t) { sum(model$F_yx(t, x))/n  })
+      n <- length(data$y)
+      Fypar.vals <- sapply(t.vals, function(t) { sum(model$F_yx(t, data$x))/n  })
 
       # determine KS statistic by computing the difference at the jump points
       proc <- sqrt(n) * (Fyn.vals-Fypar.vals)

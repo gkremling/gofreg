@@ -21,14 +21,13 @@ TestStatistic <- R6::R6Class(
     },
 
     #' @description Calculate the value of the test statistic for given data
-    #'   (x,y) and a model to test for.
+    #'   and a model to test for.
     #'
-    #' @param x vector of covariates
-    #' @param y response variable
+    #' @param data `list()` containing the data
     #' @param model [ParamRegrModel] to test for
     #'
     #' @export
-    calc_stat = function(x, y, model) {
+    calc_stat = function(data, model) {
       stop("Abstract method. Needs to be implemented.")
     },
 

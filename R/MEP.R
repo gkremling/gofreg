@@ -16,13 +16,14 @@
 ##' x <- rbind(runif(n), rbinom(n, 1, 0.5))
 ##' model <- NormalGLM$new()
 ##' y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
+##' data <- list(x = x, y = y)
 ##'
 ##' # Fit the correct model
 ##' model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Print value of test statistic and plot corresponding process
 ##' ts <- MEP$new()
-##' ts$calc_stat(x, y, model)
+##' ts$calc_stat(data, model)
 ##' print(ts)
 ##' ggplot2::ggplot() + ts$geom_ts_proc()
 ##'
@@ -32,7 +33,7 @@
 ##'
 ##' # Print value of test statistic and plot corresponding process
 ##' ts2 <- MEP$new()
-##' ts2$calc_stat(x, y, model2)
+##' ts2$calc_stat(data, model2)
 ##' print(ts2)
 ##' ggplot2::ggplot() + ts2$geom_ts_proc()
 MEP <- R6::R6Class(
@@ -40,25 +41,31 @@ MEP <- R6::R6Class(
   inherit = TestStatistic,
   public = list(
     #' @description Calculate the value of the test statistic for given data
-    #'   (x,y) and a model to test for.
+    #'   and a model to test for.
     #'
-    #' @param x vector of covariates
-    #' @param y response variable
+    #' @param data `list()` with tags x and y containing the data
     #' @param model [ParamRegrModel] to test for
     #'
     #' @export
-    calc_stat = function(x, y, model) {
-      n <- length(y)
+    calc_stat = function(data, model) {
+      # check for correct shape of data and definedness of model params
+      checkmate::assert_names(names(data), must.include = c("x", "y"))
       params <- model$get_params()
+      if(anyNA(params)) {
+        stop("Model first needs to be fitted to the data.")
+      }
+
+      # check for beta in params since MEP can only be evaluated for GLMs
       checkmate::assert_names(names(params), must.include = c("beta"))
       beta <- params$beta
-      checkmate::assert_vector(beta, len=dim(x)[1])
+      checkmate::assert_vector(beta, len=dim(data$x)[1])
 
       # compute linear combination beta^T*X and residuals
-      beta.x <- beta %*% x
-      res <- y - model$mean_yx(x)
+      beta.x <- beta %*% data$x
+      res <- data$y - model$mean_yx(data$x)
 
       # order residuals by beta^T*X, compute scaled cumsum (Rn1)
+      n <- length(data$y)
       ord.id <- order(beta.x)
       res.ord <- res[ord.id]
       Rn1 <- cumsum(res.ord)/sqrt(n)

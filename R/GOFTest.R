@@ -12,12 +12,13 @@
 ##' x <- rbind(runif(n), rbinom(n, 1, 0.5))
 ##' model <- NormalGLM$new()
 ##' y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
+##' data <- list(x = x, y = y)
 ##'
 ##' # Fit the correct model
 ##' model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Calculate the bootstrap p-value and plot the corresponding processes
-##' goftest <- GOFTest$new(x, y, model, test_stat = CondKolmY$new(), nboot = 100)
+##' goftest <- GOFTest$new(data, model, test_stat = CondKolmY$new(), nboot = 100)
 ##' goftest$get_pvalue()
 ##' goftest$plot_procs()
 ##'
@@ -26,7 +27,7 @@
 ##' model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Calculate the bootstrap p-value and plot the corresponding processes
-##' goftest2 <- GOFTest$new(x, y, model2, test_stat = CondKolmY$new(), nboot = 100)
+##' goftest2 <- GOFTest$new(data, model2, test_stat = CondKolmY$new(), nboot = 100)
 ##' goftest2$get_pvalue()
 ##' goftest2$plot_procs()
 GOFTest <- R6::R6Class(
@@ -34,26 +35,22 @@ GOFTest <- R6::R6Class(
   public = list(
     #' @description Initialize an instance of class [GOFTest].
     #'
-    #' @param x vector of covariates
-    #' @param y response variables
+    #' @param data `list()` containing the data
     #' @param model_fitted object of class [ParamRegrModel] with fitted
     #'   parameters
     #' @param test_stat object of class [TestStatistic]
-    #' @param boot_type a specification for the type of resampling scheme:
-    #'   * "keep" (default) if covariates shall be kept the same
-    #'   * "rsmpl" if covariates shall be resampled
     #' @param nboot number of bootstrap iterations
+    #' @param resampling_scheme object of class [ResamplingScheme]
     #'
     #' @export
-    initialize = function(x, y, model_fitted, test_stat, boot_type = "keep", nboot) {
+    initialize = function(data, model_fitted, test_stat, nboot, resampling_scheme = ParamResamplingScheme$new()) {
        checkmate::assert_class(model_fitted, "ParamRegrModel")
        checkmate::assert_class(test_stat, "TestStatistic")
-       checkmate::assert_choice(boot_type, c("rsmpl", "keep"))
-       private$x <- x
-       private$y <- y
+       checkmate::assert_class(resampling_scheme, "ResamplingScheme")
+       private$data <- data
        private$model <- model_fitted
        private$test_stat <- test_stat
-       private$boot_type <- boot_type
+       private$resampling_scheme <- resampling_scheme
        private$nboot <- nboot
     },
 
@@ -65,7 +62,7 @@ GOFTest <- R6::R6Class(
     get_stat_orig = function() {
       if(!checkmate::test_class(private$stat_orig, "TestStatistic") && anyNA(private$stat_orig)) {
         private$stat_orig <- private$test_stat$clone(deep = TRUE)
-        private$stat_orig$calc_stat(private$x, private$y, private$model)
+        private$stat_orig$calc_stat(private$data, private$model)
       }
       private$stat_orig
     },
@@ -116,40 +113,30 @@ GOFTest <- R6::R6Class(
     }
   ),
   private = list(
-    x = NA,
-    y = NA,
+    data = NA,
     model = NA,
     test_stat = NA,
-    boot_type = NA,
+    resampling_scheme = NA,
     nboot = NA,
     stat_orig = NA,
     stats_boot = NA,
 
     # Implements a single bootstrap iteration
     #
-    # @description Generates a bootstrap sample, fits the model and computes
-    #   the corresponding test statistic.
+    # @description Generates a bootstrap sample according to the resampling
+    #   scheme, fits the model and computes the corresponding test statistic.
     #
-    # @return object of class [TestStatistic]
+    # @returns object of class [TestStatistic]
     bootstrap = function() {
-      n <- length(private$y)
-
-      # resample covariates (or not)
-      if (private$boot_type == "rsmpl") {
-        x.b <- private$x[, sample(ncol(private$x), size=n, replace=T)]
-      } else {
-        x.b <- private$x
-      }
-
-      # sample new survival times (according to parametric model)
-      y.b <- private$model$sample_yx(x.b)
+      # create bootstrap data
+      data.b <- private$resampling_scheme$resample(private$data, private$model)
 
       # find MLE and test statistic for bootstrap data
       model.b <- private$model$clone(deep = TRUE)
-      model.b$fit(x.b, y.b, inplace=TRUE)
+      model.b$fit(data.b$x, data.b$y, inplace=TRUE)
 
       stat.b <- private$test_stat$clone(deep = TRUE)
-      stat.b$calc_stat(x.b, y.b, model.b)
+      stat.b$calc_stat(data.b, model.b)
 
       # return requested statistic
       stat.b

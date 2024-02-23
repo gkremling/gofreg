@@ -40,17 +40,15 @@ value of the test statistic
 \if{latex}{\out{\hypertarget{method-TestStatistic-calc_stat}{}}}
 \subsection{Method \code{calc_stat()}}{
 Calculate the value of the test statistic for given data
-(x,y) and a model to test for.
+and a model to test for.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TestStatistic$calc_stat(x, y, model)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TestStatistic$calc_stat(data, model)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{vector of covariates}
-
-\item{\code{y}}{response variable}
+\item{\code{data}}{\code{list()} containing the data}
 
 \item{\code{model}}{\link{ParamRegrModel} to test for}
 }

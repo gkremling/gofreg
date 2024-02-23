@@ -2,16 +2,15 @@ test_that("get_stat_orig works", {
   set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
-  x <- dummy$x
-  y <- dummy$y
+  data <- list(x = dummy$x, y = dummy$y)
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
-  goftest <- GOFTest$new(x, y, model, test_stat, boot_type="keep", nboot=10)
+  goftest <- GOFTest$new(data, model, test_stat, nboot=10)
 
   ts1 <- goftest$get_stat_orig()
   expect_error(test_stat$get_value())
-  ts2 <- test_stat$calc_stat(x, y, model)
+  ts2 <- test_stat$calc_stat(data, model)
   expect_equal(ts1, ts2)
 })
 
@@ -19,12 +18,11 @@ test_that("get_stat_boot and get_pvalue work", {
   set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
-  x <- dummy$x
-  y <- dummy$y
+  data <- list(x = dummy$x, y = dummy$y)
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
-  goftest <- GOFTest$new(x, y, model, test_stat, boot_type="keep", nboot=10)
+  goftest <- GOFTest$new(data, model, test_stat, nboot=10)
   ts_boot <- goftest$get_stats_boot()
 
   get_val <- function(ts) {
@@ -44,12 +42,24 @@ test_that("get_pvalue works alone", {
   set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
-  x <- dummy$x
-  y <- dummy$y
+  data <- list(x = dummy$x, y = dummy$y)
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
-  goftest <- GOFTest$new(x, y, model, test_stat, boot_type="keep", nboot=10)
+  goftest <- GOFTest$new(data, model, test_stat, nboot=10)
   pval <- goftest$get_pvalue()
   expect_equal(pval, 0.9)
+})
+
+test_that("default resampling scheme works", {
+  set.seed(123)
+
+  dummy <- dummy_xymodel_fitted()
+  data <- list(x = dummy$x, y = dummy$y)
+  model <- dummy$model
+
+  test_stat <- CondKolmY$new()
+  goftest1 <- GOFTest$new(data, model, test_stat, nboot=10)
+  goftest2 <- GOFTest$new(data, model, test_stat, nboot=10, resampling_scheme=ParamResamplingScheme$new())
+  expect_equal(goftest1$get_stats_boot(), goftest2$get_stats_boot())
 })

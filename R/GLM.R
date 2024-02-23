@@ -52,7 +52,7 @@ GLM <- R6::R6Class(
 #'
 #' @examples
 #' model <- GLM.new(distr="normal")
-#' # see examples of GLM-subclasses for how to use such models
+#' # see examples of GLM-subclasses (e.g. NormalGLM) for how to use such models
 GLM.new <- function(distr, linkinv = function(u) {u}) {
   distr_poss <- c("normal", "exp", "weibull", "gamma")
   checkmate::assert_function(linkinv, nargs=1)

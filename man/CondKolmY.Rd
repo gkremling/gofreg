@@ -21,13 +21,14 @@ n <- 100
 x <- rbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
 y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
+data <- list(x = x, y = y)
 
 # Fit the correct model
 model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 
 # Print value of test statistic and plot corresponding process
 ts <- CondKolmY$new()
-ts$calc_stat(x, y, model)
+ts$calc_stat(data, model)
 print(ts)
 ggplot2::ggplot() + ts$geom_ts_proc()
 
@@ -37,7 +38,7 @@ model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 
 # Print value of test statistic and plot corresponding process
 ts2 <- CondKolmY$new()
-ts2$calc_stat(x, y, model2)
+ts2$calc_stat(data, model2)
 print(ts2)
 ggplot2::ggplot() + ts2$geom_ts_proc()
 }
@@ -66,17 +67,15 @@ ggplot2::ggplot() + ts2$geom_ts_proc()
 \if{latex}{\out{\hypertarget{method-CondKolmY-calc_stat}{}}}
 \subsection{Method \code{calc_stat()}}{
 Calculate the value of the test statistic for given data
-(x,y) and a model to test for.
+and a model to test for.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{CondKolmY$calc_stat(x, y, model)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{CondKolmY$calc_stat(data, model)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{vector of covariates}
-
-\item{\code{y}}{response variable}
+\item{\code{data}}{\code{list()} with tags x and y containing the data}
 
 \item{\code{model}}{\link{ParamRegrModel} to test for, already fitted to the data}
 }

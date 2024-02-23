@@ -16,12 +16,13 @@ n <- 100
 x <- rbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
 y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
+data <- list(x = x, y = y)
 
 # Fit the correct model
 model$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 
 # Calculate the bootstrap p-value and plot the corresponding processes
-goftest <- GOFTest$new(x, y, model, test_stat = CondKolmY$new(), nboot = 100)
+goftest <- GOFTest$new(data, model, test_stat = CondKolmY$new(), nboot = 100)
 goftest$get_pvalue()
 goftest$plot_procs()
 
@@ -30,7 +31,7 @@ model2 <- NormalGLM$new(linkinv = function(u) {u+10})
 model2$fit(x, y, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 
 # Calculate the bootstrap p-value and plot the corresponding processes
-goftest2 <- GOFTest$new(x, y, model2, test_stat = CondKolmY$new(), nboot = 100)
+goftest2 <- GOFTest$new(data, model2, test_stat = CondKolmY$new(), nboot = 100)
 goftest2$get_pvalue()
 goftest2$plot_procs()
 }
@@ -51,28 +52,28 @@ goftest2$plot_procs()
 \subsection{Method \code{new()}}{
 Initialize an instance of class \link{GOFTest}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(x, y, model_fitted, test_stat, boot_type = "keep", nboot)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GOFTest$new(
+  data,
+  model_fitted,
+  test_stat,
+  nboot,
+  resampling_scheme = ParamResamplingScheme$new()
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{vector of covariates}
-
-\item{\code{y}}{response variables}
+\item{\code{data}}{\code{list()} containing the data}
 
 \item{\code{model_fitted}}{object of class \link{ParamRegrModel} with fitted
 parameters}
 
 \item{\code{test_stat}}{object of class \link{TestStatistic}}
 
-\item{\code{boot_type}}{a specification for the type of resampling scheme:
-\itemize{
-\item "keep" (default) if covariates shall be kept the same
-\item "rsmpl" if covariates shall be resampled
-}}
-
 \item{\code{nboot}}{number of bootstrap iterations}
+
+\item{\code{resampling_scheme}}{object of class \link{ResamplingScheme}}
 }
 \if{html}{\out{</div>}}
 }

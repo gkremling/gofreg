@@ -27,5 +27,5 @@ parametric GLM with specific distribution family, returning a new object of
 }
 \examples{
 model <- GLM.new(distr="normal")
-# see examples of GLM-subclasses for how to use such models
+# see examples of GLM-subclasses (e.g. NormalGLM) for how to use such models
 }

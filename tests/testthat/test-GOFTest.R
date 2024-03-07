@@ -2,7 +2,7 @@ test_that("get_stat_orig works", {
   set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
-  data <- list(x = dummy$x, y = dummy$y)
+  data <- dummy$data
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
@@ -18,7 +18,7 @@ test_that("get_stat_boot and get_pvalue work", {
   set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
-  data <- list(x = dummy$x, y = dummy$y)
+  data <- dummy$data
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
@@ -42,7 +42,7 @@ test_that("get_pvalue works alone", {
   set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
-  data <- list(x = dummy$x, y = dummy$y)
+  data <- dummy$data
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
@@ -55,7 +55,7 @@ test_that("default resampling scheme works", {
   set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
-  data <- list(x = dummy$x, y = dummy$y)
+  data <- dummy$data
   model <- dummy$model
 
   test_stat <- CondKolmY$new()

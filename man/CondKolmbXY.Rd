@@ -18,10 +18,10 @@ The process underlying the test statistic is given in Kremling & Dikta
 \examples{
 # Create an example dataset
 n <- 100
-x <- rbind(runif(n), rbinom(n, 1, 0.5))
+x <- cbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
 y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
-data <- list(x = x, y = y)
+data <- dplyr::tibble(x = x, y = y)
 
 # Fit the correct model
 model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
@@ -75,7 +75,7 @@ and a model to test for.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{\code{list()} with tags x and y containing the data}
+\item{\code{data}}{\code{data.frame()} with columns x and y containing the data}
 
 \item{\code{model}}{\link{ParamRegrModel} to test for, already fitted to the data}
 }

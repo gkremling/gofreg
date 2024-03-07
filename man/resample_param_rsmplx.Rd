@@ -7,12 +7,12 @@
 resample_param_rsmplx(data, model)
 }
 \arguments{
-\item{data}{\code{list()} with tags x and y containing the original data}
+\item{data}{\code{data.frame()} with columns x and y containing the original data}
 
 \item{model}{\link{ParamRegrModel} to use for the resampling}
 }
 \value{
-\code{list()} with tags x and y containing the resampled data
+\code{data.frame()} with columns x and y containing the resampled data
 }
 \description{
 Generate a new, resampled dataset of the same shape as data
@@ -22,11 +22,11 @@ the response variables are drawn according to \code{model$sample_yx()}.
 \examples{
 # Create an example dataset
 n <- 10
-x <- rbind(runif(n), rbinom(n, 1, 0.5))
+x <- cbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
 params <- list(beta=c(2,3), sd=1)
 y <- model$sample_yx(x, params=params)
-data <- list(x=x, y=y)
+data <- dplyr::tibble(x=x, y=y)
 
 # Fit the model to the data
 model$fit(data, params_init=params, inplace=TRUE)

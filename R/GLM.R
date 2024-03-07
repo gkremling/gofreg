@@ -29,7 +29,7 @@ GLM <- R6::R6Class(
     #' @export
     mean_yx = function(x, params=private$params) {
       private$check_params(params, x)
-      private$linkinv(params$beta %*% x)
+      private$linkinv(x %*% params$beta)
     }
   ),
   private = list(

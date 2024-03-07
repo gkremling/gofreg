@@ -14,10 +14,10 @@
 ##' @examples
 ##' # Create an example dataset
 ##' n <- 100
-##' x <- rbind(runif(n), rbinom(n, 1, 0.5))
+##' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 ##' model <- NormalGLM$new()
 ##' y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
-##' data <- list(x = x, y = y)
+##' data <- dplyr::tibble(x = x, y = y)
 ##'
 ##' # Fit the correct model
 ##' model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
@@ -44,12 +44,13 @@ CondKolmbXY <- R6::R6Class(
     #' @description Calculate the value of the test statistic for given data
     #'   and a model to test for.
     #'
-    #' @param data `list()` with tags x and y containing the data
+    #' @param data `data.frame()` with columns x and y containing the data
     #' @param model [ParamRegrModel] to test for, already fitted to the data
     #'
     #' @export
     calc_stat = function(data, model) {
       # check for correct shape of data and definedness of model params
+      checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
       params <- model$get_params()
       if(anyNA(params)) {
@@ -59,12 +60,13 @@ CondKolmbXY <- R6::R6Class(
       # check for beta in params since CondKolmbXY can only be evaluated for GLMs
       checkmate::assert_names(names(params), must.include = c("beta"))
       beta <- params$beta
-      checkmate::assert_vector(beta, len=dim(data$x)[1])
+      x <- as.matrix(data[, "x"])
+      checkmate::assert_vector(beta, len=ncol(x))
 
       # compute sum_{i=1}^n (1{Yi<=Yj} - F(Yj|theta,Xi)) 1{beta^T Xi<=beta^T Xj} for each j
       n <- length(data$y)
-      beta.x <- model$get_params()$beta %*% data$x
-      proc <- 1/sqrt(n) * sapply(seq(1,n), function(j) { sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], data$x)) * (beta.x <= beta.x[j])) })
+      beta.x <- x %*% model$get_params()$beta
+      proc <- 1/sqrt(n) * sapply(seq(1,n), function(j) { sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], x)) * (beta.x <= beta.x[j])) })
 
       # set private fields accordingly
       private$value <- max(abs(proc))

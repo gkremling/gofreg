@@ -6,7 +6,7 @@ test_that("f_yx and F_yx work", {
 
   # true values of f_yx and F_yx given model parameters
   true_vals <- function(t, x, g1, params) {
-    scale <- g1(params$beta %*% x)/gamma(1+1/params$shape)
+    scale <- g1(x %*% params$beta)/gamma(1+1/params$shape)
     dens <- dweibull(t, scale=scale, shape=params$shape)
     dist <- pweibull(t, scale=scale, shape=params$shape)
     list(dens=dens, dist=dist)
@@ -22,8 +22,8 @@ test_that("sample_yx works", {
 
   # expected sample for given model parameters
   expected_sample <- function(x, g1, params) {
-    scale <- g1(params$beta %*% x)/gamma(1+1/params$shape)
-    rweibull(dim(x)[2], scale=scale, shape=params$shape)
+    scale <- g1(x %*% params$beta)/gamma(1+1/params$shape)
+    rweibull(nrow(x), scale=scale, shape=params$shape)
   }
 
   test_glm_sample_yx(distr, params, new.params, expected_sample)
@@ -47,6 +47,24 @@ test_that("fit works for multidimensional covariates", {
   test_glm_fit(distr, params_true, params_error, tol, multi=TRUE)
 })
 
+test_that("fit works with censoring for univariate covariates", {
+  distr <- "weibull"
+  params_true <- list(beta=3, shape=0.95)
+  params_error <- list(beta=0, shape=0)
+  tol <- 0.1
+
+  test_glm_fit(distr, params_true, params_error, tol, multi=FALSE, cens=TRUE)
+})
+
+test_that("fit works with censoring for multidimensional covariates", {
+  distr <- "weibull"
+  params_true <- list(beta=c(1,2,3), shape=0.95)
+  params_error <- list(beta=c(0,0,0), shape=0)
+  tol <- 0.1
+
+  test_glm_fit(distr, params_true, params_error, tol, multi=TRUE, cens=TRUE)
+})
+
 test_that("default linkinv in constructor works", {
   distr <- "weibull"
   params_true <- list(beta=c(1,2,3), shape=0.95)
@@ -55,10 +73,10 @@ test_that("default linkinv in constructor works", {
   # create model and data
   set.seed(123)
   n <- 1000
-  x <- rbind(runif(n), runif(n), rbinom(n, 1, 0.5))
+  x <- cbind(runif(n), runif(n), rbinom(n, 1, 0.5))
   model <- GLM.new(distr)
   y <- model$sample_yx(x, params_true)
-  data <- list(x=x, y=y)
+  data <- dplyr::tibble(x=x, y=y)
 
   # estimated parameters are close to true values
   params_est <- model$fit(data, params_init = params_true)

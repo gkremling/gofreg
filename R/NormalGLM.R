@@ -2,7 +2,7 @@
 ##' @description This class represents a generalized linear model with normal
 ##'   distribution. It inherits from [GLM] and implements its functions that,
 ##'   for example, evaluate the conditional density and distribution functions.
-##' @param x vector of covariates
+##' @param x matrix of covariates, each row representing one sample
 ##' @param params model parameters to use (`list()` with tags beta and sd),
 ##'   defaults to the fitted parameter values
 ##' @export
@@ -11,7 +11,7 @@
 ##' # Use the built-in cars dataset
 ##' x <- datasets::cars$speed
 ##' y <- datasets::cars$dist
-##' data <- list(x=x, y=y)
+##' data <- dplyr::tibble(x=x, y=y)
 ##'
 ##' # Create an instance of a NormalGLM
 ##' model <- NormalGLM$new()
@@ -25,7 +25,7 @@
 ##' abline(a = 0, b = params_opt$beta)
 ##'
 ##' # Generate a sample for y for given x following the same distribution
-##' x.new <- seq(min(x), max(x), by=2)
+##' x.new <- as.matrix(seq(min(x), max(x), by=2))
 ##' y.smpl <- model$sample_yx(x.new)
 ##' points(x.new, y.smpl, col="red")
 ##'
@@ -41,7 +41,7 @@ NormalGLM <- R6::R6Class(
     #' @description Calculates the maximum likelihood estimator for the model
     #'   parameters based on given data.
     #'
-    #' @param data list containing the data to fit the model to
+    #' @param data tibble containing the data to fit the model to
     #' @param params_init initial value of the model parameters to use for the
     #'   optimization (defaults to the fitted parameter values)
     #' @param loglik `function(data, model, params)` defaults to [loglik_xy()]
@@ -73,8 +73,11 @@ NormalGLM <- R6::R6Class(
     f_yx = function(t, x, params=private$params) {
       super$check_params(params)
       # when computing the MLE, params is a plain vector and needs to be reshaped
-      if(checkmate::test_atomic_vector(params, len=1+ifelse(is.matrix(x), nrow(x), 1))) {
+      if(checkmate::test_atomic_vector(params)) {
+        checkmate::assert_atomic_vector(params, len=1+ncol(x))
         params <- list(beta = params[-length(params)], sd = params[length(params)])
+      } else {
+        private$check_params(params, x)
       }
       mean <- self$mean_yx(x, params)
       sd <- params$sd
@@ -90,7 +93,14 @@ NormalGLM <- R6::R6Class(
     #'   `t`
     #' @export
     F_yx = function(t, x, params=private$params) {
-      private$check_params(params, x)
+      super$check_params(params)
+      # when computing the MLE, params is a plain vector and needs to be reshaped
+      if(checkmate::test_atomic_vector(params)) {
+        checkmate::assert_atomic_vector(params, len=1+ncol(x))
+        params <- list(beta = params[-length(params)], sd = params[length(params)])
+      } else {
+        private$check_params(params, x)
+      }
       mean <- self$mean_yx(x, params)
       sd <- params$sd
       pnorm(t, mean=mean, sd=sd)
@@ -99,7 +109,7 @@ NormalGLM <- R6::R6Class(
     #' @description Generates a new sample of response variables with the same
     #'   conditional distribution.
     #'
-    #' @return vector of sampled response variables, same length as `x`
+    #' @return vector of sampled response variables, same length as `nrow(x)`
     #' @export
     sample_yx = function(x, params=private$params) {
       private$check_params(params, x)
@@ -114,7 +124,7 @@ NormalGLM <- R6::R6Class(
       super$check_params(params)
       checkmate::assert_list(params, len=2)
       checkmate::assert_names(names(params), identical.to = c("beta", "sd"))
-      checkmate::assert_vector(params$beta, len=ifelse(is.matrix(x), nrow(x), 1))
+      checkmate::assert_vector(params$beta, len=ncol(x))
     }
   )
 )

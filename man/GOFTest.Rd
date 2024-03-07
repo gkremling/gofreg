@@ -12,10 +12,10 @@ p-value.
 \examples{
 # Create an example dataset
 n <- 100
-x <- rbind(runif(n), rbinom(n, 1, 0.5))
+x <- cbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
 y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
-data <- list(x = x, y = y)
+data <- dplyr::tibble(x = x, y = y)
 
 # Fit the correct model
 model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
@@ -64,7 +64,7 @@ Initialize an instance of class \link{GOFTest}.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{\code{list()} containing the data}
+\item{\code{data}}{\code{data.frame()} containing the data}
 
 \item{\code{model_fitted}}{object of class \link{ParamRegrModel} with fitted
 parameters}

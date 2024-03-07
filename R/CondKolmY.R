@@ -13,10 +13,10 @@
 ##' @examples
 ##' # Create an example dataset
 ##' n <- 100
-##' x <- rbind(runif(n), rbinom(n, 1, 0.5))
+##' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 ##' model <- NormalGLM$new()
 ##' y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
-##' data <- list(x = x, y = y)
+##' data <- dplyr::tibble(x = x, y = y)
 ##'
 ##' # Fit the correct model
 ##' model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
@@ -43,12 +43,13 @@ CondKolmY <- R6::R6Class(
     #' @description Calculate the value of the test statistic for given data
     #'  and a model to test for.
     #'
-    #' @param data `list()` with tags x and y containing the data
+    #' @param data `data.frame()` with columns x and y containing the data
     #' @param model [ParamRegrModel] to test for, already fitted to the data
     #'
     #' @export
     calc_stat = function(data, model) {
       # check for correct shape of data and definedness of model params
+      checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
       if(anyNA(model$get_params())) {
         stop("Model first needs to be fitted to the data.")
@@ -63,7 +64,7 @@ CondKolmY <- R6::R6Class(
 
       # determine semi-parametric estimator for distribution of Y evaluated at the same (jump) points
       n <- length(data$y)
-      Fypar.vals <- sapply(t.vals, function(t) { sum(model$F_yx(t, data$x))/n  })
+      Fypar.vals <- sapply(t.vals, function(t) { sum(model$F_yx(t, as.matrix(data[, "x"])))/n  })
 
       # determine KS statistic by computing the difference at the jump points
       proc <- sqrt(n) * (Fyn.vals-Fypar.vals)

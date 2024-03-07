@@ -12,10 +12,10 @@
 ##' @examples
 ##' # Create an example dataset
 ##' n <- 100
-##' x <- rbind(runif(n), rbinom(n, 1, 0.5))
+##' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 ##' model <- NormalGLM$new()
 ##' y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
-##' data <- list(x = x, y = y)
+##' data <- dplyr::tibble(x = x, y = y)
 ##'
 ##' # Fit the correct model
 ##' model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
@@ -42,12 +42,13 @@ MEP <- R6::R6Class(
     #' @description Calculate the value of the test statistic for given data
     #'   and a model to test for.
     #'
-    #' @param data `list()` with tags x and y containing the data
+    #' @param data `data.frame()` with columns x and y containing the data
     #' @param model [ParamRegrModel] to test for
     #'
     #' @export
     calc_stat = function(data, model) {
       # check for correct shape of data and definedness of model params
+      checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
       params <- model$get_params()
       if(anyNA(params)) {
@@ -57,11 +58,12 @@ MEP <- R6::R6Class(
       # check for beta in params since MEP can only be evaluated for GLMs
       checkmate::assert_names(names(params), must.include = c("beta"))
       beta <- params$beta
-      checkmate::assert_vector(beta, len=dim(data$x)[1])
+      checkmate::assert_vector(beta, len=ncol(data$x))
 
       # compute linear combination beta^T*X and residuals
-      beta.x <- beta %*% data$x
-      res <- data$y - model$mean_yx(data$x)
+      x <- as.matrix(data[, "x"])
+      beta.x <- x %*% beta
+      res <- data$y - model$mean_yx(x)
 
       # order residuals by beta^T*X, compute scaled cumsum (Rn1)
       n <- length(data$y)

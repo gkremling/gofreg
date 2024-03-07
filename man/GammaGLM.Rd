@@ -12,7 +12,7 @@ for example, evaluate the conditional density and distribution functions.
 # Use the built-in cars dataset
 x <- datasets::cars$speed
 y <- datasets::cars$dist
-data <- list(x=x, y=y)
+data <- dplyr::tibble(x=x, y=y)
 
 # Create an instance of ExpGLM
 model <- GammaGLM$new()
@@ -26,7 +26,7 @@ plot(datasets::cars)
 abline(a = 0, b = params_opt$beta)
 
 # Generate a sample for y for given x following the same distribution
-x.new <- seq(min(x), max(x), by=2)
+x.new <- as.matrix(seq(min(x), max(x), by=2))
 y.smpl <- model$sample_yx(x.new)
 points(x.new, y.smpl, col="red")
 
@@ -77,7 +77,7 @@ parameters based on given data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{list containing the data to fit the model to}
+\item{\code{data}}{tibble containing the data to fit the model to}
 
 \item{\code{params_init}}{initial value of the model parameters to use for the
 optimization (defaults to the fitted parameter values)}
@@ -108,7 +108,7 @@ Evaluates the conditional density function.
 \describe{
 \item{\code{t}}{value(s) at which the conditional density shall be evaluated}
 
-\item{\code{x}}{vector of covariates}
+\item{\code{x}}{matrix of covariates, each row representing one sample}
 
 \item{\code{params}}{model parameters to use (\code{list()} with tags beta and shape),
 defaults to the fitted parameter values}
@@ -134,7 +134,7 @@ Evaluates the conditional distribution function.
 \item{\code{t}}{value(s) at which the conditional distribution shall be
 evaluated}
 
-\item{\code{x}}{vector of covariates}
+\item{\code{x}}{matrix of covariates, each row representing one sample}
 
 \item{\code{params}}{model parameters to use (\code{list()} with tags beta and shape),
 defaults to the fitted parameter values}
@@ -159,7 +159,7 @@ conditional distribution.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{vector of covariates}
+\item{\code{x}}{matrix of covariates, each row representing one sample}
 
 \item{\code{params}}{model parameters to use (\code{list()} with tags beta and shape),
 defaults to the fitted parameter values}
@@ -167,7 +167,7 @@ defaults to the fitted parameter values}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-vector of sampled response variables, same length as \code{x}
+vector of sampled response variables, same length as \code{nrow(x)}
 }
 }
 \if{html}{\out{<hr>}}

@@ -4,20 +4,20 @@
 #'   following the given model. The covariates are kept the same and the
 #'   response variables are drawn according to `model$sample_yx()`.
 #'
-#' @param data `list()` with tags x and y containing the original data
+#' @param data `data.frame()` with columns x and y containing the original data
 #' @param model [ParamRegrModel] to use for the resampling
 #'
-#' @returns `list()` with tags x and y containing the resampled data
+#' @returns `data.frame()` with columns x and y containing the resampled data
 #'
 #' @export
 #' @examples
 #' # Create an example dataset
 #' n <- 10
-#' x <- rbind(runif(n), rbinom(n, 1, 0.5))
+#' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 #' model <- NormalGLM$new()
 #' params <- list(beta=c(2,3), sd=1)
 #' y <- model$sample_yx(x, params=params)
-#' data <- list(x=x, y=y)
+#' data <- dplyr::tibble(x=x, y=y)
 #'
 #' # Fit the model to the data
 #' model$fit(data, params_init=params, inplace=TRUE)
@@ -25,15 +25,16 @@
 #' # Resample from the model given data
 #' resample_param(data, model)
 resample_param = function(data, model) {
+  checkmate::assert_data_frame(data)
   checkmate::assert_names(names(data), must.include = c("x", "y"))
   checkmate::assert_class(model, "ParamRegrModel")
 
   n <- length(data$y)
 
   # sample new survival times (according to parametric model)
-  y.b <- model$sample_yx(data$x)
+  y.b <- model$sample_yx(as.matrix(data[, "x"]))
 
-  list(x = data$x, y = y.b)
+  dplyr::tibble(x = data$x, y = y.b)
 }
 
 #' Parametric resampling scheme with resampling of covariates
@@ -42,20 +43,20 @@ resample_param = function(data, model) {
 #'   following the given model. The covariates are resampled from `data$x` and
 #'   the response variables are drawn according to `model$sample_yx()`.
 #'
-#' @param data `list()` with tags x and y containing the original data
+#' @param data `data.frame()` with columns x and y containing the original data
 #' @param model [ParamRegrModel] to use for the resampling
 #'
-#' @returns `list()` with tags x and y containing the resampled data
+#' @returns `data.frame()` with columns x and y containing the resampled data
 #'
 #' @export
 #' @examples
 #' # Create an example dataset
 #' n <- 10
-#' x <- rbind(runif(n), rbinom(n, 1, 0.5))
+#' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 #' model <- NormalGLM$new()
 #' params <- list(beta=c(2,3), sd=1)
 #' y <- model$sample_yx(x, params=params)
-#' data <- list(x=x, y=y)
+#' data <- dplyr::tibble(x=x, y=y)
 #'
 #' # Fit the model to the data
 #' model$fit(data, params_init=params, inplace=TRUE)
@@ -63,20 +64,104 @@ resample_param = function(data, model) {
 #' # Resample from the model given data
 #' resample_param(data, model)
 resample_param_rsmplx = function(data, model) {
+  checkmate::assert_data_frame(data)
   checkmate::assert_names(names(data), must.include = c("x", "y"))
   checkmate::assert_class(model, "ParamRegrModel")
 
   n <- length(data$y)
 
   # resample covariates
-  if(is.matrix(data$x)) {
-    x.b <- data$x[, sample(ncol(data$x), size=n, replace=T)]
-  } else {
-    x.b <- sample(data$x, n, replace=T)
-  }
+  x <- as.matrix(data[, "x"])
+  x.b <- x[sample(nrow(x), size=n, replace=T), ]
 
   # sample new survival times (according to parametric model)
-  y.b <- model$sample_yx(x.b)
+  y.b <- model$sample_yx(as.matrix(x.b))
 
-  list(x = x.b, y = y.b)
+  dplyr::tibble(x = x.b, y = y.b)
+}
+
+#' Parametric resampling scheme for censored data
+#'
+#' @description Generate a new, resampled dataset of the same shape as data
+#'   following the given model. The covariates X are kept the same. Survival
+#'   times Y are drawn according to `model$sample_yx()` and censoring times C
+#'   according to the KM estimator.
+#'
+#' @param data `data.frame()` with columns x, z and delta containing the
+#'   original data
+#' @param model [ParamRegrModel] to use for the resampling
+#'
+#' @returns `data.frame()` with columns x, z and delta containing the resampled
+#'   data
+#'
+#' @export
+#' @examples
+#' # Create an example dataset
+#' n <- 10
+#' x <- cbind(runif(n), rbinom(n, 1, 0.5))
+#' model <- NormalGLM$new()
+#' params <- list(beta=c(2,3), sd=1)
+#' y <- model$sample_yx(x, params=params)
+#' c <- rnorm(n, mean(y)*1.2, sd(y)*0.5)
+#' z <- pmin(y, c)
+#' delta <- as.numeric(y <= c)
+#' data <- dplyr::tibble(x=x, z=z, delta=delta)
+#'
+#' # Fit the model to the data
+#' model$fit(data, params_init=params, inplace=TRUE, loglik = loglik_xzd)
+#'
+#' # Resample from the model given data
+#' resample_param_cens(data, model)
+resample_param_cens = function(data, model) {
+  checkmate::assert_data_frame(data)
+  checkmate::assert_names(names(data), must.include = c("x", "z", "delta"))
+  checkmate::assert_class(model, "ParamRegrModel")
+
+  n <- length(data$z)
+
+  # sample new survival times (according to parametric model)
+  y.b <- model$sample_yx(as.matrix(data[, "x"]))
+
+  # sample new censoring times (according to KM estimator for C)
+  km_cens <- km_features(data$z, 1-data$delta)
+  c.b <- rkm(km_cens, n)
+
+  # assign observed times and censoring indicators accordings
+  z.b <- pmin(y.b, c.b)
+  delta.b <- as.numeric(y.b <= c.b)
+
+  dplyr::tibble(x = data$x, z = z.b, delta = delta.b)
+}
+
+km_features <- function(Z, delta){
+  # modification to create a proper distribution function with F(inf) = 1
+  delta[which.max(Z)] <- 1
+
+  # compute KM survival function, distribution function and weights
+  km <- survival::survfit(survival::Surv(Z, delta) ~ 1)
+  km.S <- km$surv
+  km.D <- 1-km.S
+  km.W <- km.D-c(0,km.D[-length(km.D)])
+
+  # get Z and delta vectors in the same order as the distribution function
+  # (i.e. unique and ordered Z values with corresponding deltas)
+  Z.new <- km$time
+  delta.new <- 1*(km$n.event >= 1)
+
+  # return results
+  km_obj <- list(Z=Z.new, delta=delta.new,
+                 dkm=km.W,
+                 pkm=km.D,
+                 skm=km.S)
+  return(km_obj)
+}
+
+rkm <- function(km_obj,n=1){
+  # extract uncensored data
+  cen_data <- data.frame(Z = km_obj$Z, pkm = km_obj$pkm, delta = km_obj$delta)
+  uncens <- cen_data[cen_data$delta==1,]
+
+  # create sample according to KM distribution function using Skorokhod 2
+  smpl <- replicate(n, uncens$Z[which(uncens$pkm >= stats::runif(1))[1]], simplify="vector")
+  return(smpl)
 }

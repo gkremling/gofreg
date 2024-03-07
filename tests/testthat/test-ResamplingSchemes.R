@@ -36,6 +36,13 @@ test_that("resample under censoring works without resampling x", {
 
   set.seed(123)
   data.rs <- resample_param_cens(data, model)
+
+  # compute reference values
+  set.seed(123)
+  y <- model$sample_yx(data$x)
+  c <- rkm(km_features(data$z, 1-data$delta), n=length(y))
+
   expect_equal(data.rs$x, data$x)
-  # expect_equal(data.rs$y, model$sample_yx(data.rs$x))
+  expect_equal(data.rs$z, pmin(y, c))
+  expect_equal(data.rs$delta, as.numeric(y <= c))
 })

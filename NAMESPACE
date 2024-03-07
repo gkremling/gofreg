@@ -2,6 +2,7 @@
 
 export(CondKolmXY)
 export(CondKolmY)
+export(CondKolmY_RCM)
 export(CondKolmbXY)
 export(ExpGLM)
 export(GLM)

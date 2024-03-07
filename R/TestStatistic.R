@@ -62,6 +62,18 @@ TestStatistic <- R6::R6Class(
     #' @export
     geom_ts_proc = function(...) {
       ggplot2::geom_line(ggplot2::aes(x=private$plot.x, y=private$plot.y), ...)
+    },
+
+    #' @description Creates a new ggplot showing the underlying process of the
+    #'   test statistic.
+    #'
+    #' @param ... Other arguments passed on to [ggplot2::geom_line()]. These are
+    #'   often aesthetics, used to set an aesthetic to a fixed value, like
+    #'   `colour = "red"` or `size = 3`.
+    #'
+    #' @export
+    plot = function(...) {
+      ggplot2::ggplot() + self$geom_ts_proc(...)
     }
   ),
   private = list(

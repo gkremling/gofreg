@@ -29,7 +29,7 @@ model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ts <- CondKolmY$new()
 ts$calc_stat(data, model)
 print(ts)
-ggplot2::ggplot() + ts$geom_ts_proc()
+plot(ts)
 
 # Fit a wrong model
 model2 <- NormalGLM$new(linkinv = function(u) {u+10})
@@ -39,7 +39,7 @@ model2$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ts2 <- CondKolmY$new()
 ts2$calc_stat(data, model2)
 print(ts2)
-ggplot2::ggplot() + ts2$geom_ts_proc()
+plot(ts2)
 }
 \section{Super class}{
 \code{\link[gofreg:TestStatistic]{gofreg::TestStatistic}} -> \code{CondKolmY}
@@ -57,6 +57,7 @@ ggplot2::ggplot() + ts2$geom_ts_proc()
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="geom_ts_proc"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-geom_ts_proc'><code>gofreg::TestStatistic$geom_ts_proc()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="get_plot_xy"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-get_plot_xy'><code>gofreg::TestStatistic$get_plot_xy()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="get_value"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-get_value'><code>gofreg::TestStatistic$get_value()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="plot"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-plot'><code>gofreg::TestStatistic$plot()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="TestStatistic" data-id="print"><a href='../../gofreg/html/TestStatistic.html#method-TestStatistic-print'><code>gofreg::TestStatistic$print()</code></a></span></li>
 </ul>
 </details>

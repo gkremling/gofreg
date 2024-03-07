@@ -24,7 +24,7 @@
 ##' ts <- MEP$new()
 ##' ts$calc_stat(data, model)
 ##' print(ts)
-##' ggplot2::ggplot() + ts$geom_ts_proc()
+##' plot(ts)
 ##'
 ##' # Fit a wrong model
 ##' model2 <- NormalGLM$new(linkinv = function(u) {u+10})
@@ -34,7 +34,7 @@
 ##' ts2 <- MEP$new()
 ##' ts2$calc_stat(data, model2)
 ##' print(ts2)
-##' ggplot2::ggplot() + ts2$geom_ts_proc()
+##' plot(ts2)
 MEP <- R6::R6Class(
   classname = "MEP",
   inherit = TestStatistic,
@@ -58,12 +58,11 @@ MEP <- R6::R6Class(
       # check for beta in params since MEP can only be evaluated for GLMs
       checkmate::assert_names(names(params), must.include = c("beta"))
       beta <- params$beta
-      checkmate::assert_vector(beta, len=ncol(data$x))
+      checkmate::assert_vector(beta, len=ncol(as.matrix(data$x)))
 
       # compute linear combination beta^T*X and residuals
-      x <- as.matrix(data[, "x"])
-      beta.x <- x %*% beta
-      res <- data$y - model$mean_yx(x)
+      beta.x <- as.matrix(data$x) %*% beta
+      res <- data$y - model$mean_yx(data$x)
 
       # order residuals by beta^T*X, compute scaled cumsum (Rn1)
       n <- length(data$y)

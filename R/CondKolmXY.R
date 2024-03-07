@@ -25,7 +25,7 @@
 ##' ts <- CondKolmXY$new()
 ##' ts$calc_stat(data, model)
 ##' print(ts)
-##' ggplot2::ggplot() + ts$geom_ts_proc()
+##' plot(ts)
 ##'
 ##' # Fit a wrong model
 ##' model2 <- NormalGLM$new(linkinv = function(u) {u+10})
@@ -35,7 +35,7 @@
 ##' ts2 <- CondKolmXY$new()
 ##' ts2$calc_stat(data, model2)
 ##' print(ts2)
-##' ggplot2::ggplot() + ts2$geom_ts_proc()
+##' plot(ts2)
 CondKolmXY <- R6::R6Class(
   classname = "CondKolmXY",
   inherit = TestStatistic,
@@ -57,7 +57,7 @@ CondKolmXY <- R6::R6Class(
 
       # compute sum_{i=1}^n (1{Yi<=Yj} - F(Yj|theta,Xi)) 1{Xi<=Xj} for each j
       n <- length(data$y)
-      x <- as.matrix(data[, "x"])
+      x <- as.matrix(data$x)
       proc <- 1/sqrt(n) * sapply(seq(1,n), function(j) { sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], x)) *
                                                                (colSums(apply(x, 1, function(r) {r <= x[j,]})) == ncol(x))) })
 

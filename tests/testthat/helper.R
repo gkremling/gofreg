@@ -87,7 +87,7 @@ dummy_xzdmodel_x3 <- function(params_true, distr, n = 1000) {
 #' Create dummy censored GLM data and model (with 3-dim x) and fit it to the
 #' data
 #'
-#' @return `list()` with tags `x`, `y` `model`
+#' @return `data.frame()` with columns `data` and `model`
 dummy_xzdmodel_fitted <- function() {
   params_true <- list(beta=c(1,2,3), sd=2)
   distr = "normal"

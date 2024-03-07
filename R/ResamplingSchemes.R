@@ -32,7 +32,7 @@ resample_param = function(data, model) {
   n <- length(data$y)
 
   # sample new survival times (according to parametric model)
-  y.b <- model$sample_yx(as.matrix(data[, "x"]))
+  y.b <- model$sample_yx(data$x)
 
   dplyr::tibble(x = data$x, y = y.b)
 }
@@ -75,7 +75,7 @@ resample_param_rsmplx = function(data, model) {
   x.b <- x[sample(nrow(x), size=n, replace=T), ]
 
   # sample new survival times (according to parametric model)
-  y.b <- model$sample_yx(as.matrix(x.b))
+  y.b <- model$sample_yx(x.b)
 
   dplyr::tibble(x = x.b, y = y.b)
 }
@@ -120,48 +120,15 @@ resample_param_cens = function(data, model) {
   n <- length(data$z)
 
   # sample new survival times (according to parametric model)
-  y.b <- model$sample_yx(as.matrix(data[, "x"]))
+  y.b <- model$sample_yx(data$x)
 
-  # sample new censoring times (according to KM estimator for C)
-  km_cens <- km_features(data$z, 1-data$delta)
-  c.b <- rkm(km_cens, n)
+  # sample new censoring times (according to KM estimator for C, i.e. for pairs
+  # (Z,1-delta))
+  c.b <- rkm(km_features(data$z, 1-data$delta), n)
 
   # assign observed times and censoring indicators accordings
   z.b <- pmin(y.b, c.b)
   delta.b <- as.numeric(y.b <= c.b)
 
   dplyr::tibble(x = data$x, z = z.b, delta = delta.b)
-}
-
-km_features <- function(Z, delta){
-  # modification to create a proper distribution function with F(inf) = 1
-  delta[which.max(Z)] <- 1
-
-  # compute KM survival function, distribution function and weights
-  km <- survival::survfit(survival::Surv(Z, delta) ~ 1)
-  km.S <- km$surv
-  km.D <- 1-km.S
-  km.W <- km.D-c(0,km.D[-length(km.D)])
-
-  # get Z and delta vectors in the same order as the distribution function
-  # (i.e. unique and ordered Z values with corresponding deltas)
-  Z.new <- km$time
-  delta.new <- 1*(km$n.event >= 1)
-
-  # return results
-  km_obj <- list(Z=Z.new, delta=delta.new,
-                 dkm=km.W,
-                 pkm=km.D,
-                 skm=km.S)
-  return(km_obj)
-}
-
-rkm <- function(km_obj,n=1){
-  # extract uncensored data
-  cen_data <- data.frame(Z = km_obj$Z, pkm = km_obj$pkm, delta = km_obj$delta)
-  uncens <- cen_data[cen_data$delta==1,]
-
-  # create sample according to KM distribution function using Skorokhod 2
-  smpl <- replicate(n, uncens$Z[which(uncens$pkm >= stats::runif(1))[1]], simplify="vector")
-  return(smpl)
 }

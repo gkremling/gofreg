@@ -26,7 +26,7 @@
 ##' abline(a = 0, b = params_opt$beta)
 ##'
 ##' # Generate a sample for y for given x following the same distribution
-##' x.new <- as.matrix(seq(min(x), max(x), by=2))
+##' x.new <- seq(min(x), max(x), by=2)
 ##' y.smpl <- model$sample_yx(x.new)
 ##' points(x.new, y.smpl, col="red")
 ##'
@@ -122,7 +122,7 @@ ExpGLM <- R6::R6Class(
       super$check_params(params)
       checkmate::assert_list(params, len=1)
       checkmate::assert_names(names(params), identical.to = c("beta"))
-      checkmate::assert_vector(params$beta, len=ncol(x))
+      checkmate::assert_vector(params$beta, len=ncol(as.matrix(x)))
     }
   )
 )

@@ -26,7 +26,7 @@ plot(datasets::cars)
 abline(a = 0, b = params_opt$beta)
 
 # Generate a sample for y for given x following the same distribution
-x.new <- as.matrix(seq(min(x), max(x), by=2))
+x.new <- seq(min(x), max(x), by=2)
 y.smpl <- model$sample_yx(x.new)
 points(x.new, y.smpl, col="red")
 

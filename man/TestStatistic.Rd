@@ -19,6 +19,7 @@ x-y-values that can be used to plot the underlying process).
 \item \href{#method-TestStatistic-get_plot_xy}{\code{TestStatistic$get_plot_xy()}}
 \item \href{#method-TestStatistic-print}{\code{TestStatistic$print()}}
 \item \href{#method-TestStatistic-geom_ts_proc}{\code{TestStatistic$geom_ts_proc()}}
+\item \href{#method-TestStatistic-plot}{\code{TestStatistic$plot()}}
 \item \href{#method-TestStatistic-clone}{\code{TestStatistic$clone()}}
 }
 }
@@ -88,6 +89,26 @@ Creates a line plot showing the underlying process of the
 test statistic.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TestStatistic$geom_ts_proc(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Other arguments passed on to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+\code{colour = "red"} or \code{size = 3}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TestStatistic-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-TestStatistic-plot}{}}}
+\subsection{Method \code{plot()}}{
+Creates a new ggplot showing the underlying process of the
+test statistic.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TestStatistic$plot(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

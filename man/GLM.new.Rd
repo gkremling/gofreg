@@ -4,17 +4,14 @@
 \alias{GLM.new}
 \title{Create GLM object with specific distribution family}
 \usage{
-GLM.new(
-  distr,
-  linkinv = function(u) {
-     u
- }
-)
+GLM.new(distr, linkinv = identity, params = NA)
 }
 \arguments{
 \item{distr}{distribution family}
 
-\item{linkinv}{inverse link function}
+\item{linkinv}{inverse link function, defaults to identity function}
+
+\item{params}{model parameters to use as default (optional)}
 }
 \value{
 new instance of a GLM-subclass

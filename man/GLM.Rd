@@ -38,17 +38,15 @@ function.
 \subsection{Method \code{new()}}{
 Initialize an object of class GLM.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GLM$new(
-  linkinv = function(u) {
-     u
- }
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GLM$new(linkinv = identity, params = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{linkinv}}{inverse link function, defaults to identity function}
+
+\item{\code{params}}{model parameters to use as default (optional)}
 }
 \if{html}{\out{</div>}}
 }

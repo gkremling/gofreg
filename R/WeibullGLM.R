@@ -13,10 +13,10 @@
 ##' y <- datasets::cars$dist
 ##' data <- dplyr::tibble(x=x, y=y)
 ##'
-##' # Create an instance of ExpGLM
+##' # Create an instance of WeibullGLM
 ##' model <- WeibullGLM$new()
 ##'
-##' # Fit an Exponential GLM to the cars dataset
+##' # Fit an Weibull GLM to the cars dataset
 ##' model$fit(data, params_init = list(beta=3, shape=1), inplace=TRUE)
 ##' params_opt <- model$get_params()
 ##'

@@ -106,9 +106,12 @@ GOFTest <- R6::R6Class(
     #' @description Plots the processes underlying the bootstrap test statistics
     #'   (gray) and the original test statistic (red)
     #'
+    #' @param subtitle text to be displayed as subtitle of the plot; default is
+    #'   no subtitle
+    #'
     #' @export
-    plot_procs = function() {
-      gpl <- ggplot2::ggplot() + ggplot2::ggtitle(sprintf("Test statistic, p-value=%s", self$get_pvalue()))
+    plot_procs = function(subtitle = ggplot2::waiver()) {
+      gpl <- ggplot2::ggplot() + ggplot2::ggtitle(sprintf("Test statistic, p-value=%s", self$get_pvalue()), subtitle)
       for(ts in private$stats_boot) {
         gpl <- gpl + ts$geom_ts_proc(col = "gray40")
       }

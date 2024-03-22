@@ -1,7 +1,8 @@
-##' @title Generalized Linear Model with Gamma Distribution
-##' @description This class represents a generalized linear model with Gamma
-##'   distribution. It inherits from [GLM] and implements its functions that,
-##'   for example, evaluate the conditional density and distribution functions.
+##' @title Generalized Linear Model with Negative Binomial Distribution
+##' @description This class represents a generalized linear model with negative
+##'   binomial distribution. It inherits from [GLM] and implements its functions
+##'   that, for example, evaluate the conditional density and distribution
+##'   functions.
 ##' @param x matrix of covariates, each row representing one sample
 ##' @param params model parameters to use (`list()` with tags beta and shape),
 ##'   defaults to the fitted parameter values
@@ -13,11 +14,11 @@
 ##' y <- datasets::cars$dist
 ##' data <- dplyr::tibble(x=x, y=y)
 ##'
-##' # Create an instance of GammaGLM
-##' model <- GammaGLM$new()
+##' # Create an instance of a NegBinomGLM
+##' model <- NegBinomGLM$new()
 ##'
-##' # Fit an Gamma GLM to the cars dataset
-##' model$fit(data, params_init = list(beta=3, shape=1), inplace=TRUE)
+##' # Fit a Negative Binomial GLM to the cars dataset
+##' model$fit(data, params_init = list(beta=3, shape=2), inplace=TRUE)
 ##' params_opt <- model$get_params()
 ##'
 ##' # Plot the resulting regression function
@@ -34,8 +35,8 @@
 ##' model$F_yx(y.smpl, x.new)
 ##' y.pred <- model$mean_yx(x.new)
 ##' points(x.new, y.pred, col="blue")
-GammaGLM <- R6::R6Class(
-  classname = "GammaGLM",
+NegBinomGLM <- R6::R6Class(
+  classname = "NegBinomGLM",
   inherit = GLM,
   public = list(
     #' @description Calculates the maximum likelihood estimator for the model
@@ -81,7 +82,7 @@ GammaGLM <- R6::R6Class(
       }
       mean <- self$mean_yx(x, params)
       shape <- params$shape
-      dgamma(t, scale=mean/shape, shape=shape)
+      dnbinom(t, mu=mean, size=shape)
     },
 
     #' @description Evaluates the conditional distribution function.
@@ -103,7 +104,7 @@ GammaGLM <- R6::R6Class(
       }
       mean <- self$mean_yx(x, params)
       shape <- params$shape
-      pgamma(t, scale=mean/shape, shape=shape)
+      pnbinom(t, mu=mean, size=shape)
     },
 
     #' @description Generates a new sample of response variables with the same
@@ -115,7 +116,7 @@ GammaGLM <- R6::R6Class(
       private$check_params(params, x)
       mean <- self$mean_yx(x, params)
       shape <- params$shape
-      rgamma(length(mean), scale=mean/shape, shape=shape)
+      rnbinom(length(mean), mu=mean, size=shape)
     }
   ),
   private = list(

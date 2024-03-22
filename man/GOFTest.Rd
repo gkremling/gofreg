@@ -133,9 +133,17 @@ to \code{model}
 Plots the processes underlying the bootstrap test statistics
 (gray) and the original test statistic (red)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GOFTest$plot_procs()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GOFTest$plot_procs(subtitle = ggplot2::waiver())}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{subtitle}}{text to be displayed as subtitle of the plot; default is
+no subtitle}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-GOFTest-clone"></a>}}

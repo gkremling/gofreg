@@ -11,11 +11,16 @@ GLM <- R6::R6Class(
     #' @description Initialize an object of class GLM.
     #'
     #' @param linkinv inverse link function, defaults to identity function
+    #' @param params model parameters to use as default (optional)
     #'
     #' @export
-    initialize = function(linkinv = function(u) {u}) {
+    initialize = function(linkinv = identity, params = NA) {
       checkmate::assert_function(linkinv, nargs=1)
       private$linkinv <- linkinv
+      if(!checkmate::test_scalar_na(params)) {
+        super$check_params(params)
+        private$params <- params
+      }
     },
 
     #' @description Evaluates the regression function or in other terms the
@@ -45,7 +50,8 @@ GLM <- R6::R6Class(
 #' `distr`.
 #'
 #' @param distr distribution family
-#' @param linkinv inverse link function
+#' @param linkinv inverse link function, defaults to identity function
+#' @param params model parameters to use as default (optional)
 #'
 #' @return new instance of a GLM-subclass
 #' @export
@@ -53,15 +59,15 @@ GLM <- R6::R6Class(
 #' @examples
 #' model <- GLM.new(distr="normal")
 #' # see examples of GLM-subclasses (e.g. NormalGLM) for how to use such models
-GLM.new <- function(distr, linkinv = function(u) {u}) {
-  distr_poss <- c("normal", "exp", "weibull", "gamma")
-  checkmate::assert_function(linkinv, nargs=1)
-  checkmate::check_choice(distr, distr_poss)
+GLM.new <- function(distr, linkinv = identity, params = NA) {
+  distr_poss <- c("normal", "exp", "weibull", "gamma", "negbinom")
+  checkmate::assert_choice(distr, distr_poss)
   switch(distr,
-         normal = NormalGLM$new(linkinv),
-         exp = ExpGLM$new(linkinv),
-         weibull = WeibullGLM$new(linkinv),
-         gamma = GammaGLM$new(linkinv),
-         stop(paste0("Bug in the code: There is a distribution family listed in distr_poss",
+         normal = NormalGLM$new(linkinv, params),
+         exp = ExpGLM$new(linkinv, params),
+         weibull = WeibullGLM$new(linkinv, params),
+         gamma = GammaGLM$new(linkinv, params),
+         negbinom = NegBinomGLM$new(linkinv, params),
+         stop(paste0("Bug in the code: There is a distribution family listed in distr_poss ",
                                 "which is not taken account of in the switch-statement.")))
 }

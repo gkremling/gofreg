@@ -15,40 +15,41 @@ knitr::opts_chunk$set(
 
 # gofreg
 
-<!-- badges: start -->
-<!-- badges: end -->
+This R package provides classes and methods to fit parametric regression models
+to given data and to perform bootstrap-based goodness-of-fit tests using
+different test statistics.
 
-The goal of gofreg is to ...
+The data can either consist of $(X,Y)$ pairs of covariates and response 
+variables or in case of random censorship it consists of tuples $(X, Z, \delta)$ 
+denoting covariates, censored survival times and censoring indicators. The 
+package includes different parametric regression models (mostly generalized 
+linear models) and test statistics (based on different papers). It can easily be 
+extended by other user-defined models and test statistics. 
 
 ## Installation
 
-You can install the development version of gofreg like so:
+You can install gofreg from github with:
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+``` {r, eval = FALSE}
+remotes::install_github("gkremling/gofreg")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to fit a parametric regression
+model (in this case a generalized linear model with normal distribution) to
+given data and afterwards perform a goodness-of-fit test (in this case using
+the conditional Kolmogorov test statistic of the marginal distribution of $Y$ 
+defined in Kremling & Dikta (2024)). As an example dataset we use
+`datasets::cars`.
 
 ```{r example}
 library(gofreg)
-## basic example code
+
+data <- dplyr::tibble(x = datasets::cars$speed, y = datasets::cars$dist)
+model <- GLM.new(distr = "normal", linkinv = identity)
+model$fit(data, params_init = list(beta = 3, sd = 2), inplace = TRUE)
+print(model$get_params())
+gt <- GOFTest$new(data = data, model_fitted = model, test_stat = CondKolmY$new(), nboot = 100)
+print(gt$get_pvalue())
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

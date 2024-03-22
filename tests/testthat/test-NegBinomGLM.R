@@ -1,14 +1,14 @@
 test_that("f_yx and F_yx work", {
-  distr <- "exp"
-  params <- list(beta=c(1,2,3))
-  new.params <- list(beta=c(2,3,4))
-  t <- c(0,0.2) # values at which f_yx and F_yx shall be evaluated
+  distr <- "negbinom"
+  params <- list(beta=c(1,2,3), shape=2)
+  new.params <- list(beta=c(2,3,4), shape=5)
+  t <- c(0,4) # values at which f_yx and F_yx shall be evaluated
 
   # true values of f_yx and F_yx given model parameters
   true_vals <- function(t, x, g1, params) {
-    rate <- 1/g1(x %*% params$beta)
-    dens <- dexp(t, rate)
-    dist <- pexp(t, rate)
+    mean <- g1(x %*% params$beta)
+    dens <- dnbinom(t, mu=mean, size=params$shape)
+    dist <- pnbinom(t, mu=mean, size=params$shape)
     list(dens=dens, dist=dist)
   }
 
@@ -16,59 +16,59 @@ test_that("f_yx and F_yx work", {
 })
 
 test_that("sample_yx works", {
-  distr <- "exp"
-  params <- list(beta=c(1,2,3))
-  new.params <- list(beta=c(2,3,4))
+  distr <- "negbinom"
+  params <- list(beta=c(1,2,3), shape=2)
+  new.params <- list(beta=c(2,3,4), shape=5)
 
   # expected sample for given model parameters
   expected_sample <- function(x, g1, params) {
-    rate <- 1/g1(x %*% params$beta)
-    rexp(nrow(x), rate)
+    mean <- g1(x %*% params$beta)
+    rnbinom(nrow(x), mu=mean, size=params$shape)
   }
 
   test_glm_sample_yx(distr, params, new.params, expected_sample)
 })
 
 test_that("fit works for univariate covariates", {
-  distr <- "exp"
-  params_true <- list(beta=3)
-  params_error <- list(beta=-10)
+  distr <- "negbinom"
+  params_true <- list(beta=3, shape=2)
+  params_error <- list(beta=0, shape=0)
   tol <- 0.1
 
   test_glm_fit(distr, params_true, params_error, tol, multi=FALSE)
 })
 
 test_that("fit works for multidimensional covariates", {
-  distr <- "exp"
-  params_true <- list(beta=c(1,2,3))
-  params_error <- list(beta=c(0,0,0))
-  tol <- 0.1
+  distr <- "negbinom"
+  params_true <- list(beta=c(1,2,3), shape=2)
+  params_error <- list(beta=c(0,0,0), shape=0)
+  tol <- 0.2
 
   test_glm_fit(distr, params_true, params_error, tol, multi=TRUE)
 })
 
 test_that("fit works with censoring for univariate covariates", {
-  distr <- "exp"
-  params_true <- list(beta=3)
-  params_error <- list(beta=-10)
+  distr <- "negbinom"
+  params_true <- list(beta=3, shape=2)
+  params_error <- list(beta=0, shape=0)
   tol <- 0.1
 
   test_glm_fit(distr, params_true, params_error, tol, multi=FALSE, cens=TRUE)
 })
 
 test_that("fit works with censoring for multidimensional covariates", {
-  distr <- "exp"
-  params_true <- list(beta=c(1,2,3))
-  params_error <- list(beta=c(0,0,0))
-  tol <- 0.1
+  distr <- "negbinom"
+  params_true <- list(beta=c(1,2,3), shape=2)
+  params_error <- list(beta=c(0,0,0), shape=0)
+  tol <- 0.25
 
   test_glm_fit(distr, params_true, params_error, tol, multi=TRUE, cens=TRUE)
 })
 
 test_that("default linkinv in constructor works", {
-  distr <- "exp"
-  params_true <- list(beta=c(1,2,3))
-  tol <- 0.1
+  distr <- "negbinom"
+  params_true <- list(beta=c(1,2,3), shape=0.5)
+  tol <- 0.3
 
   # create model and data
   set.seed(123)
@@ -84,12 +84,12 @@ test_that("default linkinv in constructor works", {
 })
 
 test_that("params in constructor works", {
-  distr <- "exp"
+  distr <- "negbinom"
 
   model1 <- GLM.new(distr)
   checkmate::expect_scalar_na(model1$get_params())
 
-  params <- list(beta=c(1,2,3))
+  params <- list(beta=c(1,2,3), shape=0.5)
   model2 <- GLM.new(distr, params=params)
   expect_equal(model2$get_params(), params)
 })

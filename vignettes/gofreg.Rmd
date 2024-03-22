@@ -1,0 +1,167 @@
+---
+title: "The gofreg package: Perform goodness-of-fit tests for parametric regression"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{gofreg}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  # collapse = TRUE,
+  comment = "",
+  fig.width = 6
+)
+```
+
+```{r setup, echo = FALSE, message = FALSE}
+options(width = 500, max.print = 500)
+set.seed(123)
+library(gofreg)
+library(ggplot2)
+```
+
+## Typical usage
+
+1. Generate or load data
+2. Fit a parametric regression model to the given data
+3. Compute the p-value of the fitted model
+
+## Example
+
+In this example, we will fit a Normal and Gaussian Generalized Linear Model 
+(GLM) to the `datasets::cars` dataset. Let us first have a look at the data at 
+hand.
+
+```{r}
+x <- datasets::cars$speed
+y <- datasets::cars$dist
+data <- dplyr::tibble(x=x, y=y)
+
+pl <- ggplot(data) + 
+  geom_point(aes(x=x, y=y)) + 
+  labs(x = "Speed [mph]", y = "Distance [ft]") +
+  ggtitle("Stopping distance of cars depending on speed")
+print(pl)
+```
+
+Now, we fit a GLM with normal distribution to the data. 
+
+``` {r}
+model <- GLM.new(distr = "normal", linkinv = identity)
+model$fit(data, params_init = list(beta=3, sd = 2), inplace = TRUE)
+
+params_opt <- model$get_params()
+print(params_opt)
+```
+
+The resulting regression line (and its 95% confidence band) can be seen in the 
+following plot.
+
+``` {r}
+pl <- pl + geom_abline(slope = params_opt$beta) +
+  geom_abline(intercept = -2*params_opt$sd, slope = params_opt$beta, linetype = "dashed") +
+  geom_abline(intercept = 2*params_opt$sd, slope = params_opt$beta, linetype = "dashed")
+print(pl)
+```
+
+To assess whether the fitted model fits to the given data, we perform a 
+bootstrap-based goodness-of-fit test using the test statistic given in 
+Kremling & Dikta (2024).
+
+``` {r}
+gt <- GOFTest$new(data = data, model_fitted = model, test_stat = CondKolmY$new(), nboot = 100)
+print(gt$get_pvalue())
+```
+
+As the p-value is very low, the model hypothesis should be rejected.
+Next, we fit a GLM with gamma distribution instead.
+
+``` {r}
+model <- GLM.new(distr = "gamma", linkinv = identity)
+model$fit(data, params_init = list(beta=3, shape = 2), inplace = TRUE)
+
+params_opt <- model$get_params()
+print(params_opt)
+```
+
+The corresponding p-value is computed in the following code chunk.
+
+``` {r}
+gt <- GOFTest$new(data = data, model_fitted = model, test_stat = CondKolmY$new(), nboot = 100)
+print(gt$get_pvalue())
+```
+
+This time, the p-value is rather high. Hence, a Gamma GLM can be assumed to
+describe the given data appropriately. 
+
+## Parametric Regression Models
+
+Here is a list of parametric regression models that are available in the 
+`gofreg` package: 
+
+* `NormalGLM`: Generalized linear model with normal distribution
+* `GammaGLM`: Generalized linear model with gamma distribution
+* `ExpGLM`: Generalized linear model with exponential distribution
+* `WeibullGLM`: Generalized linear model with Weibull distribution
+* `NegBinomGLM`: Generalized linear model with negative binomial distribution
+
+The package also offers the option to use other user-defined models. For 
+instructions on how to implement new models see `vignette("New-Models")`.
+
+## Test Statistics
+
+Here is a list of test statistics that are available in the `gofreg` package: 
+
+* `MEP`: Marked Empirical Process defined in Dikta & Scheer (2021)
+* `CondKolmXY`: Conditional Kolmogorov of the joint distribution of $(X,Y)$ defined in Andrews (1997)
+* `CondKolmY`: Conditional Kolmogorov of the marginal distribution of $Y$ defined in Kremling & Dikta (2024)
+* `CondKolmbXY`: Conditional Kolmogorov of the joint distribution of $(\beta^T X, Y)$ defined in Kremling & Dikta (2024)
+
+The package also offers the option to use other user-defined test statistics. 
+For instructions on how to implement new models see
+`vignette("New-TestStatistics")`.
+
+## Censored data
+
+The package can also be used to fit parametric regression models and perform 
+goodnes-of-fit tests for randmly right-censored survival times $Y$. In this 
+case, the `loglik` and `resample` arguments in the `ParamRegrModel$fit()` and
+`GOFTest$new()` methods have to be specified. Moreover, the `data` object needs
+to be a `data.frame()` with tags "x", "z" and "delta" with $X$ representing the
+covariates, $Z = \min(Y, C)$ the censored times and $\delta = 1_{\{Y \le C\}}$ the
+censoring indicators.
+
+Here is an example with generated data from a normal GLM with normally 
+distributed censoring times.
+
+``` {r, echo = FALSE, message = FALSE}
+set.seed(123)
+```
+
+``` {r}
+n <- 100
+x <- cbind(runif(n), rbinom(n, 1, 0.5))
+model <- NormalGLM$new()
+y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
+c <- rnorm(n, mean(y)*1.2, sd(y)*0.5)
+data <- dplyr::tibble(x = x, z = pmin(y,c), delta = as.numeric(y <= c))
+
+model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE, loglik = loglik_xzd)
+print(model$get_params())
+```
+
+It can be seen that the estimated parameters are close to the true parameters
+$\beta = (2,3)$ and $\sigma = 1$. Now, we compute the corresponding p-value
+using the Conditional Komlmogorov test statistic for the marginal distribution
+of $Y$ under random censorship (defined in Kremling & Dikta (2024)).
+
+``` {r}
+gt <- GOFTest$new(data = data, model_fitted = model, test_stat = CondKolmY_RCM$new(), nboot = 100,
+                  resample = resample_param_cens, loglik = loglik_xzd)
+print(gt$get_pvalue())
+```
+
+As expected (since we fitted the correct model) the p-value is rather high and 
+the model is not rejected. 

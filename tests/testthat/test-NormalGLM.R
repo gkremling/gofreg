@@ -82,3 +82,14 @@ test_that("default linkinv in constructor works", {
   params_est <- model$fit(data, params_init = params_true)
   expect_params_range(params_est, params_true, tol)
 })
+
+test_that("params in constructor works", {
+  distr <- "normal"
+
+  model1 <- GLM.new(distr)
+  checkmate::expect_scalar_na(model1$get_params())
+
+  params <- list(beta=c(1,2,3), sd=0.5)
+  model2 <- GLM.new(distr, params=params)
+  expect_equal(model2$get_params(), params)
+})

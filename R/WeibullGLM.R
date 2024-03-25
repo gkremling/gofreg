@@ -54,7 +54,7 @@ WeibullGLM <- R6::R6Class(
     fit = function(data, params_init = private$params, loglik = loglik_xy, inplace = FALSE) {
       checkmate::assert_names(names(data), must.include = c("x"))
       private$check_params(params_init, data$x)
-      params_opt <- super$fit(data, params_init = unlist(params_init, use.names=FALSE), loglik = loglik)
+      params_opt <- super$fit(data, params_init = unlist(params_init, use.names = FALSE), loglik = loglik)
       params_opt <- list(beta = params_opt[-length(params_opt)], shape = params_opt[length(params_opt)])
       if (inplace) {
         private$params <- params_opt
@@ -70,18 +70,18 @@ WeibullGLM <- R6::R6Class(
     #'
     #' @return value(s) of the conditional density function, same shape as `t`
     #' @export
-    f_yx = function(t, x, params=private$params) {
+    f_yx = function(t, x, params = private$params) {
       super$check_params(params)
       # when computing the MLE, params is a plain vector and needs to be reshaped
-      if(checkmate::test_atomic_vector(params)) {
-        checkmate::assert_atomic_vector(params, len=1+ncol(x))
+      if (checkmate::test_atomic_vector(params)) {
+        checkmate::assert_atomic_vector(params, len = 1 + ncol(x))
         params <- list(beta = params[-length(params)], shape = params[length(params)])
       } else {
         private$check_params(params, x)
       }
       mean <- self$mean_yx(x, params)
       shape <- params$shape
-      dweibull(t, scale=mean/gamma(1+1/shape), shape=shape)
+      dweibull(t, scale = mean / gamma(1 + 1 / shape), shape = shape)
     },
 
     #' @description Evaluates the conditional distribution function.
@@ -92,18 +92,18 @@ WeibullGLM <- R6::R6Class(
     #' @return value(s) of the conditional distribution function,  same shape as
     #'   `t`
     #' @export
-    F_yx = function(t, x, params=private$params) {
+    F_yx = function(t, x, params = private$params) {
       super$check_params(params)
       # when computing the MLE, params is a plain vector and needs to be reshaped
-      if(checkmate::test_atomic_vector(params)) {
-        checkmate::assert_atomic_vector(params, len=1+ncol(x))
+      if (checkmate::test_atomic_vector(params)) {
+        checkmate::assert_atomic_vector(params, len = 1 + ncol(x))
         params <- list(beta = params[-length(params)], shape = params[length(params)])
       } else {
         private$check_params(params, x)
       }
       mean <- self$mean_yx(x, params)
       shape <- params$shape
-      pweibull(t, scale=mean/gamma(1+1/shape), shape=shape)
+      pweibull(t, scale = mean / gamma(1 + 1 / shape), shape = shape)
     },
 
     #' @description Generates a new sample of response variables with the same
@@ -111,20 +111,20 @@ WeibullGLM <- R6::R6Class(
     #'
     #' @return vector of sampled response variables, same length as `nrow(x)`
     #' @export
-    sample_yx = function(x, params=private$params) {
+    sample_yx = function(x, params = private$params) {
       private$check_params(params, x)
       mean <- self$mean_yx(x, params)
       shape <- params$shape
-      rweibull(length(mean), scale=mean/gamma(1+1/shape), shape=shape)
+      rweibull(length(mean), scale = mean / gamma(1 + 1 / shape), shape = shape)
     }
   ),
   private = list(
     # @description Check that `params` have the correct form
     check_params = function(params, x) {
       super$check_params(params)
-      checkmate::assert_list(params, len=2)
+      checkmate::assert_list(params, len = 2)
       checkmate::assert_names(names(params), identical.to = c("beta", "shape"))
-      checkmate::assert_vector(params$beta, len=ncol(as.matrix(x)))
+      checkmate::assert_vector(params$beta, len = ncol(as.matrix(x)))
     }
   )
 )

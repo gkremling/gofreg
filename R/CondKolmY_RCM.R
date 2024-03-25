@@ -52,7 +52,7 @@ CondKolmY_RCM <- R6::R6Class(
       # check for correct shape of data and definedness of model params
       checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "z", "delta"))
-      if(anyNA(model$get_params())) {
+      if (anyNA(model$get_params())) {
         stop("Model first needs to be fitted to the data.")
       }
 
@@ -70,7 +70,9 @@ CondKolmY_RCM <- R6::R6Class(
 
       # determine semi-parametric estimator for distribution of Y evaluated at the same (jump) points
       n <- length(data$z)
-      Fpar.vals <- sapply(t.vals, function(t) { sum(model$F_yx(t, data$x))/n  })
+      Fpar.vals <- sapply(t.vals, function(t) {
+        sum(model$F_yx(t, data$x)) / n
+      })
 
       # determine test statistic by computing the difference at the jump points
       proc <- sqrt(n) * (Fkm.vals - Fpar.vals)

@@ -47,22 +47,26 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #'   `params_init`
   #' @export
   fit = function(data, params_init = private$params, loglik = loglik_xy) {
-    if(anyNA(params_init)) {
+    if (anyNA(params_init)) {
       stop("Starting value of model parameters needs to be defined for the optimization.")
     }
     checkmate::assert_function(loglik, nargs = 3, args = c("data", "model", "params"), ordered = TRUE)
-    lik_init <- loglik(data, model=self, params_init)
-    if(lik_init == 1e100) {
+    lik_init <- loglik(data, model = self, params_init)
+    if (lik_init == 1e100) {
       stop("Starting value of model parameters not feasible for the given data.")
     }
-    if(length(params_init) == 1) {
-      params_opt <- optim(par=params_init,
-                          fn=loglik, data=data, model=self,
-                          lower=0, upper=20, method="Brent")
+    if (length(params_init) == 1) {
+      params_opt <- optim(
+        par = params_init,
+        fn = loglik, data = data, model = self,
+        lower = 0, upper = 20, method = "Brent"
+      )
     } else {
-      params_opt <- optim(par=params_init,
-                          fn=loglik, data=data, model=self,
-                          method="Nelder-Mead")
+      params_opt <- optim(
+        par = params_init,
+        fn = loglik, data = data, model = self,
+        method = "Nelder-Mead"
+      )
     }
     params_opt$par
   },
@@ -105,14 +109,14 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #' @export
   mean_yx = function(x, params = private$params) {
     stop("Abstract method. Needs to be implemented.")
-  }), private = list(
-    params = NA,
+  }
+), private = list(
+  params = NA,
 
-    # @description Check that `params` are not NA, otherwise throw an error.
-    check_params = function(params) {
-      if(anyNA(params)) {
-        stop("Model parameters need to be defined. Use fit(x, y, model) or set_params(params) to set default values.")
-      }
+  # @description Check that `params` are not NA, otherwise throw an error.
+  check_params = function(params) {
+    if (anyNA(params)) {
+      stop("Model parameters need to be defined. Use fit(x, y, model) or set_params(params) to set default values.")
     }
-  )
-)
+  }
+))

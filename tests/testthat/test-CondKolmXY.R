@@ -27,4 +27,3 @@ test_that("calc_stat does not work for wrong type of data", {
   test_stat <- CondKolmXY$new()
   expect_error(test_stat$calc_stat(dummy$data, dummy$model))
 })
-

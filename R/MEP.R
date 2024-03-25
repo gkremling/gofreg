@@ -51,14 +51,14 @@ MEP <- R6::R6Class(
       checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
       params <- model$get_params()
-      if(anyNA(params)) {
+      if (anyNA(params)) {
         stop("Model first needs to be fitted to the data.")
       }
 
       # check for beta in params since MEP can only be evaluated for GLMs
       checkmate::assert_names(names(params), must.include = c("beta"))
       beta <- params$beta
-      checkmate::assert_vector(beta, len=ncol(as.matrix(data$x)))
+      checkmate::assert_vector(beta, len = ncol(as.matrix(data$x)))
 
       # compute linear combination beta^T*X and residuals
       beta.x <- as.matrix(data$x) %*% beta
@@ -68,7 +68,7 @@ MEP <- R6::R6Class(
       n <- length(data$y)
       ord.id <- order(beta.x)
       res.ord <- res[ord.id]
-      Rn1 <- cumsum(res.ord)/sqrt(n)
+      Rn1 <- cumsum(res.ord) / sqrt(n)
 
       # determine KS statistic by computing the supremum of |Rn1|
       private$value <- max(abs(Rn1))

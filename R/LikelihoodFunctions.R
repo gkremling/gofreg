@@ -19,7 +19,9 @@ loglik_xy <- function(data, model, params) {
   checkmate::assert_names(names(data), must.include = c("x", "y"))
   checkmate::assert_class(model, "ParamRegrModel")
   suppressWarnings(lik <- model$f_yx(data$y, as.matrix(data$x), params))
-  if(any(lik==0) || checkmate::anyNaN(lik)) return(1e100)
+  if (any(lik == 0) || checkmate::anyNaN(lik)) {
+    return(1e100)
+  }
   -sum(log(lik))
 }
 
@@ -49,6 +51,8 @@ loglik_xzd <- function(data, model, params) {
   suppressWarnings(uncens <- model$f_yx(data$z[data$delta == 1], as.matrix(data[data$delta == 1, "x"]), params))
   suppressWarnings(cens <- 1 - model$F_yx(data$z[data$delta == 0], as.matrix(data[data$delta == 0, "x"]), params))
   lik <- c(uncens, cens)
-  if(checkmate::anyNaN(lik) || any(lik==0)) return(1e100)
+  if (checkmate::anyNaN(lik) || any(lik == 0)) {
+    return(1e100)
+  }
   -sum(log(lik))
 }

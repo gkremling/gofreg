@@ -23,7 +23,7 @@ test_that("resample works with resampling x", {
   data.rs <- resample_param_rsmplx(data, model)
   set.seed(123)
   x <- as.matrix(data[, "x"])
-  expect_equal(data.rs$x, x[sample(nrow(x), size=nrow(x), replace=T), ])
+  expect_equal(data.rs$x, x[sample(nrow(x), size = nrow(x), replace = T), ])
   expect_equal(data.rs$y, model$sample_yx(data.rs$x))
 })
 
@@ -40,7 +40,7 @@ test_that("resample under censoring works without resampling x", {
   # compute reference values
   set.seed(123)
   y <- model$sample_yx(data$x)
-  c <- rkm(km_features(data$z, 1-data$delta), n=length(y))
+  c <- rkm(km_features(data$z, 1 - data$delta), n = length(y))
 
   expect_equal(data.rs$x, data$x)
   expect_equal(data.rs$z, pmin(y, c))

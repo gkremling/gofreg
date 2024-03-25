@@ -47,16 +47,16 @@ GOFTest <- R6::R6Class(
     #'
     #' @export
     initialize = function(data, model_fitted, test_stat, nboot, resample = resample_param, loglik = loglik_xy) {
-       checkmate::assert_class(model_fitted, "ParamRegrModel")
-       checkmate::assert_class(test_stat, "TestStatistic")
-       checkmate::assert_function(resample, nargs = 2, args = c("data", "model"), ordered=TRUE)
-       checkmate::assert_function(loglik, nargs = 3, args = c("data", "model", "params"), ordered=TRUE)
-       private$data <- data
-       private$model <- model_fitted
-       private$test_stat <- test_stat
-       private$nboot <- nboot
-       private$resample <- resample
-       private$loglik <- loglik
+      checkmate::assert_class(model_fitted, "ParamRegrModel")
+      checkmate::assert_class(test_stat, "TestStatistic")
+      checkmate::assert_function(resample, nargs = 2, args = c("data", "model"), ordered = TRUE)
+      checkmate::assert_function(loglik, nargs = 3, args = c("data", "model", "params"), ordered = TRUE)
+      private$data <- data
+      private$model <- model_fitted
+      private$test_stat <- test_stat
+      private$nboot <- nboot
+      private$resample <- resample
+      private$loglik <- loglik
     },
 
     #' @description Calculates the test statistic for the original data and
@@ -65,7 +65,7 @@ GOFTest <- R6::R6Class(
     #' @return object of class [TestStatistic]
     #' @export
     get_stat_orig = function() {
-      if(!checkmate::test_class(private$stat_orig, "TestStatistic") && anyNA(private$stat_orig)) {
+      if (!checkmate::test_class(private$stat_orig, "TestStatistic") && anyNA(private$stat_orig)) {
         private$stat_orig <- private$test_stat$clone(deep = TRUE)
         private$stat_orig$calc_stat(private$data, private$model)
       }
@@ -79,7 +79,7 @@ GOFTest <- R6::R6Class(
     #'   [TestStatistic]
     #' @export
     get_stats_boot = function() {
-      if(!checkmate::test_class(private$stats_boot, "TestStatistic") && anyNA(private$stats_boot)) {
+      if (!checkmate::test_class(private$stats_boot, "TestStatistic") && anyNA(private$stats_boot)) {
         private$stats_boot <- replicate(private$nboot, private$bootstrap())
       }
       private$stats_boot
@@ -111,11 +111,12 @@ GOFTest <- R6::R6Class(
     #'
     #' @export
     plot_procs = function(subtitle = ggplot2::waiver()) {
-      gpl <- ggplot2::ggplot() + ggplot2::ggtitle(sprintf("Test statistic, p-value=%s", self$get_pvalue()), subtitle)
-      for(ts in private$stats_boot) {
+      gpl <- ggplot2::ggplot() +
+        ggplot2::ggtitle(sprintf("Test statistic, p-value=%s", self$get_pvalue()), subtitle)
+      for (ts in private$stats_boot) {
         gpl <- gpl + ts$geom_ts_proc(col = "gray40")
       }
-      gpl <- gpl + private$stat_orig$geom_ts_proc(col="red")
+      gpl <- gpl + private$stat_orig$geom_ts_proc(col = "red")
       print(gpl)
       invisible(self)
     }
@@ -142,7 +143,7 @@ GOFTest <- R6::R6Class(
 
       # find MLE and test statistic for bootstrap data
       model.b <- private$model$clone(deep = TRUE)
-      model.b$fit(data.b, loglik=private$loglik, inplace=TRUE)
+      model.b$fit(data.b, loglik = private$loglik, inplace = TRUE)
 
       stat.b <- private$test_stat$clone(deep = TRUE)
       stat.b$calc_stat(data.b, model.b)

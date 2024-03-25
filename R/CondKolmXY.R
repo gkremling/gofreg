@@ -51,19 +51,23 @@ CondKolmXY <- R6::R6Class(
       # check for correct shape of data and definedness of model params
       checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
-      if(anyNA(model$get_params())) {
+      if (anyNA(model$get_params())) {
         stop("Model first needs to be fitted to the data.")
       }
 
       # compute sum_{i=1}^n (1{Yi<=Yj} - F(Yj|theta,Xi)) 1{Xi<=Xj} for each j
       n <- length(data$y)
       x <- as.matrix(data$x)
-      proc <- 1/sqrt(n) * sapply(seq(1,n), function(j) { sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], x)) *
-                                                               (colSums(apply(x, 1, function(r) {r <= x[j,]})) == ncol(x))) })
+      proc <- 1 / sqrt(n) * sapply(seq(1, n), function(j) {
+        sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], x)) *
+          (colSums(apply(x, 1, function(r) {
+            r <= x[j, ]
+          })) == ncol(x)))
+      })
 
       # set private fields accordingly
       private$value <- max(abs(proc))
-      private$plot.x <- seq(1,n)
+      private$plot.x <- seq(1, n)
       private$plot.y <- proc
       invisible(self)
     }

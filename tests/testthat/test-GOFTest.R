@@ -6,7 +6,7 @@ test_that("get_stat_orig works", {
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
-  goftest <- GOFTest$new(data, model, test_stat, nboot=10)
+  goftest <- GOFTest$new(data, model, test_stat, nboot = 10)
 
   ts1 <- goftest$get_stat_orig()
   expect_error(test_stat$get_value())
@@ -22,7 +22,7 @@ test_that("get_stat_boot and get_pvalue work", {
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
-  goftest <- GOFTest$new(data, model, test_stat, nboot=10)
+  goftest <- GOFTest$new(data, model, test_stat, nboot = 10)
   ts_boot <- goftest$get_stats_boot()
 
   get_val <- function(ts) {
@@ -46,7 +46,7 @@ test_that("get_pvalue works alone", {
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
-  goftest <- GOFTest$new(data, model, test_stat, nboot=10)
+  goftest <- GOFTest$new(data, model, test_stat, nboot = 10)
   pval <- goftest$get_pvalue()
   expect_equal(pval, 0.8)
 })
@@ -59,8 +59,8 @@ test_that("default resampling scheme works", {
   model <- dummy$model
 
   test_stat <- CondKolmY$new()
-  goftest1 <- GOFTest$new(data, model, test_stat, nboot=10)
-  goftest2 <- GOFTest$new(data, model, test_stat, nboot=10, resample=resample_param)
+  goftest1 <- GOFTest$new(data, model, test_stat, nboot = 10)
+  goftest2 <- GOFTest$new(data, model, test_stat, nboot = 10, resample = resample_param)
   expect_equal(goftest1$get_stats_boot(), goftest2$get_stats_boot())
 })
 
@@ -72,7 +72,7 @@ test_that("get_stat_orig works under censoring", {
   model <- dummy$model
 
   test_stat <- CondKolmY_RCM$new()
-  goftest <- GOFTest$new(data, model, test_stat, nboot=10, resample = resample_param_cens, loglik = loglik_xzd)
+  goftest <- GOFTest$new(data, model, test_stat, nboot = 10, resample = resample_param_cens, loglik = loglik_xzd)
 
   ts1 <- goftest$get_stat_orig()
   expect_error(test_stat$get_value())
@@ -88,7 +88,7 @@ test_that("get_stat_boot and get_pvalue work under censoring", {
   model <- dummy$model
 
   test_stat <- CondKolmY_RCM$new()
-  goftest <- GOFTest$new(data, model, test_stat, nboot=10, resample = resample_param_cens, loglik = loglik_xzd)
+  goftest <- GOFTest$new(data, model, test_stat, nboot = 10, resample = resample_param_cens, loglik = loglik_xzd)
   ts_boot <- goftest$get_stats_boot()
 
   get_val <- function(ts) {
@@ -112,7 +112,7 @@ test_that("get_pvalue works alone under censoring", {
   model <- dummy$model
 
   test_stat <- CondKolmY_RCM$new()
-  goftest <- GOFTest$new(data, model, test_stat, nboot=10, resample = resample_param_cens, loglik = loglik_xzd)
+  goftest <- GOFTest$new(data, model, test_stat, nboot = 10, resample = resample_param_cens, loglik = loglik_xzd)
   pval <- goftest$get_pvalue()
   expect_equal(pval, 0.9)
 })

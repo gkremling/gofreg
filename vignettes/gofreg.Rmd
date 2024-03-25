@@ -37,10 +37,10 @@ hand.
 ```{r}
 x <- datasets::cars$speed
 y <- datasets::cars$dist
-data <- dplyr::tibble(x=x, y=y)
+data <- dplyr::tibble(x = x, y = y)
 
-pl <- ggplot(data) + 
-  geom_point(aes(x=x, y=y)) + 
+pl <- ggplot(data) +
+  geom_point(aes(x = x, y = y)) +
   labs(x = "Speed [mph]", y = "Distance [ft]") +
   ggtitle("Stopping distance of cars depending on speed")
 print(pl)
@@ -50,7 +50,7 @@ Now, we fit a GLM with normal distribution to the data.
 
 ``` {r}
 model <- GLM.new(distr = "normal", linkinv = identity)
-model$fit(data, params_init = list(beta=3, sd = 2), inplace = TRUE)
+model$fit(data, params_init = list(beta = 3, sd = 2), inplace = TRUE)
 
 params_opt <- model$get_params()
 print(params_opt)
@@ -61,8 +61,8 @@ following plot.
 
 ``` {r}
 pl <- pl + geom_abline(slope = params_opt$beta) +
-  geom_abline(intercept = -2*params_opt$sd, slope = params_opt$beta, linetype = "dashed") +
-  geom_abline(intercept = 2*params_opt$sd, slope = params_opt$beta, linetype = "dashed")
+  geom_abline(intercept = -2 * params_opt$sd, slope = params_opt$beta, linetype = "dashed") +
+  geom_abline(intercept = 2 * params_opt$sd, slope = params_opt$beta, linetype = "dashed")
 print(pl)
 ```
 
@@ -80,7 +80,7 @@ Next, we fit a GLM with gamma distribution instead.
 
 ``` {r}
 model <- GLM.new(distr = "gamma", linkinv = identity)
-model$fit(data, params_init = list(beta=3, shape = 2), inplace = TRUE)
+model$fit(data, params_init = list(beta = 3, shape = 2), inplace = TRUE)
 
 params_opt <- model$get_params()
 print(params_opt)
@@ -144,11 +144,11 @@ set.seed(123)
 n <- 100
 x <- cbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
-y <- model$sample_yx(x, params=list(beta=c(2,3), sd=1))
-c <- rnorm(n, mean(y)*1.2, sd(y)*0.5)
-data <- dplyr::tibble(x = x, z = pmin(y,c), delta = as.numeric(y <= c))
+y <- model$sample_yx(x, params = list(beta = c(2, 3), sd = 1))
+c <- rnorm(n, mean(y) * 1.2, sd(y) * 0.5)
+data <- dplyr::tibble(x = x, z = pmin(y, c), delta = as.numeric(y <= c))
 
-model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE, loglik = loglik_xzd)
+model$fit(data, params_init = list(beta = c(1, 1), sd = 3), inplace = TRUE, loglik = loglik_xzd)
 print(model$get_params())
 ```
 
@@ -158,8 +158,10 @@ using the Conditional Komlmogorov test statistic for the marginal distribution
 of $Y$ under random censorship (defined in Kremling & Dikta (2024)).
 
 ``` {r}
-gt <- GOFTest$new(data = data, model_fitted = model, test_stat = CondKolmY_RCM$new(), nboot = 100,
-                  resample = resample_param_cens, loglik = loglik_xzd)
+gt <- GOFTest$new(
+  data = data, model_fitted = model, test_stat = CondKolmY_RCM$new(), nboot = 100,
+  resample = resample_param_cens, loglik = loglik_xzd
+)
 print(gt$get_pvalue())
 ```
 

@@ -15,16 +15,16 @@
 #' n <- 10
 #' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 #' model <- NormalGLM$new()
-#' params <- list(beta=c(2,3), sd=1)
-#' y <- model$sample_yx(x, params=params)
-#' data <- dplyr::tibble(x=x, y=y)
+#' params <- list(beta = c(2, 3), sd = 1)
+#' y <- model$sample_yx(x, params = params)
+#' data <- dplyr::tibble(x = x, y = y)
 #'
 #' # Fit the model to the data
-#' model$fit(data, params_init=params, inplace=TRUE)
+#' model$fit(data, params_init = params, inplace = TRUE)
 #'
 #' # Resample from the model given data
 #' resample_param(data, model)
-resample_param = function(data, model) {
+resample_param <- function(data, model) {
   checkmate::assert_data_frame(data)
   checkmate::assert_names(names(data), must.include = c("x", "y"))
   checkmate::assert_class(model, "ParamRegrModel")
@@ -54,16 +54,16 @@ resample_param = function(data, model) {
 #' n <- 10
 #' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 #' model <- NormalGLM$new()
-#' params <- list(beta=c(2,3), sd=1)
-#' y <- model$sample_yx(x, params=params)
-#' data <- dplyr::tibble(x=x, y=y)
+#' params <- list(beta = c(2, 3), sd = 1)
+#' y <- model$sample_yx(x, params = params)
+#' data <- dplyr::tibble(x = x, y = y)
 #'
 #' # Fit the model to the data
-#' model$fit(data, params_init=params, inplace=TRUE)
+#' model$fit(data, params_init = params, inplace = TRUE)
 #'
 #' # Resample from the model given data
 #' resample_param(data, model)
-resample_param_rsmplx = function(data, model) {
+resample_param_rsmplx <- function(data, model) {
   checkmate::assert_data_frame(data)
   checkmate::assert_names(names(data), must.include = c("x", "y"))
   checkmate::assert_class(model, "ParamRegrModel")
@@ -72,7 +72,7 @@ resample_param_rsmplx = function(data, model) {
 
   # resample covariates
   x <- as.matrix(data[, "x"])
-  x.b <- x[sample(nrow(x), size=n, replace=T), ]
+  x.b <- x[sample(nrow(x), size = n, replace = T), ]
 
   # sample new survival times (according to parametric model)
   y.b <- model$sample_yx(x.b)
@@ -100,19 +100,19 @@ resample_param_rsmplx = function(data, model) {
 #' n <- 10
 #' x <- cbind(runif(n), rbinom(n, 1, 0.5))
 #' model <- NormalGLM$new()
-#' params <- list(beta=c(2,3), sd=1)
-#' y <- model$sample_yx(x, params=params)
-#' c <- rnorm(n, mean(y)*1.2, sd(y)*0.5)
+#' params <- list(beta = c(2, 3), sd = 1)
+#' y <- model$sample_yx(x, params = params)
+#' c <- rnorm(n, mean(y) * 1.2, sd(y) * 0.5)
 #' z <- pmin(y, c)
 #' delta <- as.numeric(y <= c)
-#' data <- dplyr::tibble(x=x, z=z, delta=delta)
+#' data <- dplyr::tibble(x = x, z = z, delta = delta)
 #'
 #' # Fit the model to the data
-#' model$fit(data, params_init=params, inplace=TRUE, loglik = loglik_xzd)
+#' model$fit(data, params_init = params, inplace = TRUE, loglik = loglik_xzd)
 #'
 #' # Resample from the model given data
 #' resample_param_cens(data, model)
-resample_param_cens = function(data, model) {
+resample_param_cens <- function(data, model) {
   checkmate::assert_data_frame(data)
   checkmate::assert_names(names(data), must.include = c("x", "z", "delta"))
   checkmate::assert_class(model, "ParamRegrModel")
@@ -124,7 +124,7 @@ resample_param_cens = function(data, model) {
 
   # sample new censoring times (according to KM estimator for C, i.e. for pairs
   # (Z,1-delta))
-  c.b <- rkm(km_features(data$z, 1-data$delta), n)
+  c.b <- rkm(km_features(data$z, 1 - data$delta), n)
 
   # assign observed times and censoring indicators accordings
   z.b <- pmin(y.b, c.b)

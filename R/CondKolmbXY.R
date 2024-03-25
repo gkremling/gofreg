@@ -53,23 +53,25 @@ CondKolmbXY <- R6::R6Class(
       checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
       params <- model$get_params()
-      if(anyNA(params)) {
+      if (anyNA(params)) {
         stop("Model first needs to be fitted to the data.")
       }
 
       # check for beta in params since CondKolmbXY can only be evaluated for GLMs
       checkmate::assert_names(names(params), must.include = c("beta"))
       beta <- params$beta
-      checkmate::assert_vector(beta, len=ncol(as.matrix(data$x)))
+      checkmate::assert_vector(beta, len = ncol(as.matrix(data$x)))
 
       # compute sum_{i=1}^n (1{Yi<=Yj} - F(Yj|theta,Xi)) 1{beta^T Xi<=beta^T Xj} for each j
       n <- length(data$y)
       beta.x <- as.matrix(data$x) %*% model$get_params()$beta
-      proc <- 1/sqrt(n) * sapply(seq(1,n), function(j) { sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], data$x)) * (beta.x <= beta.x[j])) })
+      proc <- 1 / sqrt(n) * sapply(seq(1, n), function(j) {
+        sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], data$x)) * (beta.x <= beta.x[j]))
+      })
 
       # set private fields accordingly
       private$value <- max(abs(proc))
-      private$plot.x <- seq(1,n)
+      private$plot.x <- seq(1, n)
       private$plot.y <- proc
       invisible(self)
     }

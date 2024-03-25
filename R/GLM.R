@@ -15,9 +15,9 @@ GLM <- R6::R6Class(
     #'
     #' @export
     initialize = function(linkinv = identity, params = NA) {
-      checkmate::assert_function(linkinv, nargs=1)
+      checkmate::assert_function(linkinv, nargs = 1)
       private$linkinv <- linkinv
-      if(!checkmate::test_scalar_na(params)) {
+      if (!checkmate::test_scalar_na(params)) {
         super$check_params(params)
         private$params <- params
       }
@@ -32,7 +32,7 @@ GLM <- R6::R6Class(
     #'
     #' @return value of the regression function
     #' @export
-    mean_yx = function(x, params=private$params) {
+    mean_yx = function(x, params = private$params) {
       private$check_params(params, x)
       private$linkinv(as.matrix(x) %*% params$beta)
     }
@@ -57,17 +57,20 @@ GLM <- R6::R6Class(
 #' @export
 #'
 #' @examples
-#' model <- GLM.new(distr="normal")
+#' model <- GLM.new(distr = "normal")
 #' # see examples of GLM-subclasses (e.g. NormalGLM) for how to use such models
 GLM.new <- function(distr, linkinv = identity, params = NA) {
   distr_poss <- c("normal", "exp", "weibull", "gamma", "negbinom")
   checkmate::assert_choice(distr, distr_poss)
   switch(distr,
-         normal = NormalGLM$new(linkinv, params),
-         exp = ExpGLM$new(linkinv, params),
-         weibull = WeibullGLM$new(linkinv, params),
-         gamma = GammaGLM$new(linkinv, params),
-         negbinom = NegBinomGLM$new(linkinv, params),
-         stop(paste0("Bug in the code: There is a distribution family listed in distr_poss ",
-                                "which is not taken account of in the switch-statement.")))
+    normal = NormalGLM$new(linkinv, params),
+    exp = ExpGLM$new(linkinv, params),
+    weibull = WeibullGLM$new(linkinv, params),
+    gamma = GammaGLM$new(linkinv, params),
+    negbinom = NegBinomGLM$new(linkinv, params),
+    stop(paste0(
+      "Bug in the code: There is a distribution family listed in distr_poss ",
+      "which is not taken account of in the switch-statement."
+    ))
+  )
 }

@@ -51,7 +51,7 @@ CondKolmY <- R6::R6Class(
       # check for correct shape of data and definedness of model params
       checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
-      if(anyNA(model$get_params())) {
+      if (anyNA(model$get_params())) {
         stop("Model first needs to be fitted to the data.")
       }
 
@@ -64,10 +64,12 @@ CondKolmY <- R6::R6Class(
 
       # determine semi-parametric estimator for distribution of Y evaluated at the same (jump) points
       n <- length(data$y)
-      Fypar.vals <- sapply(t.vals, function(t) { sum(model$F_yx(t, data$x))/n  })
+      Fypar.vals <- sapply(t.vals, function(t) {
+        sum(model$F_yx(t, data$x)) / n
+      })
 
       # determine KS statistic by computing the difference at the jump points
-      proc <- sqrt(n) * (Fyn.vals-Fypar.vals)
+      proc <- sqrt(n) * (Fyn.vals - Fypar.vals)
 
       # compute sup(abs(proc)): compare parametric fit to the upper and lower
       # step function value of KM estimator

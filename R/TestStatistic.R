@@ -14,7 +14,7 @@ TestStatistic <- R6::R6Class(
     #' @return value of the test statistic
     #' @export
     get_value = function() {
-      if(is.na(private$value)) {
+      if (is.na(private$value)) {
         stop("Value of the test statistic is not assigned yet. Call calc_stat(x, y, model) first!")
       }
       private$value
@@ -37,10 +37,10 @@ TestStatistic <- R6::R6Class(
     #' @return list with plot.x and plot.y being vectors of the same length
     #' @export
     get_plot_xy = function() {
-      if(anyNA(c(private$plot.x, private$plot.y))) {
+      if (anyNA(c(private$plot.x, private$plot.y))) {
         stop("The values of plot.x and plot.y are not assigned yet. Call calc_stat(x, y, model) first!")
       }
-      list(plot.x=private$plot.x, plot.y=private$plot.y)
+      list(plot.x = private$plot.x, plot.y = private$plot.y)
     },
 
     #' @description Overrides the print-method for objects of type
@@ -61,7 +61,7 @@ TestStatistic <- R6::R6Class(
     #'
     #' @export
     geom_ts_proc = function(...) {
-      ggplot2::geom_line(ggplot2::aes(x=private$plot.x, y=private$plot.y), ...)
+      ggplot2::geom_line(ggplot2::aes(x = private$plot.x, y = private$plot.y), ...)
     },
 
     #' @description Creates a new ggplot showing the underlying process of the

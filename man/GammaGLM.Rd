@@ -2,7 +2,7 @@
 % Please edit documentation in R/GammaGLM.R
 \name{GammaGLM}
 \alias{GammaGLM}
-\title{Generalized Linear Model with Gamma Distribution}
+\title{Generalized linear model with gamma distribution}
 \description{
 This class represents a generalized linear model with Gamma
 distribution. It inherits from \link{GLM} and implements its functions that,

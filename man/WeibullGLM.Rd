@@ -2,7 +2,7 @@
 % Please edit documentation in R/WeibullGLM.R
 \name{WeibullGLM}
 \alias{WeibullGLM}
-\title{Generalized Linear Model with Weibull Distribution}
+\title{Generalized linear model with Weibull distribution}
 \description{
 This class represents a generalized linear model with Weibull
 distribution. It inherits from \link{GLM} and implements its functions that,

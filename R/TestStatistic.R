@@ -1,4 +1,4 @@
-##' @title TestStatistic Class
+##' @title Test Statistic for parametric regression models (abstract class)
 ##' @description This is the abstract base class for test statistic objects like
 ##'   [CondKolmY] or [MEP].
 ##'

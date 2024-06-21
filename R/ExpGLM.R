@@ -1,4 +1,4 @@
-##' @title Generalized Linear Model with Exponential Distribution
+##' @title Generalized linear model with exponential distribution
 ##' @description This class represents a generalized linear model with
 ##'   exponential distribution. It inherits from [GLM] and implements its
 ##'   functions that, for example, evaluate the conditional density and

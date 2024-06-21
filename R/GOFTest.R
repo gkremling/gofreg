@@ -110,13 +110,13 @@ GOFTest <- R6::R6Class(
     #'   no subtitle
     #'
     #' @export
-    plot_procs = function(subtitle = ggplot2::waiver()) {
+    plot_procs = function(title = sprintf("Test Statistic: %s, p-value: %s", class(private$test_stat)[1], self$get_pvalue()), subtitle = ggplot2::waiver(), color_boot = "gray40", color_orig = "red") {
       gpl <- ggplot2::ggplot() +
-        ggplot2::ggtitle(sprintf("Test statistic, p-value=%s", self$get_pvalue()), subtitle)
+        ggplot2::ggtitle(title, subtitle)
       for (ts in private$stats_boot) {
-        gpl <- gpl + ts$geom_ts_proc(col = "gray40")
+        gpl <- gpl + ts$geom_ts_proc(col = color_boot)
       }
-      gpl <- gpl + private$stat_orig$geom_ts_proc(col = "red")
+      gpl <- gpl + private$stat_orig$geom_ts_proc(col = color_orig)
       print(gpl)
       invisible(self)
     }

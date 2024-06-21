@@ -50,6 +50,7 @@ MEP <- R6::R6Class(
       # check for correct shape of data and definedness of model params
       checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "y"))
+      checkmate::assert_class(model, "ParamRegrModel")
       params <- model$get_params()
       if (anyNA(params)) {
         stop("Model first needs to be fitted to the data.")
@@ -71,7 +72,7 @@ MEP <- R6::R6Class(
       Rn1 <- cumsum(res.ord) / sqrt(n)
 
       # determine KS statistic by computing the supremum of |Rn1|
-      private$value <- max(abs(Rn1))
+      private$value <- max(abs(Rn1)) #mean(Rn1^2)
       private$plot.x <- beta.x[ord.id]
       private$plot.y <- Rn1
       invisible(self)

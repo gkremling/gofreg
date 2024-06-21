@@ -2,7 +2,8 @@
 % Please edit documentation in R/ResamplingSchemes.R
 \name{resample_param_cens}
 \alias{resample_param_cens}
-\title{Parametric resampling scheme for censored data}
+\title{Parametric resampling scheme for a paramatric regression model under random
+censorship}
 \usage{
 resample_param_cens(data, model)
 }
@@ -27,15 +28,15 @@ according to the KM estimator.
 n <- 10
 x <- cbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
-params <- list(beta=c(2,3), sd=1)
-y <- model$sample_yx(x, params=params)
-c <- rnorm(n, mean(y)*1.2, sd(y)*0.5)
+params <- list(beta = c(2, 3), sd = 1)
+y <- model$sample_yx(x, params = params)
+c <- rnorm(n, mean(y) * 1.2, sd(y) * 0.5)
 z <- pmin(y, c)
 delta <- as.numeric(y <= c)
-data <- dplyr::tibble(x=x, z=z, delta=delta)
+data <- dplyr::tibble(x = x, z = z, delta = delta)
 
 # Fit the model to the data
-model$fit(data, params_init=params, inplace=TRUE, loglik = loglik_xzd)
+model$fit(data, params_init = params, inplace = TRUE, loglik = loglik_xzd)
 
 # Resample from the model given data
 resample_param_cens(data, model)

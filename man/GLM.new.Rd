@@ -23,6 +23,6 @@ parametric GLM with specific distribution family, returning a new object of
 \code{distr}.
 }
 \examples{
-model <- GLM.new(distr="normal")
+model <- GLM.new(distr = "normal")
 # see examples of GLM-subclasses (e.g. NormalGLM) for how to use such models
 }

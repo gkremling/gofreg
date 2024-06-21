@@ -1,4 +1,4 @@
-##' @title Generalized Linear Model with Negative Binomial Distribution
+##' @title Generalized linear model with negative binomial distribution
 ##' @description This class represents a generalized linear model with negative
 ##'   binomial distribution. It inherits from [GLM] and implements its functions
 ##'   that, for example, evaluate the conditional density and distribution

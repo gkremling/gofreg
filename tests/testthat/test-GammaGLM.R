@@ -48,7 +48,7 @@ test_that("fit works for multidimensional covariates", {
 })
 
 test_that("fit works with censoring for univariate covariates", {
-  distr <- "weibull"
+  distr <- "gamma"
   params_true <- list(beta = 3, shape = 0.95)
   params_error <- list(beta = 0, shape = 0)
   tol <- 0.1
@@ -57,7 +57,7 @@ test_that("fit works with censoring for univariate covariates", {
 })
 
 test_that("fit works with censoring for multidimensional covariates", {
-  distr <- "weibull"
+  distr <- "gamma"
   params_true <- list(beta = c(1, 2, 3), shape = 0.95)
   params_error <- list(beta = c(0, 0, 0), shape = 0)
   tol <- 0.1

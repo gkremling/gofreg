@@ -2,7 +2,7 @@
 % Please edit documentation in R/ParamRegrModel.R
 \name{ParamRegrModel}
 \alias{ParamRegrModel}
-\title{Parametric Regression Model}
+\title{Parametric regression model (abstract class)}
 \description{
 This is the abstract base class for parametric regression model
 objects like \link{NormalGLM}.

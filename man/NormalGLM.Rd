@@ -2,7 +2,7 @@
 % Please edit documentation in R/NormalGLM.R
 \name{NormalGLM}
 \alias{NormalGLM}
-\title{Generalized Linear Model with Normal Distribution}
+\title{Generalized linear model with normal distribution}
 \description{
 This class represents a generalized linear model with normal
 distribution. It inherits from \link{GLM} and implements its functions that,

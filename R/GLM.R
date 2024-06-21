@@ -1,4 +1,4 @@
-##' @title Generalized Linear Model
+##' @title Generalized linear model (abstract class)
 ##' @description This class specializes [ParamRegrModel]. It is the abstract
 ##'   base class for parametric generalized linear model objects with specific
 ##'   distribution family such as [NormalGLM] and handles the (inverse) link

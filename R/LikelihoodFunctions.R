@@ -1,4 +1,4 @@
-#' Negative Log-likelihood Function for a Parametric Regression Model
+#' Negative log-likelihood function for a parametric regression model
 #'
 #' @description The log-likelihood function for a parametric regression model
 #'   with data (x,y) is given by the sum of the logarithm of the conditional
@@ -25,7 +25,8 @@ loglik_xy <- function(data, model, params) {
   -sum(log(lik))
 }
 
-#' Negative Log-likelihood Function for a Censored Parametric Regression Model
+#' Negative log-likelihood function for a parametric regression model under
+#' random censorship
 #'
 #' @description The log-likelihood function for a parametric regression model
 #'   under random censorship with data (x,z,delta) is given by the sum of the
@@ -48,8 +49,19 @@ loglik_xzd <- function(data, model, params) {
   checkmate::assert_names(names(data), must.include = c("x", "z", "delta"))
   checkmate::assert_class(model, "ParamRegrModel")
   cens_index <- data$delta == 0
-  suppressWarnings(uncens <- model$f_yx(data$z[data$delta == 1], as.matrix(data[data$delta == 1, "x"]), params))
-  suppressWarnings(cens <- 1 - model$F_yx(data$z[data$delta == 0], as.matrix(data[data$delta == 0, "x"]), params))
+  cens <- c()
+  unens <- c()
+
+  # if there is uncensored data
+  if (any(!cens_index)) {
+    suppressWarnings(uncens <- model$f_yx(data$z[!cens_index], as.matrix(data[!cens_index, "x"]), params))
+  }
+
+  # if there is censored data
+  if (any(cens_index)) {
+    suppressWarnings(cens <- 1 - model$F_yx(data$z[cens_index], as.matrix(data[cens_index, "x"]), params))
+  }
+
   lik <- c(uncens, cens)
   if (checkmate::anyNaN(lik) || any(lik == 0)) {
     return(1e100)

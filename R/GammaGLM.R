@@ -1,4 +1,4 @@
-##' @title Generalized Linear Model with Gamma Distribution
+##' @title Generalized linear model with gamma distribution
 ##' @description This class represents a generalized linear model with Gamma
 ##'   distribution. It inherits from [GLM] and implements its functions that,
 ##'   for example, evaluate the conditional density and distribution functions.
@@ -74,7 +74,7 @@ GammaGLM <- R6::R6Class(
       super$check_params(params)
       # when computing the MLE, params is a plain vector and needs to be reshaped
       if (checkmate::test_atomic_vector(params)) {
-        checkmate::assert_atomic_vector(params, len = 1 + ncol(x))
+        checkmate::assert_atomic_vector(params, len = 1 + ncol(as.matrix(x)))
         params <- list(beta = params[-length(params)], shape = params[length(params)])
       } else {
         private$check_params(params, x)

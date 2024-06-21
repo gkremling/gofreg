@@ -2,7 +2,7 @@
 % Please edit documentation in R/LikelihoodFunctions.R
 \name{loglik_xy}
 \alias{loglik_xy}
-\title{Negative Log-likelihood Function for a Parametric Regression Model}
+\title{Negative log-likelihood function for a parametric regression model}
 \usage{
 loglik_xy(data, model, params)
 }

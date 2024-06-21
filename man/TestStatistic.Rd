@@ -2,7 +2,7 @@
 % Please edit documentation in R/TestStatistic.R
 \name{TestStatistic}
 \alias{TestStatistic}
-\title{TestStatistic Class}
+\title{Test Statistic for parametric regression models (abstract class)}
 \description{
 This is the abstract base class for test statistic objects like
 \link{CondKolmY} or \link{MEP}.

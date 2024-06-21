@@ -1,4 +1,4 @@
-##' @title Generalized Linear Model with Normal Distribution
+##' @title Generalized linear model with normal distribution
 ##' @description This class represents a generalized linear model with normal
 ##'   distribution. It inherits from [GLM] and implements its functions that,
 ##'   for example, evaluate the conditional density and distribution functions.

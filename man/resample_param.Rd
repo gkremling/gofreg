@@ -2,7 +2,7 @@
 % Please edit documentation in R/ResamplingSchemes.R
 \name{resample_param}
 \alias{resample_param}
-\title{Parametric resampling scheme}
+\title{Parametric resampling scheme for a paramatric regression model}
 \usage{
 resample_param(data, model)
 }
@@ -24,12 +24,12 @@ response variables are drawn according to \code{model$sample_yx()}.
 n <- 10
 x <- cbind(runif(n), rbinom(n, 1, 0.5))
 model <- NormalGLM$new()
-params <- list(beta=c(2,3), sd=1)
-y <- model$sample_yx(x, params=params)
-data <- dplyr::tibble(x=x, y=y)
+params <- list(beta = c(2, 3), sd = 1)
+y <- model$sample_yx(x, params = params)
+data <- dplyr::tibble(x = x, y = y)
 
 # Fit the model to the data
-model$fit(data, params_init=params, inplace=TRUE)
+model$fit(data, params_init = params, inplace = TRUE)
 
 # Resample from the model given data
 resample_param(data, model)

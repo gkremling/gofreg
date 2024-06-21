@@ -2,7 +2,8 @@
 % Please edit documentation in R/LikelihoodFunctions.R
 \name{loglik_xzd}
 \alias{loglik_xzd}
-\title{Negative Log-likelihood Function for a Censored Parametric Regression Model}
+\title{Negative log-likelihood function for a parametric regression model under
+random censorship}
 \usage{
 loglik_xzd(data, model, params)
 }

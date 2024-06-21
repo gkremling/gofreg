@@ -52,6 +52,7 @@ CondKolmY_RCM <- R6::R6Class(
       # check for correct shape of data and definedness of model params
       checkmate::assert_data_frame(data)
       checkmate::assert_names(names(data), must.include = c("x", "z", "delta"))
+      checkmate::assert_class(model, "ParamRegrModel")
       if (anyNA(model$get_params())) {
         stop("Model first needs to be fitted to the data.")
       }

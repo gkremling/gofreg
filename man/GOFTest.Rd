@@ -133,7 +133,13 @@ to \code{model}
 Plots the processes underlying the bootstrap test statistics
 (gray) and the original test statistic (red)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GOFTest$plot_procs(subtitle = ggplot2::waiver())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GOFTest$plot_procs(
+  title = sprintf("Test Statistic: \%s, p-value: \%s", class(private$test_stat)[1],
+    self$get_pvalue()),
+  subtitle = ggplot2::waiver(),
+  color_boot = "gray40",
+  color_orig = "red"
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

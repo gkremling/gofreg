@@ -2,7 +2,7 @@
 % Please edit documentation in R/GLM.R
 \name{GLM}
 \alias{GLM}
-\title{Generalized Linear Model}
+\title{Generalized linear model (abstract class)}
 \description{
 This class specializes \link{ParamRegrModel}. It is the abstract
 base class for parametric generalized linear model objects with specific

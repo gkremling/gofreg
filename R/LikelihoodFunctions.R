@@ -50,7 +50,7 @@ loglik_xzd <- function(data, model, params) {
   checkmate::assert_class(model, "ParamRegrModel")
   cens_index <- data$delta == 0
   cens <- c()
-  unens <- c()
+  uncens <- c()
 
   # if there is uncensored data
   if (any(!cens_index)) {

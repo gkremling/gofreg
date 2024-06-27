@@ -2,17 +2,19 @@ test_that("f_yx and F_yx work", {
   distr <- "negbinom"
   params <- list(beta = c(1, 2, 3), shape = 2)
   new.params <- list(beta = c(2, 3, 4), shape = 5)
-  t <- c(0, 4) # values at which f_yx and F_yx shall be evaluated
+  t <- c(0, 4) # values at which f_yx, F_yx and F1_yx shall be evaluated
+  p <- 0.5 # value at which F1_yx shall be evaluated
 
   # true values of f_yx and F_yx given model parameters
-  true_vals <- function(t, x, g1, params) {
+  true_vals <- function(t, p, x, g1, params) {
     mean <- g1(x %*% params$beta)
     dens <- dnbinom(t, mu = mean, size = params$shape)
     dist <- pnbinom(t, mu = mean, size = params$shape)
-    list(dens = dens, dist = dist)
+    quan <- qnbinom(p, mu = mean, size = params$shape)
+    list(dens = dens, dist = dist, quan = quan)
   }
 
-  test_glm_fF_yx(distr, params, new.params, t, true_vals)
+  test_glm_fF1_yx(distr, params, new.params, t, p, true_vals)
 })
 
 test_that("sample_yx works", {

@@ -1,18 +1,20 @@
-test_that("f_yx and F_yx work", {
+test_that("f_yx, F_yx and F1_yx work", {
   distr <- "normal"
   params <- list(beta = c(1, 2, 3), sd = 2)
   new.params <- list(beta = c(2, 3, 4), sd = 5)
   t <- c(0, 4) # values at which f_yx and F_yx shall be evaluated
+  p <- 0.5 # value at which F1_yx shall be evaluated
 
   # true values of f_yx and F_yx given model parameters
-  true_vals <- function(t, x, g1, params) {
+  true_vals <- function(t, p, x, g1, params) {
     mean <- g1(x %*% params$beta)
     dens <- dnorm(t, mean = mean, sd = params$sd)
     dist <- pnorm(t, mean = mean, sd = params$sd)
-    list(dens = dens, dist = dist)
+    quan <- qnorm(p, mean = mean, sd = params$sd)
+    list(dens = dens, dist = dist, quan = quan)
   }
 
-  test_glm_fF_yx(distr, params, new.params, t, true_vals)
+  test_glm_fF1_yx(distr, params, new.params, t, p, true_vals)
 })
 
 test_that("sample_yx works", {

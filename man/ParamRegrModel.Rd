@@ -25,6 +25,7 @@ following the model given a vector of covariates
 \item \href{#method-ParamRegrModel-fit}{\code{ParamRegrModel$fit()}}
 \item \href{#method-ParamRegrModel-f_yx}{\code{ParamRegrModel$f_yx()}}
 \item \href{#method-ParamRegrModel-F_yx}{\code{ParamRegrModel$F_yx()}}
+\item \href{#method-ParamRegrModel-F1_yx}{\code{ParamRegrModel$F1_yx()}}
 \item \href{#method-ParamRegrModel-sample_yx}{\code{ParamRegrModel$sample_yx()}}
 \item \href{#method-ParamRegrModel-mean_yx}{\code{ParamRegrModel$mean_yx()}}
 \item \href{#method-ParamRegrModel-clone}{\code{ParamRegrModel$clone()}}
@@ -137,7 +138,34 @@ values}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-value(s) of the conditional distribution function,  same shape as
+value(s) of the conditional distribution function, same shape as
+\code{t}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ParamRegrModel-F1_yx"></a>}}
+\if{latex}{\out{\hypertarget{method-ParamRegrModel-F1_yx}{}}}
+\subsection{Method \code{F1_yx()}}{
+Evaluates the conditional quantile function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ParamRegrModel$F1_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{t}}{value(s) at which the conditional quantile function shall be
+evaluated}
+
+\item{\code{x}}{vector of covariates}
+
+\item{\code{params}}{model parameters to use, defaults to the fitted parameter
+values}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+value(s) of the conditional quantile function, same shape as
 \code{t}
 }
 }

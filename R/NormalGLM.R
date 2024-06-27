@@ -106,6 +106,21 @@ NormalGLM <- R6::R6Class(
       pnorm(t, mean = mean, sd = sd)
     },
 
+    #' @description Evaluates the conditional quantile function.
+    #'
+    #' @param t value(s) at which the conditional quantile function shall be
+    #'   evaluated
+    #'
+    #' @return value(s) of the conditional quantile function, same shape as
+    #'   `t`
+    #' @export
+    F1_yx = function(t, x, params = private$params) {
+      private$check_params(params, x)
+      mean <- self$mean_yx(x, params)
+      sd <- params$sd
+      qnorm(t, mean = mean, sd = sd)
+    },
+
     #' @description Generates a new sample of response variables with the same
     #'   conditional distribution.
     #'

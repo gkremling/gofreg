@@ -23,6 +23,7 @@ function.
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="F1_yx"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-F1_yx'><code>gofreg::ParamRegrModel$F1_yx()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="F_yx"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-F_yx'><code>gofreg::ParamRegrModel$F_yx()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="f_yx"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-f_yx'><code>gofreg::ParamRegrModel$f_yx()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="gofreg" data-topic="ParamRegrModel" data-id="fit"><a href='../../gofreg/html/ParamRegrModel.html#method-ParamRegrModel-fit'><code>gofreg::ParamRegrModel$fit()</code></a></span></li>

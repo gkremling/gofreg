@@ -1,6 +1,8 @@
-km_features <- function(z, delta) {
+km_features <- function(z, delta, dist1 = FALSE) {
   # modification to create a proper distribution function with F(inf) = 1
-  delta[which.max(z)] <- 1
+  if(dist1) {
+    delta[which.max(z)] <- 1
+  }
 
   # compute KM survival function, distribution function and weights
   km <- survival::survfit(survival::Surv(z, delta) ~ 1)

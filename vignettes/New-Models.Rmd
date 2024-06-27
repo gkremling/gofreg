@@ -30,6 +30,7 @@ following methods have to be implemented:
 
 * `f_yx()` evaluating the conditional density function
 * `F_yx()` evaluating the conditional distribution function
+* `F1_yx()` evaluating the conditional quantile function
 * `mean_yx()` evaluating the regression function $(\mathbb{E}[Y|X=x])$
 * `sample_yx()` generating a sample of response variables according to the
   conditional distribution
@@ -84,6 +85,12 @@ CustomModel <- R6::R6Class(
         private$check_params(params, x)
       }
       pnorm(t, mean = self$mean_yx(x, params), 
+               sd = as.matrix(x)^2 %*% params$c)
+    },
+    
+    F1_yx = function(t, x, params = private$params) {
+      private$check_params(params, x)
+      qnorm(t, mean = self$mean_yx(x, params), 
                sd = as.matrix(x)^2 %*% params$c)
     },
     

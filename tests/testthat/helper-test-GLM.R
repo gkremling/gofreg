@@ -8,7 +8,7 @@ expect_params_range <- function(params_est, params_true, tol) {
   }
 }
 
-test_glm_fF_yx <- function(distr, params, new.params, t, true_vals) {
+test_glm_fF1_yx <- function(distr, params, new.params, t, p, true_vals) {
   g1 <- function(u) {
     1 / u
   }
@@ -20,22 +20,30 @@ test_glm_fF_yx <- function(distr, params, new.params, t, true_vals) {
   # no parameters specified (nor saved yet)
   expect_error(model$f_yx(t, x))
   expect_error(model$F_yx(t, x))
+  expect_error(model$F1_yx(p, x))
 
   # wrong shape of parameters
   expect_error(model$f_yx(t, x, params = list(useless_param = 3)))
   expect_error(model$F_yx(t, x, params = list(useless_param = 3)))
+  expect_error(model$F1_yx(p, x, params = list(useless_param = 3)))
 
   # use saved parameters
   model$set_params(params)
 
   # print(model$f_yx(t, x))
 
-  expect_equal(model$f_yx(t, x), true_vals(t, x, g1, params)$dens)
-  expect_equal(model$F_yx(t, x), true_vals(t, x, g1, params)$dist)
+  tv <- true_vals(t, p, x, g1, params)
+
+  expect_equal(model$f_yx(t, x), tv$dens)
+  expect_equal(model$F_yx(t, x), tv$dist)
+  expect_equal(model$F1_yx(p, x), tv$quan)
+
+  tv <- true_vals(t, p, x, g1, new.params)
 
   # use new parameters if specified
-  expect_equal(model$f_yx(t, x, new.params), true_vals(t, x, g1, new.params)$dens)
-  expect_equal(model$F_yx(t, x, new.params), true_vals(t, x, g1, new.params)$dist)
+  expect_equal(model$f_yx(t, x, new.params), tv$dens)
+  expect_equal(model$F_yx(t, x, new.params), tv$dist)
+  expect_equal(model$F1_yx(p, x, new.params), tv$quan)
 }
 
 test_glm_sample_yx <- function(distr, params, new.params, expected_sample) {

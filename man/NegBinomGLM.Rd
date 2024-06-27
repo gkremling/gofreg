@@ -46,6 +46,7 @@ points(x.new, y.pred, col="blue")
 \item \href{#method-NegBinomGLM-fit}{\code{NegBinomGLM$fit()}}
 \item \href{#method-NegBinomGLM-f_yx}{\code{NegBinomGLM$f_yx()}}
 \item \href{#method-NegBinomGLM-F_yx}{\code{NegBinomGLM$F_yx()}}
+\item \href{#method-NegBinomGLM-F1_yx}{\code{NegBinomGLM$F1_yx()}}
 \item \href{#method-NegBinomGLM-sample_yx}{\code{NegBinomGLM$sample_yx()}}
 \item \href{#method-NegBinomGLM-clone}{\code{NegBinomGLM$clone()}}
 }
@@ -144,6 +145,33 @@ defaults to the fitted parameter values}
 }
 \subsection{Returns}{
 value(s) of the conditional distribution function,  same shape as
+\code{t}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NegBinomGLM-F1_yx"></a>}}
+\if{latex}{\out{\hypertarget{method-NegBinomGLM-F1_yx}{}}}
+\subsection{Method \code{F1_yx()}}{
+Evaluates the conditional quantile function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NegBinomGLM$F1_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{t}}{value(s) at which the conditional quantile function shall be
+evaluated}
+
+\item{\code{x}}{matrix of covariates, each row representing one sample}
+
+\item{\code{params}}{model parameters to use (\code{list()} with tags beta and shape),
+defaults to the fitted parameter values}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+value(s) of the conditional quantile function, same shape as
 \code{t}
 }
 }

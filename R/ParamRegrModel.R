@@ -86,10 +86,22 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #' @param t value(s) at which the conditional distribution shall be
   #'   evaluated
   #'
-  #' @return value(s) of the conditional distribution function,  same shape as
+  #' @return value(s) of the conditional distribution function, same shape as
   #'   `t`
   #' @export
   F_yx = function(t, x, params = private$params) {
+    stop("Abstract method. Needs to be implemented.")
+  },
+
+  #' @description Evaluates the conditional quantile function.
+  #'
+  #' @param t value(s) at which the conditional quantile function shall be
+  #'   evaluated
+  #'
+  #' @return value(s) of the conditional quantile function, same shape as
+  #'   `t`
+  #' @export
+  F1_yx = function(t, x, params = private$params) {
     stop("Abstract method. Needs to be implemented.")
   },
 

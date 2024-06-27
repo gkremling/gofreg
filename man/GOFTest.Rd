@@ -138,7 +138,9 @@ Plots the processes underlying the bootstrap test statistics
     self$get_pvalue()),
   subtitle = ggplot2::waiver(),
   color_boot = "gray40",
-  color_orig = "red"
+  color_orig = "red",
+  x_lab = "plot.x",
+  y_lab = "plot.y"
 )}\if{html}{\out{</div>}}
 }
 

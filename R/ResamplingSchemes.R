@@ -126,7 +126,7 @@ resample_param_cens <- function(data, model) {
 
   # sample new censoring times (according to KM estimator for C, i.e. for pairs
   # (Z,1-delta))
-  c.b <- rkm(km_features(data$z, 1 - data$delta), n)
+  c.b <- rkm(km_features(data$z, 1 - data$delta, dist1 = TRUE), n)
 
   # assign observed times and censoring indicators accordings
   z.b <- pmin(y.b, c.b)

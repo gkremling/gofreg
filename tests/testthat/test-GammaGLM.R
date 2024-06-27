@@ -1,18 +1,20 @@
-test_that("f_yx and F_yx work", {
+test_that("f_yx, F_yx and F1_yx work", {
   distr <- "gamma"
   params <- list(beta = c(1, 2, 3), shape = 2)
   new.params <- list(beta = c(2, 3, 4), shape = 5)
   t <- seq(0, 1, 0.1) # values at which f_yx and F_yx shall be evaluated
+  p <- 0.5 # value at which F1_yx shall be evaluated
 
   # true values of f_yx and F_yx given model parameters
-  true_vals <- function(t, x, g1, params) {
+  true_vals <- function(t, p, x, g1, params) {
     scale <- g1(x %*% params$beta) / params$shape
     dens <- dgamma(t, scale = scale, shape = params$shape)
     dist <- pgamma(t, scale = scale, shape = params$shape)
-    list(dens = dens, dist = dist)
+    quan <- qgamma(p, scale = scale, shape = params$shape)
+    list(dens = dens, dist = dist, quan = quan)
   }
 
-  test_glm_fF_yx(distr, params, new.params, t, true_vals)
+  test_glm_fF1_yx(distr, params, new.params, t, p, true_vals)
 })
 
 test_that("sample_yx works", {

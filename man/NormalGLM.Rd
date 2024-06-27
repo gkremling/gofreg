@@ -45,6 +45,7 @@ points(x.new, y.pred, col="blue")
 \item \href{#method-NormalGLM-fit}{\code{NormalGLM$fit()}}
 \item \href{#method-NormalGLM-f_yx}{\code{NormalGLM$f_yx()}}
 \item \href{#method-NormalGLM-F_yx}{\code{NormalGLM$F_yx()}}
+\item \href{#method-NormalGLM-F1_yx}{\code{NormalGLM$F1_yx()}}
 \item \href{#method-NormalGLM-sample_yx}{\code{NormalGLM$sample_yx()}}
 \item \href{#method-NormalGLM-clone}{\code{NormalGLM$clone()}}
 }
@@ -143,6 +144,33 @@ defaults to the fitted parameter values}
 }
 \subsection{Returns}{
 value(s) of the conditional distribution function,  same shape as
+\code{t}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NormalGLM-F1_yx"></a>}}
+\if{latex}{\out{\hypertarget{method-NormalGLM-F1_yx}{}}}
+\subsection{Method \code{F1_yx()}}{
+Evaluates the conditional quantile function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NormalGLM$F1_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{t}}{value(s) at which the conditional quantile function shall be
+evaluated}
+
+\item{\code{x}}{matrix of covariates, each row representing one sample}
+
+\item{\code{params}}{model parameters to use (\code{list()} with tags beta and sd),
+defaults to the fitted parameter values}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+value(s) of the conditional quantile function, same shape as
 \code{t}
 }
 }

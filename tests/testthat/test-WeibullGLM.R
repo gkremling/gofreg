@@ -1,18 +1,20 @@
-test_that("f_yx and F_yx work", {
+test_that("f_yx, F_yx and F1_yx work", {
   distr <- "weibull"
   params <- list(beta = c(1, 2, 3), shape = 2)
   new.params <- list(beta = c(2, 3, 4), shape = 5)
   t <- seq(0, 0.3, 0.05) # values at which f_yx and F_yx shall be evaluated
+  p <- 0.5 # value at which F1_yx shall be evaluated
 
   # true values of f_yx and F_yx given model parameters
-  true_vals <- function(t, x, g1, params) {
+  true_vals <- function(t, p, x, g1, params) {
     scale <- g1(x %*% params$beta) / gamma(1 + 1 / params$shape)
     dens <- dweibull(t, scale = scale, shape = params$shape)
     dist <- pweibull(t, scale = scale, shape = params$shape)
-    list(dens = dens, dist = dist)
+    quan <- qweibull(p, scale = scale, shape = params$shape)
+    list(dens = dens, dist = dist, quan = quan)
   }
 
-  test_glm_fF_yx(distr, params, new.params, t, true_vals)
+  test_glm_fF1_yx(distr, params, new.params, t, p, true_vals)
 })
 
 test_that("sample_yx works", {

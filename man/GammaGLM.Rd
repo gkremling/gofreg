@@ -45,6 +45,7 @@ points(x.new, y.pred, col="blue")
 \item \href{#method-GammaGLM-fit}{\code{GammaGLM$fit()}}
 \item \href{#method-GammaGLM-f_yx}{\code{GammaGLM$f_yx()}}
 \item \href{#method-GammaGLM-F_yx}{\code{GammaGLM$F_yx()}}
+\item \href{#method-GammaGLM-F1_yx}{\code{GammaGLM$F1_yx()}}
 \item \href{#method-GammaGLM-sample_yx}{\code{GammaGLM$sample_yx()}}
 \item \href{#method-GammaGLM-clone}{\code{GammaGLM$clone()}}
 }
@@ -143,6 +144,33 @@ defaults to the fitted parameter values}
 }
 \subsection{Returns}{
 value(s) of the conditional distribution function,  same shape as
+\code{t}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-GammaGLM-F1_yx"></a>}}
+\if{latex}{\out{\hypertarget{method-GammaGLM-F1_yx}{}}}
+\subsection{Method \code{F1_yx()}}{
+Evaluates the conditional quantile function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GammaGLM$F1_yx(t, x, params = private$params)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{t}}{value(s) at which the conditional quantile function shall be
+evaluated}
+
+\item{\code{x}}{matrix of covariates, each row representing one sample}
+
+\item{\code{params}}{model parameters to use (\code{list()} with tags beta and shape),
+defaults to the fitted parameter values}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+value(s) of the conditional quantile function, same shape as
 \code{t}
 }
 }

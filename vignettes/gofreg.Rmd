@@ -105,8 +105,8 @@ Here is a list of test statistics that are available in the `gofreg` package:
 
 * `MEP`: Marked Empirical Process defined in Dikta & Scheer (2021)
 * `CondKolmXY`: Conditional Kolmogorov of the joint distribution of $(X,Y)$ defined in Andrews (1997)
-* `CondKolmY`: Conditional Kolmogorov of the marginal distribution of $Y$ defined in Kremling & Dikta (2024)
-* `CondKolmbXY`: Conditional Kolmogorov of the joint distribution of $(\beta^T X, Y)$ defined in Kremling & Dikta (2024)
+* `CondKolmY`: Conditional Kolmogorov of the marginal distribution of $Y$ defined in Kremling's dissertation (2024)
+<!-- * `CondKolmbXY`: Conditional Kolmogorov of the joint distribution of $(\beta^T X, Y)$ defined in Kremling & Dikta (2024) -->
 
 The package also offers the option to use other user-defined test statistics. 
 For instructions on how to implement new test statistics see
@@ -145,7 +145,7 @@ print(model$get_params())
 It can be seen that the estimated parameters are close to the true parameters
 $\beta = (2,3)$ and $\sigma = 1$. Now, we compute the corresponding p-value
 using the Conditional Kolmogorov test statistic for the marginal distribution
-of $Y$ under random censorship (defined in Kremling & Dikta (2024)).
+of $Y$ under random censorship (defined in Kremling's dissertation (2024)).
 
 ``` {r}
 gt <- GOFTest$new(

@@ -147,8 +147,21 @@ Plots the processes underlying the bootstrap test statistics
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{title}}{text to be displayed as title of the plot; defaults to "Test
+statistic: xxx, p-value: xxx"}
+
 \item{\code{subtitle}}{text to be displayed as subtitle of the plot; default is
 no subtitle}
+
+\item{\code{color_boot}}{color used to plot bootstrap test statistics; default
+is "red"}
+
+\item{\code{color_orig}}{color used to plot original test statistic; default is
+"gray40"}
+
+\item{\code{x_lab}}{label to use for the x-axis; default is "plot.x"}
+
+\item{\code{y_lab}}{label to use for the y-axis; default is "plot.y"}
 }
 \if{html}{\out{</div>}}
 }

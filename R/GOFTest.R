@@ -106,8 +106,16 @@ GOFTest <- R6::R6Class(
     #' @description Plots the processes underlying the bootstrap test statistics
     #'   (gray) and the original test statistic (red)
     #'
+    #' @param title text to be displayed as title of the plot; defaults to "Test
+    #'   statistic: xxx, p-value: xxx"
     #' @param subtitle text to be displayed as subtitle of the plot; default is
     #'   no subtitle
+    #' @param color_boot color used to plot bootstrap test statistics; default
+    #'   is "red"
+    #' @param color_orig color used to plot original test statistic; default is
+    #'   "gray40"
+    #' @param x_lab label to use for the x-axis; default is "plot.x"
+    #' @param y_lab label to use for the y-axis; default is "plot.y"
     #'
     #' @export
     plot_procs = function(title = sprintf("Test Statistic: %s, p-value: %s",

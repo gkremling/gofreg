@@ -4,10 +4,11 @@
 ##'   function to calculate the test statistic (and x-y-values that can be used
 ##'   to plot the underlying process).
 ##'
-##'   The process underlying the test statistic is given in Kremling & Dikta
-##'   (2024) and defined by \deqn{\tilde{\alpha}_n^{KM}(t) = \sqrt{n} \left(
-##'   \hat{F}^{KM}_n(t) - \frac{1}{n} \sum_{i=1}^n F(t|\hat{\vartheta}_n, X_i)
-##'   \right), \quad -\infty \le t \le \infty.}{(see formula given in paper).}
+##'   The process underlying the test statistic is given in Kremling's
+##'   dissertation (2024) and defined by \deqn{\tilde{\alpha}_n^{KM}(t) =
+##'   \sqrt{n} \left( \hat{F}^{KM}_n(t) - \frac{1}{n} \sum_{i=1}^n
+##'   F(t|\hat{\vartheta}_n, X_i) \right), \quad -\infty \le t \le \infty.}{(see
+##'   formula given in paper).}
 ##' @export
 ##'
 ##' @examples

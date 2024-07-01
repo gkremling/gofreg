@@ -24,6 +24,6 @@ Imports:
     R6,
     survival,
     tibble
-URL: https://github.com/gkremling/gofreg
+URL: https://github.com/gkremling/gofreg, https://gkremling.github.io/gofreg/
 BugReports: https://github.com/gkremling/gofreg/issues
 VignetteBuilder: knitr

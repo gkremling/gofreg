@@ -192,11 +192,9 @@ Andrews (1997)</li>
 <li>
 <code>CondKolmY</code>: Conditional Kolmogorov of the marginal
 distribution of <span class="math inline">\(Y\)</span> defined in
-Kremling &amp; Dikta (2024)</li>
-<li>
-<code>CondKolmbXY</code>: Conditional Kolmogorov of the joint
-distribution of <span class="math inline">\((\beta^T X, Y)\)</span>
-defined in Kremling &amp; Dikta (2024)</li>
+Kremling’s dissertation (2024)
+<!-- * `CondKolmbXY`: Conditional Kolmogorov of the joint distribution of $(\beta^T X, Y)$ defined in Kremling & Dikta (2024) -->
+</li>
 </ul>
 <p>The package also offers the option to use other user-defined test
 statistics. For instructions on how to implement new test statistics see
@@ -236,7 +234,7 @@ with normally distributed censoring times.</p>
 parameters <span class="math inline">\(\beta = (2,3)\)</span> and <span class="math inline">\(\sigma = 1\)</span>. Now, we compute the
 corresponding p-value using the Conditional Kolmogorov test statistic
 for the marginal distribution of <span class="math inline">\(Y\)</span>
-under random censorship (defined in Kremling &amp; Dikta (2024)).</p>
+under random censorship (defined in Kremling’s dissertation (2024)).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gt</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/GOFTest.html">GOFTest</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>, model_fitted <span class="op">=</span> <span class="va">model</span>, test_stat <span class="op">=</span> <span class="va"><a href="../reference/CondKolmY_RCM.html">CondKolmY_RCM</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, nboot <span class="op">=</span> <span class="fl">100</span>,</span>

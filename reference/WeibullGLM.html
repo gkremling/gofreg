@@ -273,11 +273,11 @@ defaults to the fitted parameter values</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Evaluate the conditional density, distribution and regression function at given values</span></span></span>
 <span class="r-in"><span><span class="va">model</span><span class="op">$</span><span class="fu">f_yx</span><span class="op">(</span><span class="va">y.smpl</span>, <span class="va">x.new</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.077258698 0.045252797 0.024351504 0.027757625 0.026002747 0.008117495</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.012810385 0.019804572 0.015770691 0.009563436 0.014849278</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.01494594 0.04582393 0.02494813 0.03258233 0.01808029 0.02137735</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.01880288 0.00211314 0.01697626 0.01574869 0.01386921</span>
 <span class="r-in"><span><span class="va">model</span><span class="op">$</span><span class="fu">F_yx</span><span class="op">(</span><span class="va">y.smpl</span>, <span class="va">x.new</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.6809698 0.1853942 0.8547546 0.1945708 0.2575939 0.9307553 0.8433396</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.4608537 0.2651740 0.1115368 0.4524806</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.9690795 0.7468939 0.1011280 0.6386123 0.8291680 0.2316691 0.2346510</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.9820209 0.5937070 0.5633772 0.6172362</span>
 <span class="r-in"><span><span class="va">y.pred</span> <span class="op">&lt;-</span> <span class="va">model</span><span class="op">$</span><span class="fu">mean_yx</span><span class="op">(</span><span class="va">x.new</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">x.new</span>, <span class="va">y.pred</span>, col<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="WeibullGLM-1.png" alt="" width="700" height="433"></span>

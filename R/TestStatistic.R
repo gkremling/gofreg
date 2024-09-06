@@ -15,7 +15,7 @@ TestStatistic <- R6::R6Class(
     #' @export
     get_value = function() {
       if (is.na(private$value)) {
-        stop("Value of the test statistic is not assigned yet. Call calc_stat(x, y, model) first!")
+        stop("Value of the test statistic is not assigned yet. Call calc_stat(data, model) first!")
       }
       private$value
     },
@@ -38,7 +38,7 @@ TestStatistic <- R6::R6Class(
     #' @export
     get_plot_xy = function() {
       if (anyNA(c(private$plot.x, private$plot.y))) {
-        stop("The values of plot.x and plot.y are not assigned yet. Call calc_stat(x, y, model) first!")
+        stop("The values of plot.x and plot.y are not assigned yet. Call calc_stat(data, model) first!")
       }
       list(plot.x = private$plot.x, plot.y = private$plot.y)
     },

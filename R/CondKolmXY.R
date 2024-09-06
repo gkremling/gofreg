@@ -61,9 +61,7 @@ CondKolmXY <- R6::R6Class(
       x <- as.matrix(data$x)
       proc <- 1 / sqrt(n) * sapply(seq(1, n), function(j) {
         sum(((data$y <= data$y[j]) - model$F_yx(data$y[j], x)) *
-          (colSums(apply(x, 1, function(r) {
-            r <= x[j, ]
-          })) == ncol(x)))
+          (apply(x, 1, function(r) {all(r <= x[j,])})))
       })
 
       # set private fields accordingly

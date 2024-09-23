@@ -1,11 +1,11 @@
 test_that("calc_stat works", {
-  set.seed(12345)
+  set.seed(123)
 
   dummy <- dummy_xymodel_fitted()
 
   test_stat <- SICM$new(c = 5)
   test_stat$calc_stat(dummy$data, dummy$model)
-  expect_equal(test_stat$get_value(), 0.000317456475750)
+  expect_equal(test_stat$get_value(), 0.000002631423620)
 })
 
 test_that("initialization does not work without value of c", {

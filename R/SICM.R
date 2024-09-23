@@ -1,13 +1,13 @@
-##' @title Simulated Integrated Conditional Moment (SICM) test statistic
+##' @title Simulated integrated conditional moment test statistic
 ##' @description This class inherits from [TestStatistic] and implements a
 ##'   function to calculate the test statistic (and x-y-values that can be used
 ##'   to plot the underlying process).
 ##'
-##'   The process underlying the test statistic is given in  & Wang (2012) and
-##'   defined by \deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}} \int_{[-c,c]^p}
-##'   \int_{-c}^c \abs{\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
-##'   \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)}^2 d\tau d\xi }{(see
-##'   formula given in paper).}
+##'   The process underlying the test statistic is given in Bierens & Wang
+##'   (2012) and defined by \deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}}
+##'   \int_{[-c,c]^p} \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n
+##'   \Big(\exp(i \tau Y_j) - \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2
+##'   d\tau d\xi }{(see formula given in paper).}
 ##' @export
 ##'
 ##' @examples
@@ -53,7 +53,7 @@ SICM <- R6::R6Class(
     #'
     #' @export
     initialize = function(c, transx = function(values) {tvals <- atan(scale(values)); tvals[, apply(values,2,sd) == 0] <- 0; return(tvals)},
-                          transy = function(values, data) {atan(scale(values, center = mean(data$y), scale = sd(data$y)))}) {
+                          transy = function(values, data) {array(atan(scale(values, center = mean(data$y), scale = sd(data$y))))}) {
       checkmate::assert_function(transx, nargs = 1, args = c("values"))
       checkmate::assert_function(transy, nargs = 2, args = c("values", "data"), ordered = TRUE)
       private$c <- c
@@ -89,31 +89,50 @@ SICM <- R6::R6Class(
       ys <- private$transy(ys.orig, data)
 
       # compute statistic
-      Tns <- 0
-      for (j1 in 1:(n-1)) {
-        for (j2 in (j1+1):(n)) {
-          y.diff <- private$c * c(y[j1] - y[j2], ys[j1] - ys[j2], y[j1] - ys[j2], ys[j1] - y[j2])
-          y.sign <- c(1,1,-1,-1)
-          y.diff <- ifelse(y.diff != 0, sin(y.diff)/y.diff, 1)
-          y.part <- sum(y.sign*y.diff)
+      y.diff <- outer(y, y, "-")
+      ys.diff <- outer(ys, ys, "-")
+      y.ys.diff <- outer(y, ys, "-")
 
-          x.diff <- private$c * (x[j1,] - x[j2,])
-          x.diff <- ifelse(x.diff != 0, sin(x.diff)/x.diff, 1)
-          x.part <- prod(x.diff)
+      sin.frac <- function(mat) {
+        ifelse(mat != 0, sin(private$c * mat) / (private$c * mat), 1)
+      }
 
-          Tns <- Tns + y.part * x.part
-        }
-        if (y[j1] - ys[j1] != 0) {
-          Tns <- Tns + 1 - (sin(private$c * (y[j1] - ys[j1])) / (private$c * (y[j1] - ys[j1])))
-        }
+      x.diff <- simplify2array(lapply(1:ncol(x), function(col) {outer(x[,col], x[,col], "-")}))
+      x.diff.sf <- sin.frac(x.diff)
+      x.diff.sf.prod <- x.diff.sf[,,1]
+      for(i in 2:dim(x.diff.sf)[3]){
+        x.diff.sf.prod <- x.diff.sf.prod*x.diff.sf[,,i]
       }
-      if (y[n] - ys[n] != 0) {
-        Tns <- Tns + 1 - (sin(private$c * (y[n] - ys[n])) / (private$c * (y[n] - ys[n])))
-      }
+
+      Tns <- sum((sin.frac(y.diff) + sin.frac(ys.diff) - sin.frac(y.ys.diff)
+                  - sin.frac(t(y.ys.diff))) * x.diff.sf.prod)
+
+      # Tns <- 0
+      # for (j1 in 1:(n-1)) {
+      #   for (j2 in (j1+1):(n)) {
+      #     y.diff <- private$c * c(y[j1] - y[j2], ys[j1] - ys[j2], y[j1] - ys[j2], ys[j1] - y[j2])
+      #     y.sign <- c(1,1,-1,-1)
+      #     y.diff <- ifelse(y.diff != 0, sin(y.diff)/y.diff, 1)
+      #     y.part <- sum(y.sign*y.diff)
+      #
+      #     x.diff <- private$c * (x[j1,] - x[j2,])
+      #     x.diff <- ifelse(x.diff != 0, sin(x.diff)/x.diff, 1)
+      #     x.part <- prod(x.diff)
+      #
+      #     Tns <- Tns + y.part * x.part
+      #   }
+      #   if (y[j1] - ys[j1] != 0) {
+      #     Tns <- Tns + 1 - (sin(private$c * (y[j1] - ys[j1])) / (private$c * (y[j1] - ys[j1])))
+      #   }
+      # }
+      # if (y[n] - ys[n] != 0) {
+      #   Tns <- Tns + 1 - (sin(private$c * (y[n] - ys[n])) / (private$c * (y[n] - ys[n])))
+      # }
+      # Tns <- 2*Tns
 
       # set class attributes
       # TODO: WHAT TO USE FOR PLOTTING?
-      private$value <- Tns
+      private$value <- Tns/n
       private$plot.x <- c(1)
       private$plot.y <- c(1)
       invisible(self)

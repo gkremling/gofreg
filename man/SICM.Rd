@@ -2,17 +2,17 @@
 % Please edit documentation in R/SICM.R
 \name{SICM}
 \alias{SICM}
-\title{Simulated Integrated Conditional Moment (SICM) test statistic}
+\title{Simulated integrated conditional moment test statistic}
 \description{
 This class inherits from \link{TestStatistic} and implements a
 function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).
 
-The process underlying the test statistic is given in  & Wang (2012) and
-defined by \deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}} \int_{[-c,c]^p}
-  \int_{-c}^c \abs{\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
-  \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)}^2 d\tau d\xi }{(see
-  formula given in paper).}
+The process underlying the test statistic is given in Bierens & Wang
+(2012) and defined by \deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}}
+  \int_{[-c,c]^p} \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n
+  \Big(\exp(i \tau Y_j) - \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2
+  d\tau d\xi }{(see formula given in paper).}
 }
 \examples{
 # Create an example dataset
@@ -78,8 +78,8 @@ Initialize an instance of class \link{SICM}.
      return(tvals)
  },
   transy = function(values, data) {
-     atan(scale(values, center = mean(data$y), scale
-    = sd(data$y)))
+     array(atan(scale(values, center = mean(data$y),
+    scale = sd(data$y))))
  }
 )}\if{html}{\out{</div>}}
 }

@@ -1,12 +1,12 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   Architecture: Architecture.html
   gofreg: gofreg.html
   New-Models: New-Models.html
   New-TestStatistics: New-TestStatistics.html
-last_built: 2024-09-06T08:07Z
+last_built: 2024-09-23T13:58Z
 urls:
   reference: https://gkremling.github.io/gofreg/reference
   article: https://gkremling.github.io/gofreg/articles

@@ -17,10 +17,16 @@ user-defined models and test statistics.
 
 ## Installation
 
-You can install gofreg from github with:
+You can install it from CRAN
 
 ``` r
-remotes::install_github("gkremling/gofreg")
+install.packages("gofreg")
+```
+
+or github
+
+``` r
+devtools::install_github("gkremling/gofreg")
 ```
 
 ## Example

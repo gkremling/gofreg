@@ -17,7 +17,7 @@
 ##' model$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Calculate the bootstrap p-value and plot the corresponding processes
-##' goftest <- GOFTest$new(data, model, test_stat = CondKolmY$new(), nboot = 100)
+##' goftest <- GOFTest$new(data, model, test_stat = CondKolmY$new(), nboot = 10)
 ##' goftest$get_pvalue()
 ##' goftest$plot_procs()
 ##'
@@ -26,7 +26,7 @@
 ##' model2$fit(data, params_init=list(beta=c(1,1), sd=3), inplace = TRUE)
 ##'
 ##' # Calculate the bootstrap p-value and plot the corresponding processes
-##' goftest2 <- GOFTest$new(data, model2, test_stat = CondKolmY$new(), nboot = 100)
+##' goftest2 <- GOFTest$new(data, model2, test_stat = CondKolmY$new(), nboot = 10)
 ##' goftest2$get_pvalue()
 ##' goftest2$plot_procs()
 GOFTest <- R6::R6Class(

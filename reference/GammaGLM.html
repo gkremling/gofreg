@@ -27,6 +27,7 @@ for example, evaluate the conditional density and distribution functions."></hea
     <li><a class="dropdown-item" href="../articles/New-Models.html">New-Models</a></li>
     <li><a class="dropdown-item" href="../articles/New-TestStatistics.html">New-TestStatistics</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/gkremling/gofreg/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -273,11 +274,12 @@ defaults to the fitted parameter values</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Evaluate the conditional density, distribution and regression function at given values</span></span></span>
 <span class="r-in"><span><span class="va">model</span><span class="op">$</span><span class="fu">f_yx</span><span class="op">(</span><span class="va">y.smpl</span>, <span class="va">x.new</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.092814029 0.036435966 0.025174802 0.011842189 0.011311789 0.024678957</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.015447158 0.006102868 0.003522130 0.006880620 0.014163155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 2.631940e-02 2.680607e-02 4.768020e-02 5.822071e-03 3.208479e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] 9.263047e-03 7.369133e-03 1.690065e-02 1.896789e-02 1.613904e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] 2.219092e-05</span>
 <span class="r-in"><span><span class="va">model</span><span class="op">$</span><span class="fu">F_yx</span><span class="op">(</span><span class="va">y.smpl</span>, <span class="va">x.new</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.48712302 0.78297339 0.80471667 0.02864527 0.87927841 0.56684183</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.74436855 0.02551531 0.94287945 0.86258674 0.58045274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.91013645 0.04664996 0.32487047 0.95373608 0.38730096 0.88558751</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.89760357 0.65364127 0.31196951 0.23359127 0.99966102</span>
 <span class="r-in"><span><span class="va">y.pred</span> <span class="op">&lt;-</span> <span class="va">model</span><span class="op">$</span><span class="fu">mean_yx</span><span class="op">(</span><span class="va">x.new</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">x.new</span>, <span class="va">y.pred</span>, col<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GammaGLM-1.png" alt="" width="700" height="433"></span>

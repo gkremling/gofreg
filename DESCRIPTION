@@ -1,6 +1,6 @@
 Package: gofreg
 Title: Bootstrap-Based Goodness-of-Fit Tests for Parametric Regression
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Gitte", "Kremling", 
       email = "gitte.kremling@web.de", 

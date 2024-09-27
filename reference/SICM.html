@@ -3,17 +3,19 @@
 function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).
 The process underlying the test statistic is given in Bierens &amp;amp; Wang
-(2012) and defined by $$\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}}
-  \int_{[-c,c]^p} \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n
-  \Big(\exp(i \tau Y_j) - \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2
-  d\tau d\xi $$"><meta property="og:description" content="This class inherits from TestStatistic and implements a
+(2012) doi:10.1017/S0266466611000168
+ and defined by
+$$\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}} \int_{[-c,c]^p}
+  \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
+  \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2 d\tau d\xi $$"><meta property="og:description" content="This class inherits from TestStatistic and implements a
 function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).
 The process underlying the test statistic is given in Bierens &amp;amp; Wang
-(2012) and defined by $$\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}}
-  \int_{[-c,c]^p} \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n
-  \Big(\exp(i \tau Y_j) - \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2
-  d\tau d\xi $$"></head><body>
+(2012) doi:10.1017/S0266466611000168
+ and defined by
+$$\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}} \int_{[-c,c]^p}
+  \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
+  \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2 d\tau d\xi $$"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -59,10 +61,11 @@ The process underlying the test statistic is given in Bierens &amp;amp; Wang
 function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).</p>
 <p>The process underlying the test statistic is given in Bierens &amp; Wang
-(2012) and defined by $$\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}}
-  \int_{[-c,c]^p} \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n
-  \Big(\exp(i \tau Y_j) - \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2
-  d\tau d\xi $$</p>
+(2012) <a href="https://doi.org/10.1017/S0266466611000168" class="external-link">doi:10.1017/S0266466611000168</a>
+ and defined by
+$$\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}} \int_{[-c,c]^p}
+  \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
+  \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2 d\tau d\xi $$</p>
     </div>
 
 
@@ -124,6 +127,10 @@ standard deviation and then applying arctan</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>a new instance of the class</p>
+</div>
 
 </div><p></p><hr><a id="method-SICM-calc_stat"></a><div class="section">
 <h3 id="method-calc-stat-">Method <code>calc_stat()</code><a class="anchor" aria-label="anchor" href="#method-calc-stat-"></a></h3>
@@ -144,6 +151,10 @@ and a model to test for.</p><div class="section">
 
 
 </dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>The modified object (<code>self</code>), allowing for method chaining.</p>
 </div>
 
 </div><p></p><hr><a id="method-SICM-clone"></a><div class="section">

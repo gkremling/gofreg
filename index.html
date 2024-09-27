@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Bootstrap-Based Goodness-of-Fit Tests for Parametric Regression">
-<meta name="description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset. Each data point consists of a response variable Y and a vector of covariates X. Different test statistics can be used to verify the validity of the assumed model. The corresponding p-values are determined using a parametric bootstrap method.">
-<meta property="og:description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset. Each data point consists of a response variable Y and a vector of covariates X. Different test statistics can be used to verify the validity of the assumed model. The corresponding p-values are determined using a parametric bootstrap method.">
+<meta name="description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset of covariates and response variables. Different test statistics can be used to determine the goodness-of-fit of the assumed model, see Andrews (1997) &lt;doi:10.2307/2171880&gt;, Bierens &amp; Wang (2012) &lt;doi:10.1017/S0266466611000168&gt;, Dikta &amp; Scheer (2021) &lt;doi:10.1007/978-3-030-73480-0&gt; and Kremling &amp; Dikta (2024) &lt;arXiv:&gt;. As proposed in these papers, the corresponding p-values are approximated using a parametric bootstrap method.">
+<meta property="og:description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset of covariates and response variables. Different test statistics can be used to determine the goodness-of-fit of the assumed model, see Andrews (1997) &lt;doi:10.2307/2171880&gt;, Bierens &amp; Wang (2012) &lt;doi:10.1017/S0266466611000168&gt;, Dikta &amp; Scheer (2021) &lt;doi:10.1007/978-3-030-73480-0&gt; and Kremling &amp; Dikta (2024) &lt;arXiv:&gt;. As proposed in these papers, the corresponding p-values are approximated using a parametric bootstrap method.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -73,7 +73,7 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a basic example which shows you how to fit a parametric regression model (in this case a generalized linear model with normal distribution) to given data and afterwards perform a goodness-of-fit test (in this case using the conditional Kolmogorov test statistic of the marginal distribution of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> defined in Kremling &amp; Dikta (2024)). As an example dataset we use <code><a href="https://rdrr.io/r/datasets/cars.html" class="external-link">datasets::cars</a></code>.</p>
+<p>This is a basic example which shows how to fit a parametric regression model to a given dataset and afterwards perform a goodness-of-fit test. In this example, we use the dataset <code><a href="https://rdrr.io/r/datasets/cars.html" class="external-link">datasets::cars</a></code>, a generalized linear model with normal distribution and the conditional Kolmogorov test statistic of the marginal distribution of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> defined in Kremling &amp; Dikta (2024) <a href="https://arxiv.org/abs/" class="external-link">arXiv:</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gkremling/gofreg" class="external-link">gofreg</a></span><span class="op">)</span></span>
 <span></span>
@@ -88,7 +88,9 @@
 <span><span class="co">#&gt; [1] 16.09429</span></span>
 <span><span class="va">gt</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/GOFTest.html">GOFTest</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, model_fitted <span class="op">=</span> <span class="va">model</span>, test_stat <span class="op">=</span> <span class="va"><a href="reference/CondKolmY.html">CondKolmY</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>, nboot <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gt</span><span class="op">$</span><span class="fu">get_pvalue</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.01</span></span>
+<span><span class="va">gt</span><span class="op">$</span><span class="fu">plot_procs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-1.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -118,7 +120,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Gitte Kremling <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0753-1520" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Gitte Kremling <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0002-0753-1520" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 

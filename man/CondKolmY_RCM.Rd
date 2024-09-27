@@ -9,11 +9,11 @@ This class inherits from \link{TestStatistic} and implements a
 function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).
 
-The process underlying the test statistic is given in Kremling's
-dissertation (2024) and defined by \deqn{\tilde{\alpha}_n^{KM}(t) =
-  \sqrt{n} \left( \hat{F}^{KM}_n(t) - \frac{1}{n} \sum_{i=1}^n
-  F(t|\hat{\vartheta}_n, X_i) \right), \quad -\infty \le t \le \infty.}{(see
-  formula given in paper).}
+The process underlying the test statistic is defined by
+\deqn{\tilde{\alpha}_n^{KM}(t) = \sqrt{n} \left( \hat{F}^{KM}_n(t) -
+  \frac{1}{n} \sum_{i=1}^n F(t|\hat{\vartheta}_n, X_i) \right), \quad
+  -\infty \le t \le \infty.}{(formula cannot be displayed here, see package
+  website).}
 }
 \examples{
 # Create an example dataset
@@ -82,6 +82,9 @@ and a model to test for.
 \item{\code{model}}{\link{ParamRegrModel} to test for, already fitted to the data}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The modified object (\code{self}), allowing for method chaining.
 }
 }
 \if{html}{\out{<hr>}}

@@ -55,6 +55,9 @@ and a model to test for.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+The modified object (\code{self}), allowing for method chaining.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TestStatistic-get_plot_xy"></a>}}
@@ -80,6 +83,9 @@ Overrides the print-method for objects of type
 \if{html}{\out{<div class="r">}}\preformatted{TestStatistic$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+The object (\code{self}), allowing for method chaining.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TestStatistic-geom_ts_proc"></a>}}
@@ -100,6 +106,9 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A ggplot2 layer representing a line plot.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TestStatistic-plot"></a>}}
@@ -119,6 +128,10 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A ggplot2 object representing the complete plot, including a line
+geometry.
 }
 }
 \if{html}{\out{<hr>}}

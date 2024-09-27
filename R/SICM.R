@@ -4,10 +4,11 @@
 ##'   to plot the underlying process).
 ##'
 ##'   The process underlying the test statistic is given in Bierens & Wang
-##'   (2012) and defined by \deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}}
-##'   \int_{[-c,c]^p} \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n
-##'   \Big(\exp(i \tau Y_j) - \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2
-##'   d\tau d\xi }{(see formula given in paper).}
+##'   (2012) \doi{10.1017/S0266466611000168} and defined by
+##'   \deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}} \int_{[-c,c]^p}
+##'   \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
+##'   \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2 d\tau d\xi }{(see
+##'   formula given in paper).}
 ##' @export
 ##'
 ##' @examples
@@ -51,6 +52,8 @@ SICM <- R6::R6Class(
     #'   default is standardizatiin by subtracting the mean and dividing by the
     #'   standard deviation and then applying arctan
     #'
+    #' @return a new instance of the class
+    #'
     #' @export
     initialize = function(c, transx = function(values) {tvals <- atan(scale(values)); tvals[, apply(values,2,sd) == 0] <- 0; return(tvals)},
                           transy = function(values, data) {array(atan(scale(values, center = mean(data$y), scale = sd(data$y))))}) {
@@ -66,6 +69,8 @@ SICM <- R6::R6Class(
     #'
     #' @param data `data.frame()` with columns x and y containing the data
     #' @param model [ParamRegrModel] to test for
+    #'
+    #' @return The modified object (`self`), allowing for method chaining.
     #'
     #' @export
     calc_stat = function(data, model) {

@@ -19,6 +19,8 @@ ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #'
   #' @param params model parameters to use as default
   #'
+  #' @return The modified object (`self`), allowing for method chaining.
+  #'
   #' @export
   set_params = function(params) {
     private$params <- params

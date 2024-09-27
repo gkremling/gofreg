@@ -51,6 +51,9 @@ Initialize an object of class GLM.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+a new instance of the class
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-GLM-mean_yx"></a>}}

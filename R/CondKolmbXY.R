@@ -7,8 +7,8 @@
 ##'   The process underlying the test statistic is defined by
 ##'   \deqn{\bar{\alpha}_n(s,t) = \frac{1}{\sqrt{n}} \sum_{i=1}^n
 ##'   \left( I_{\{Y_i \le t\}} - F(t|\hat{\vartheta}_n, X_i) \right)
-##'   I_{\{\hat{\beta}_n^T X_i \le s\}}, \quad (s,t) \in R^{2}.}{(see formula
-##'   given in paper).}
+##'   I_{\{\hat{\beta}_n^T X_i \le s\}}, \quad (s,t) \in R^{2}.}{(formula
+##'   cannot be displayed here, see package website).}
 ##' @export
 ##'
 ##' @examples
@@ -46,6 +46,8 @@ CondKolmbXY <- R6::R6Class(
     #'
     #' @param data `data.frame()` with columns x and y containing the data
     #' @param model [ParamRegrModel] to test for, already fitted to the data
+    #'
+    #' @return The modified object (`self`), allowing for method chaining.
     #'
     #' @export
     calc_stat = function(data, model) {

@@ -9,10 +9,10 @@ This class inherits from \link{TestStatistic} and implements a
 function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).
 
-The process underlying the test statistic is given in Andrews (1997) and
-defined by \deqn{\nu_n(x,y) = \frac{1}{\sqrt{n}} \sum_{i=1}^n \left(
-  I_{\{Y_i \le y\}} - F(y|\hat{\vartheta}_n, X_i) \right) I_{\{X_i \le x\}},
-  \quad (x,y) \in R^{p+1}.}{(see formula given in paper).}
+The process underlying the test statistic is given in Andrews (1997)
+\doi{10.2307/2171880} and defined by \deqn{\nu_n(x,y) = \frac{1}{\sqrt{n}}
+  \sum_{i=1}^n \left(I_{\{Y_i \le y\}} - F(y|\hat{\vartheta}_n, X_i) \right)
+  I_{\{X_i \le x\}},\quad (x,y) \in R^{p+1}.}{(see formula given in paper).}
 }
 \examples{
 # Create an example dataset
@@ -80,6 +80,9 @@ and a model to test for.
 \item{\code{model}}{\link{ParamRegrModel} to test for, already fitted to the data}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The modified object (\code{self}), allowing for method chaining.
 }
 }
 \if{html}{\out{<hr>}}

@@ -9,10 +9,11 @@ function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).
 
 The process underlying the test statistic is given in Bierens & Wang
-(2012) and defined by \deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}}
-  \int_{[-c,c]^p} \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n
-  \Big(\exp(i \tau Y_j) - \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2
-  d\tau d\xi }{(see formula given in paper).}
+(2012) \doi{10.1017/S0266466611000168} and defined by
+\deqn{\hat{T}_n^{(s)}(c) = \frac{1}{(2c)^{p+1}} \int_{[-c,c]^p}
+  \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
+  \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2 d\tau d\xi }{(see
+  formula given in paper).}
 }
 \examples{
 # Create an example dataset
@@ -100,6 +101,9 @@ standard deviation and then applying arctan}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+a new instance of the class
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-SICM-calc_stat"></a>}}
@@ -119,6 +123,9 @@ and a model to test for.
 \item{\code{model}}{\link{ParamRegrModel} to test for}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The modified object (\code{self}), allowing for method chaining.
 }
 }
 \if{html}{\out{<hr>}}

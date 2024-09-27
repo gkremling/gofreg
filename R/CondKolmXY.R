@@ -4,10 +4,10 @@
 ##'   function to calculate the test statistic (and x-y-values that can be used
 ##'   to plot the underlying process).
 ##'
-##'   The process underlying the test statistic is given in Andrews (1997) and
-##'   defined by \deqn{\nu_n(x,y) = \frac{1}{\sqrt{n}} \sum_{i=1}^n \left(
-##'   I_{\{Y_i \le y\}} - F(y|\hat{\vartheta}_n, X_i) \right) I_{\{X_i \le x\}},
-##'   \quad (x,y) \in R^{p+1}.}{(see formula given in paper).}
+##'   The process underlying the test statistic is given in Andrews (1997)
+##'   \doi{10.2307/2171880} and defined by \deqn{\nu_n(x,y) = \frac{1}{\sqrt{n}}
+##'   \sum_{i=1}^n \left(I_{\{Y_i \le y\}} - F(y|\hat{\vartheta}_n, X_i) \right)
+##'   I_{\{X_i \le x\}},\quad (x,y) \in R^{p+1}.}{(see formula given in paper).}
 ##' @export
 ##'
 ##' @examples
@@ -45,6 +45,8 @@ CondKolmXY <- R6::R6Class(
     #'
     #' @param data `data.frame()` with columns x and y containing the data
     #' @param model [ParamRegrModel] to test for, already fitted to the data
+    #'
+    #' @return The modified object (`self`), allowing for method chaining.
     #'
     #' @export
     calc_stat = function(data, model) {

@@ -48,6 +48,9 @@ class functions.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+The modified object (\code{self}), allowing for method chaining.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ParamRegrModel-get_params"></a>}}

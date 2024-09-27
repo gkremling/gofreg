@@ -45,6 +45,8 @@ GOFTest <- R6::R6Class(
     #'   function used to fit model to resampled data in bootstrap iterations,
     #'   defaults to [loglik_xy()]
     #'
+    #' @return a new instance of the class
+    #'
     #' @export
     initialize = function(data, model_fitted, test_stat, nboot, resample = resample_param, loglik = loglik_xy) {
       checkmate::assert_class(model_fitted, "ParamRegrModel")
@@ -116,6 +118,8 @@ GOFTest <- R6::R6Class(
     #'   "gray40"
     #' @param x_lab label to use for the x-axis; default is "plot.x"
     #' @param y_lab label to use for the y-axis; default is "plot.y"
+    #'
+    #' @return The object (`self`), allowing for method chaining.
     #'
     #' @export
     plot_procs = function(title = sprintf("Test Statistic: %s, p-value: %s",

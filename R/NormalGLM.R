@@ -29,9 +29,11 @@
 ##' y.smpl <- model$sample_yx(x.new)
 ##' points(x.new, y.smpl, col="red")
 ##'
-##' # Evaluate the conditional density, distribution and regression function at given values
+##' # Evaluate the conditional density, distribution, quantile and regression
+##' # function at given values
 ##' model$f_yx(y.smpl, x.new)
 ##' model$F_yx(y.smpl, x.new)
+##' model$F1_yx(y.smpl, x.new)
 ##' y.pred <- model$mean_yx(x.new)
 ##' points(x.new, y.pred, col="blue")
 NormalGLM <- R6::R6Class(

@@ -13,6 +13,8 @@ GLM <- R6::R6Class(
     #' @param linkinv inverse link function, defaults to identity function
     #' @param params model parameters to use as default (optional)
     #'
+    #' @return a new instance of the class
+    #'
     #' @export
     initialize = function(linkinv = identity, params = NA) {
       checkmate::assert_function(linkinv, nargs = 1)
@@ -53,7 +55,7 @@ GLM <- R6::R6Class(
 #' @param linkinv inverse link function, defaults to identity function
 #' @param params model parameters to use as default (optional)
 #'
-#' @return new instance of a GLM-subclass
+#' @return a new instance of a GLM-subclass
 #' @export
 #'
 #' @examples

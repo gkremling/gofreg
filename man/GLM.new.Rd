@@ -14,7 +14,7 @@ GLM.new(distr, linkinv = identity, params = NA)
 \item{params}{model parameters to use as default (optional)}
 }
 \value{
-new instance of a GLM-subclass
+a new instance of a GLM-subclass
 }
 \description{
 This constructor function can be used to create an instance of a

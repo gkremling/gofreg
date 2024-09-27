@@ -9,9 +9,10 @@ function to calculate the test statistic (and x-y-values that can be used
 to plot the underlying process).
 
 The process underlying the test statistic is given in Dikta & Scheer
-(2021) and defined by \deqn{\bar{R}^1_n(u) = \frac{1}{\sqrt{n}}
-  \sum_{i=1}^n \left( Y_i - m(X_i, \hat{\beta}_n) \right) I_{\{\hat{\beta}_n
-  X_i \le u\}}, \quad -\infty \le u \le \infty.}{(see formula given in paper).}
+(2021) \doi{10.1007/978-3-030-73480-0} and defined by \deqn{\bar{R}^1_n(u)
+  = \frac{1}{\sqrt{n}} \sum_{i=1}^n \left( Y_i - m(X_i, \hat{\beta}_n)
+  \right) I_{\{\hat{\beta}_n X_i \le u\}}, \quad -\infty \le u \le \infty.}
+{(see formula given in paper).}
 }
 \examples{
 # Create an example dataset
@@ -79,6 +80,9 @@ and a model to test for.
 \item{\code{model}}{\link{ParamRegrModel} to test for}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The modified object (\code{self}), allowing for method chaining.
 }
 }
 \if{html}{\out{<hr>}}

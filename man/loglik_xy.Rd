@@ -25,3 +25,18 @@ This function is one option that can be used to fit a \link{ParamRegrModel}. It
 returns the negative log-likelihood value in order for \code{optim()} to
 maximize (instead of minimize).
 }
+\examples{
+# Create an example dataset
+n <- 100
+x <- cbind(runif(n), rbinom(n, 1, 0.5))
+model <- NormalGLM$new()
+params.true <- list(beta = c(2,3), sd = 1)
+y <- model$sample_yx(x, params = params.true)
+data <- dplyr::tibble(x = x, y = y)
+
+# Compute negative log likelihood for true parameters
+loglik_xy(data, model, params.true)
+
+# Compute negative log likelihood for wrong parameters (should be higher)
+loglik_xy(data, model, params = list(beta = c(1,2), sd = 0.5))
+}

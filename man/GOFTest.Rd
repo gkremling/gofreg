@@ -82,6 +82,9 @@ defaults to \code{\link[=loglik_xy]{loglik_xy()}}}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+a new instance of the class
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-GOFTest-get_stat_orig"></a>}}
@@ -164,6 +167,9 @@ is "red"}
 \item{\code{y_lab}}{label to use for the y-axis; default is "plot.y"}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The object (\code{self}), allowing for method chaining.
 }
 }
 \if{html}{\out{<hr>}}

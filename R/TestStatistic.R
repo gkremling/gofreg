@@ -26,6 +26,8 @@ TestStatistic <- R6::R6Class(
     #' @param data `list()` containing the data
     #' @param model [ParamRegrModel] to test for
     #'
+    #' @return The modified object (`self`), allowing for method chaining.
+    #'
     #' @export
     calc_stat = function(data, model) {
       stop("Abstract method. Needs to be implemented.")
@@ -46,6 +48,8 @@ TestStatistic <- R6::R6Class(
     #' @description Overrides the print-method for objects of type
     #'   `TestStatistic` to only print its value.
     #'
+    #' @return The object (`self`), allowing for method chaining.
+    #'
     #' @export
     print = function() {
       cat("Test statistic with value", private$value)
@@ -59,6 +63,8 @@ TestStatistic <- R6::R6Class(
     #'   often aesthetics, used to set an aesthetic to a fixed value, like
     #'   `colour = "red"` or `size = 3`.
     #'
+    #' @return A ggplot2 layer representing a line plot.
+    #'
     #' @export
     geom_ts_proc = function(...) {
       ggplot2::geom_line(ggplot2::aes(x = private$plot.x, y = private$plot.y), ...)
@@ -70,6 +76,9 @@ TestStatistic <- R6::R6Class(
     #' @param ... Other arguments passed on to [ggplot2::geom_line()]. These are
     #'   often aesthetics, used to set an aesthetic to a fixed value, like
     #'   `colour = "red"` or `size = 3`.
+    #'
+    #' @return A ggplot2 object representing the complete plot, including a line
+    #'   geometry.
     #'
     #' @export
     plot = function(...) {

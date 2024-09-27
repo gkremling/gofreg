@@ -31,12 +31,12 @@ devtools::install_github("gkremling/gofreg")
 
 ## Example
 
-This is a basic example which shows you how to fit a parametric
-regression model (in this case a generalized linear model with normal
-distribution) to given data and afterwards perform a goodness-of-fit
-test (in this case using the conditional Kolmogorov test statistic of
-the marginal distribution of $Y$ defined in Kremling & Dikta (2024)). As
-an example dataset we use `datasets::cars`.
+This is a basic example which shows how to fit a parametric regression
+model to a given dataset and afterwards perform a goodness-of-fit test.
+In this example, we use the dataset `datasets::cars`, a generalized
+linear model with normal distribution and the conditional Kolmogorov
+test statistic of the marginal distribution of $Y$ defined in Kremling &
+Dikta (2024) [arXiv:](https://arxiv.org/abs/).
 
 ``` r
 library(gofreg)
@@ -52,5 +52,8 @@ print(model$get_params())
 #> [1] 16.09429
 gt <- GOFTest$new(data = data, model_fitted = model, test_stat = CondKolmY$new(), nboot = 100)
 print(gt$get_pvalue())
-#> [1] 0
+#> [1] 0.01
+gt$plot_procs()
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />

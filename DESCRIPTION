@@ -4,14 +4,17 @@ Version: 1.0.0
 Authors@R: 
     person("Gitte", "Kremling", 
       email = "gitte.kremling@web.de", 
-      role = c("aut", "cre"),
+      role = c("aut", "cre", "cph"),
       comment = c(ORCID = "0000-0002-0753-1520")
     )
 Description: Provides statistical methods to check if a parametric family of
-  conditional density functions fits to some given dataset. Each data point
-  consists of a response variable Y and a vector of covariates X. Different test 
-  statistics can be used to verify the validity of the assumed model. The 
-  corresponding p-values are determined using a parametric bootstrap method.
+  conditional density functions fits to some given dataset of covariates and 
+  response variables. Different test statistics can be used to determine the 
+  goodness-of-fit of the assumed model, see Andrews (1997) 
+  <doi:10.2307/2171880>, Bierens & Wang (2012) <doi:10.1017/S0266466611000168>,
+  Dikta & Scheer (2021) <doi:10.1007/978-3-030-73480-0> and Kremling & Dikta 
+  (2024) <arXiv:>. As proposed in these papers, the corresponding p-values are 
+  approximated using a parametric bootstrap method.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

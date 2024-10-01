@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Bootstrap-Based Goodness-of-Fit Tests for Parametric Regression">
-<meta name="description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset of covariates and response variables. Different test statistics can be used to determine the goodness-of-fit of the assumed model, see Andrews (1997) &lt;doi:10.2307/2171880&gt;, Bierens &amp; Wang (2012) &lt;doi:10.1017/S0266466611000168&gt;, Dikta &amp; Scheer (2021) &lt;doi:10.1007/978-3-030-73480-0&gt; and Kremling &amp; Dikta (2024) &lt;arXiv:&gt;. As proposed in these papers, the corresponding p-values are approximated using a parametric bootstrap method.">
-<meta property="og:description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset of covariates and response variables. Different test statistics can be used to determine the goodness-of-fit of the assumed model, see Andrews (1997) &lt;doi:10.2307/2171880&gt;, Bierens &amp; Wang (2012) &lt;doi:10.1017/S0266466611000168&gt;, Dikta &amp; Scheer (2021) &lt;doi:10.1007/978-3-030-73480-0&gt; and Kremling &amp; Dikta (2024) &lt;arXiv:&gt;. As proposed in these papers, the corresponding p-values are approximated using a parametric bootstrap method.">
+<meta name="description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset of covariates and response variables. Different test statistics can be used to determine the goodness-of-fit of the assumed model, see Andrews (1997) &lt;doi:10.2307/2171880&gt;, Bierens &amp; Wang (2012) &lt;doi:10.1017/S0266466611000168&gt;, Dikta &amp; Scheer (2021) &lt;doi:10.1007/978-3-030-73480-0&gt; and Kremling &amp; Dikta (2024) &lt;arXiv:2409.20262&gt;. As proposed in these papers, the corresponding p-values are approximated using a parametric bootstrap method.">
+<meta property="og:description" content="Provides statistical methods to check if a parametric family of conditional density functions fits to some given dataset of covariates and response variables. Different test statistics can be used to determine the goodness-of-fit of the assumed model, see Andrews (1997) &lt;doi:10.2307/2171880&gt;, Bierens &amp; Wang (2012) &lt;doi:10.1017/S0266466611000168&gt;, Dikta &amp; Scheer (2021) &lt;doi:10.1007/978-3-030-73480-0&gt; and Kremling &amp; Dikta (2024) &lt;arXiv:2409.20262&gt;. As proposed in these papers, the corresponding p-values are approximated using a parametric bootstrap method.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -55,7 +55,8 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
+  <main id="main" class="col-md-9">
+<div class="section level1">
 <div class="page-header"><h1 id="gofreg">gofreg<a class="anchor" aria-label="anchor" href="#gofreg"></a>
 </h1></div>
 <p>This R package provides classes and methods to fit parametric regression models to given data and to perform bootstrap-based goodness-of-fit tests using different test statistics.</p>
@@ -73,9 +74,11 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a basic example which shows how to fit a parametric regression model to a given dataset and afterwards perform a goodness-of-fit test. In this example, we use the dataset <code><a href="https://rdrr.io/r/datasets/cars.html" class="external-link">datasets::cars</a></code>, a generalized linear model with normal distribution and the conditional Kolmogorov test statistic of the marginal distribution of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> defined in Kremling &amp; Dikta (2024) <a href="https://arxiv.org/abs/" class="external-link">arXiv:</a>.</p>
+<p>This is a basic example which shows how to fit a parametric regression model to a given dataset and afterwards perform a goodness-of-fit test. In this example, we use the dataset <code><a href="https://rdrr.io/r/datasets/cars.html" class="external-link">datasets::cars</a></code>, a generalized linear model with normal distribution and the conditional Kolmogorov test statistic of the marginal distribution of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> defined in Kremling &amp; Dikta (2024) <a href="https://arxiv.org/abs/2409.20262" class="external-link">arXiv:2409.20262</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gkremling/gofreg" class="external-link">gofreg</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/cars.html" class="external-link">cars</a></span><span class="op">$</span><span class="va">speed</span>, y <span class="op">=</span> <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/cars.html" class="external-link">cars</a></span><span class="op">$</span><span class="va">dist</span><span class="op">)</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/GLM.new.html">GLM.new</a></span><span class="op">(</span>distr <span class="op">=</span> <span class="st">"normal"</span>, linkinv <span class="op">=</span> <span class="va">identity</span><span class="op">)</span></span>
@@ -93,6 +96,7 @@
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 </div>
 </div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -124,7 +128,12 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/gkremling/gofreg/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/gkremling/gofreg/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>

@@ -1,10 +1,10 @@
 ## Test Environments
 - Local: Ubuntu 22.04, R 4.1.2
 - GitHub Actions:
-  - Windows Server 2022, R 4.3.1
-  - macOS 13.0, R 4.3.1
-  - Ubuntu 22.04, R 4.3.1
-- WinBuilder (check_win_devel): Windows, R Under development (unstable) (2024-XX-XX rXXXXX)
+  - Windows Server 2022, R 4.4.1
+  - macOS 14.6.1, R 4.4.1
+  - Ubuntu 22.04, R 4.4.1
+- WinBuilder: Windows Server 2022, R Under development (unstable) (2024-09-30 r87204)
 
 
 ## R CMD check results

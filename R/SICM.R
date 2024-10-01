@@ -48,11 +48,11 @@ SICM <- R6::R6Class(
     #'
     #' @param c chosen value for integral boundaries (see Bierens & Wang (2012))
     #' @param transx `function(values)` used to transform x-values to be
-    #'   standardized and bounded; default is standardizatiin by subtracting the
+    #'   standardized and bounded; default is standardization by subtracting the
     #'   mean and dividing by the standard deviation and then applying arctan
     #' @param transy `function(values, data)` used to transform y-values to be
     #'   standardized and bounded (same method is used for simulated y-values);
-    #'   default is standardizatiin by subtracting the mean and dividing by the
+    #'   default is standardization by subtracting the mean and dividing by the
     #'   standard deviation and then applying arctan
     #'
     #' @return a new instance of the class

@@ -1,4 +1,4 @@
-#' Parametric resampling scheme for a paramatric regression model
+#' Parametric resampling scheme for a parametric regression model
 #'
 #' @description Generate a new, resampled dataset of the same shape as data
 #'   following the given model. The covariates are kept the same and the
@@ -37,7 +37,7 @@ resample_param <- function(data, model) {
   dplyr::tibble(x = data$x, y = y.b)
 }
 
-#' Parametric resampling scheme for a paramatric regression model with
+#' Parametric resampling scheme for a parametric regression model with
 #' resampling of covariates
 #'
 #' @description Generate a new, resampled dataset of the same shape as data
@@ -81,7 +81,7 @@ resample_param_rsmplx <- function(data, model) {
   dplyr::tibble(x = x.b, y = y.b)
 }
 
-#' Parametric resampling scheme for a paramatric regression model under random
+#' Parametric resampling scheme for a parametric regression model under random
 #' censorship
 #'
 #' @description Generate a new, resampled dataset of the same shape as data

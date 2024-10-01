@@ -2,7 +2,7 @@
 % Please edit documentation in R/ResamplingSchemes.R
 \name{resample_param}
 \alias{resample_param}
-\title{Parametric resampling scheme for a paramatric regression model}
+\title{Parametric resampling scheme for a parametric regression model}
 \usage{
 resample_param(data, model)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ResamplingSchemes.R
 \name{resample_param_cens}
 \alias{resample_param_cens}
-\title{Parametric resampling scheme for a paramatric regression model under random
+\title{Parametric resampling scheme for a parametric regression model under random
 censorship}
 \usage{
 resample_param_cens(data, model)

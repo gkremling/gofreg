@@ -5,7 +5,7 @@
 ##'   to plot the underlying process).
 ##'
 ##'   The process underlying the test statistic is given in Kremling & Dikta
-##'   (2024) \url{https://arxiv.org/abs/} and defined by \deqn{\tilde{\alpha}_n(t) = \frac{1}{\sqrt{n}}
+##'   (2024) \url{https://arxiv.org/abs/2409.20262} and defined by \deqn{\tilde{\alpha}_n(t) = \frac{1}{\sqrt{n}}
 ##'   \sum_{i=1}^n \left( I_{\{Y_i \le t\}} - F(t|\hat{\vartheta}_n, X_i)
 ##'   \right), \quad -\infty \le t \le \infty.}{(see formula given in paper).}
 ##' @export

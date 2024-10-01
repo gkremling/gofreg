@@ -1,5 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/gkremling/gofreg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gkremling/gofreg/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 # gofreg
 
@@ -36,10 +40,12 @@ model to a given dataset and afterwards perform a goodness-of-fit test.
 In this example, we use the dataset `datasets::cars`, a generalized
 linear model with normal distribution and the conditional Kolmogorov
 test statistic of the marginal distribution of $Y$ defined in Kremling &
-Dikta (2024) [arXiv:](https://arxiv.org/abs/).
+Dikta (2024) [arXiv:2409.20262](https://arxiv.org/abs/2409.20262).
 
 ``` r
 library(gofreg)
+
+set.seed(123)
 
 data <- dplyr::tibble(x = datasets::cars$speed, y = datasets::cars$dist)
 model <- GLM.new(distr = "normal", linkinv = identity)

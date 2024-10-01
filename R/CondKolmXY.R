@@ -8,6 +8,9 @@
 ##'   \doi{10.2307/2171880} and defined by \deqn{\nu_n(x,y) = \frac{1}{\sqrt{n}}
 ##'   \sum_{i=1}^n \left(I_{\{Y_i \le y\}} - F(y|\hat{\vartheta}_n, X_i) \right)
 ##'   I_{\{X_i \le x\}},\quad (x,y) \in R^{p+1}.}{(see formula given in paper).}
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ##'
 ##' @examples

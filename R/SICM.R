@@ -9,6 +9,9 @@
 ##'   \int_{-c}^c \left|\frac{1}{\sqrt{n}} \sum_{j=1}^n \Big(\exp(i \tau Y_j) -
 ##'   \exp(i \tau \tilde{Y}_j)\Big) \exp(i \xi^T X_j)\right|^2 d\tau d\xi }{(see
 ##'   formula given in paper).}
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ##'
 ##' @examples

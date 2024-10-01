@@ -5,6 +5,10 @@
 ##'   Test statistics are built around the key method
 ##'   `calc_stat()` which calculates the particular test statistic (and
 ##'   x-y-values that can be used to plot the underlying process).
+##'
+##' @importFrom R6 R6Class
+##' @importFrom ggplot2 ggplot geom_line aes
+##'
 ##' @export
 TestStatistic <- R6::R6Class(
   classname = "TestStatistic",

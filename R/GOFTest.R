@@ -3,6 +3,10 @@
 ##'   for the original data as well as the statistics for bootstrap samples. It
 ##'   also offers the possibility to compute the corresponding bootstrap
 ##'   p-value.
+##'
+##' @importFrom R6 R6Class
+##' @importFrom ggplot2 ggplot waiver ggtitle xlab ylab
+##'
 ##' @export
 ##'
 ##' @examples

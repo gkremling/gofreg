@@ -9,6 +9,9 @@
 ##'   \left( I_{\{Y_i \le t\}} - F(t|\hat{\vartheta}_n, X_i) \right)
 ##'   I_{\{\hat{\beta}_n^T X_i \le s\}}, \quad (s,t) \in R^{2}.}{(formula
 ##'   cannot be displayed here, see package website).}
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ##'
 ##' @examples

@@ -9,6 +9,9 @@
 ##'   \frac{1}{n} \sum_{i=1}^n F(t|\hat{\vartheta}_n, X_i) \right), \quad
 ##'   -\infty \le t \le \infty.}{(formula cannot be displayed here, see package
 ##'   website).}
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ##'
 ##' @examples

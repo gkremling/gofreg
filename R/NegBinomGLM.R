@@ -6,6 +6,9 @@
 ##' @param x matrix of covariates, each row representing one sample
 ##' @param params model parameters to use (`list()` with tags beta and shape),
 ##'   defaults to the fitted parameter values
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ##'
 ##' @examples

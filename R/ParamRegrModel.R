@@ -9,9 +9,13 @@
 ##'     density, distribution and regression function
 ##'   * A method `sample_yx()` to generate a random sample of response variables
 ##'     following the model given a vector of covariates
+##'
 ##' @param x vector of covariates
 ##' @param params model parameters to use, defaults to the fitted parameter
 ##'   values
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ParamRegrModel <- R6::R6Class("ParamRegrModel", public = list(
   #' @description Set the value of the model parameters used as default for the

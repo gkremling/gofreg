@@ -110,7 +110,7 @@ gt$plot_procs()
 Now, let us consider the correct model with covariates $X^2$.
 
 ``` {r}
-data_x2 <- tibble::tibble(x = data$x^2, y = data$y)
+data_x2 <- dplyr::tibble(x = data$x^2, y = data$y)
 model$fit(data_x2, params_init = list(beta = 1, sd = 5), inplace = TRUE)
 model$get_params()
 gt <- GOFTest$new(data = data_x2, model_fitted = model, test_stat = MEP_Stute97$new(), nboot = 100)

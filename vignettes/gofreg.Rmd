@@ -71,7 +71,7 @@ second covariate.
 
 ``` {r}
 model_test <- GLM.new(distr = "normal", linkinv = identity)
-data_miss <- tibble::tibble(x = data$x[,1], y = data$y)
+data_miss <- dplyr::tibble(x = data$x[,1], y = data$y)
 model_test$fit(data_miss, params_init = list(beta = c(2), sd = 2), 
                inplace = TRUE)
 print(model_test$get_params())

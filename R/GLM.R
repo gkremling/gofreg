@@ -3,6 +3,9 @@
 ##'   base class for parametric generalized linear model objects with specific
 ##'   distribution family such as [NormalGLM] and handles the (inverse) link
 ##'   function.
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 GLM <- R6::R6Class(
   classname = "GLM",

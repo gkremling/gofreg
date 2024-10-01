@@ -2,9 +2,13 @@
 ##' @description This class represents a generalized linear model with Weibull
 ##'   distribution. It inherits from [GLM] and implements its functions that,
 ##'   for example, evaluate the conditional density and distribution functions.
+##'
 ##' @param x matrix of covariates, each row representing one sample
 ##' @param params model parameters to use (`list()` with tags beta and shape),
 ##'   defaults to the fitted parameter values
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ##'
 ##' @examples

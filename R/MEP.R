@@ -8,6 +8,9 @@
 ##'   = \frac{1}{\sqrt{n}} \sum_{i=1}^n \left( Y_i - m(X_i, \hat{\beta}_n)
 ##'   \right) I_{\{\hat{\beta}_n X_i \le u\}}, \quad -\infty \le u \le \infty.}{
 ##'   (see formula given in paper).}
+##'
+##' @importFrom R6 R6Class
+##'
 ##' @export
 ##'
 ##' @examples

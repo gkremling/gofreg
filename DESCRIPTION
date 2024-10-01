@@ -13,8 +13,8 @@ Description: Provides statistical methods to check if a parametric family of
   goodness-of-fit of the assumed model, see Andrews (1997) 
   <doi:10.2307/2171880>, Bierens & Wang (2012) <doi:10.1017/S0266466611000168>,
   Dikta & Scheer (2021) <doi:10.1007/978-3-030-73480-0> and Kremling & Dikta 
-  (2024) <arXiv:2409.20262>. As proposed in these papers, the corresponding p-values are 
-  approximated using a parametric bootstrap method.
+  (2024) <doi:10.48550/arXiv.2409.20262>. As proposed in these papers, the 
+  corresponding p-values are approximated using a parametric bootstrap method.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

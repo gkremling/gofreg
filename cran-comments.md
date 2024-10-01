@@ -4,8 +4,8 @@
   - Windows Server 2022, R 4.4.1
   - macOS 14.6.1, R 4.4.1
   - Ubuntu 22.04, R 4.4.1
+  - Ubuntu 22.04, R Under development (unstable) (2024-09-28 r87201)
 - WinBuilder: Windows Server 2022, R Under development (unstable) (2024-09-30 r87204)
-
 
 ## R CMD check results
 

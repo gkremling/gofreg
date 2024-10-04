@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE, message = FALSE}
-options(width = 500, max.print = 500)
 set.seed(123)
 library(gofreg)
 library(ggplot2)

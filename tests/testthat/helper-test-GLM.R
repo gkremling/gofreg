@@ -8,10 +8,7 @@ expect_params_range <- function(params_est, params_true, tol) {
   }
 }
 
-test_glm_fF1_yx <- function(distr, params, new.params, t, p, true_vals) {
-  g1 <- function(u) {
-    1 / u
-  }
+test_glm_fF1_yx <- function(distr, params, new.params, t, p, true_vals, g1 = function(u) {1/u}) {
   x <- rbind(c(1, 2, 3), c(4, 5, 6))
 
   # create model
@@ -30,9 +27,12 @@ test_glm_fF1_yx <- function(distr, params, new.params, t, p, true_vals) {
   # use saved parameters
   model$set_params(params)
 
-  # print(model$f_yx(t, x))
-
   tv <- true_vals(t, p, x, g1, params)
+
+  # print(model$mean_yx(x))
+  # print(tv$dens)
+  # print(tv$dist)
+  # print(tv$quan)
 
   expect_equal(model$f_yx(t, x), tv$dens)
   expect_equal(model$F_yx(t, x), tv$dist)
@@ -46,10 +46,7 @@ test_glm_fF1_yx <- function(distr, params, new.params, t, p, true_vals) {
   expect_equal(model$F1_yx(p, x, new.params), tv$quan)
 }
 
-test_glm_sample_yx <- function(distr, params, new.params, expected_sample) {
-  g1 <- function(u) {
-    1 / u
-  }
+test_glm_sample_yx <- function(distr, params, new.params, expected_sample, g1 = function(u) {1/u}) {
   x <- rbind(c(1, 2, 3), c(4, 5, 6))
 
   # create model
@@ -78,7 +75,7 @@ test_glm_sample_yx <- function(distr, params, new.params, expected_sample) {
   expect_equal(s1, s2)
 }
 
-test_glm_fit <- function(distr, params_true, params_error, tol, multi, cens = FALSE) {
+test_glm_fit <- function(distr, params_true, params_error, tol, multi, cens = FALSE, g1 = function(u) {exp(u)}) {
   set.seed(123)
 
   dummy_model_func <- "dummy_"
@@ -100,7 +97,7 @@ test_glm_fit <- function(distr, params_true, params_error, tol, multi, cens = FA
   }
 
   # create data and model
-  dummy <- do.call(dummy_model_func, args = list(params_true = params_true, distr = distr))
+  dummy <- do.call(dummy_model_func, args = list(params_true = params_true, distr = distr, g1 = g1))
   data <- dummy$data
   model <- dummy$model
 
@@ -118,6 +115,8 @@ test_glm_fit <- function(distr, params_true, params_error, tol, multi, cens = FA
 
   # estimated parameters are close to true values
   params_est <- model$fit(data, params_init = params_true, loglik = loglik)
+  # print(params_est)
+  # print(params_true)
 
   expect_params_range(params_est, params_true, tol)
 

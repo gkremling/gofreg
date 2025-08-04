@@ -16,3 +16,7 @@
 ## NOTE
 
 There is a NOTE about possibly invalid URLs, but I have manually verified that they work as expected.
+
+## Fix according to comment on previous CRAN submission
+
+I removed the options()-call in the vignette gofreg.R.

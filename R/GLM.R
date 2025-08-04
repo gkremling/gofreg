@@ -65,7 +65,7 @@ GLM <- R6::R6Class(
 #' model <- GLM.new(distr = "normal")
 #' # see examples of GLM-subclasses (e.g. NormalGLM) for how to use such models
 GLM.new <- function(distr, linkinv = identity, params = NA) {
-  distr_poss <- c("normal", "exp", "weibull", "gamma", "negbinom")
+  distr_poss <- c("normal", "exp", "weibull", "gamma", "negbinom", "poisson")
   checkmate::assert_choice(distr, distr_poss)
   switch(distr,
     normal = NormalGLM$new(linkinv, params),
@@ -73,6 +73,7 @@ GLM.new <- function(distr, linkinv = identity, params = NA) {
     weibull = WeibullGLM$new(linkinv, params),
     gamma = GammaGLM$new(linkinv, params),
     negbinom = NegBinomGLM$new(linkinv, params),
+    poisson = PoissonGLM$new(linkinv, params),
     stop(paste0(
       "Bug in the code: There is a distribution family listed in distr_poss ",
       "which is not taken account of in the switch-statement."

@@ -4,11 +4,7 @@
 #' @param distr distribution family used for the model
 #'
 #' @return `data.frame()` with columns `data` and `model`
-dummy_xymodel_x1 <- function(params_true, distr, n = 1000) {
-  g1 <- function(u) {
-    exp(u)
-  }
-
+dummy_xymodel_x1 <- function(params_true, distr, n = 1000, g1 = function(u) {exp(u)}) {
   x <- as.matrix(runif(n))
 
   model <- GLM.new(distr, g1)
@@ -22,11 +18,7 @@ dummy_xymodel_x1 <- function(params_true, distr, n = 1000) {
 #' @param distr distribution family used for the model
 #'
 #' @return `data.frame()` with columns `data` and `model`
-dummy_xymodel_x3 <- function(params_true, distr, n = 1000) {
-  g1 <- function(u) {
-    exp(u)
-  }
-
+dummy_xymodel_x3 <- function(params_true, distr, n = 1000, g1 = function(u) {exp(u)}) {
   x <- cbind(runif(n), runif(n), rnorm(n))
 
   model <- GLM.new(distr, g1)
@@ -52,11 +44,7 @@ dummy_xymodel_fitted <- function() {
 #' @param distr distribution family used for the model
 #'
 #' @return `data.frame()` with columns `data` and `model`
-dummy_xzdmodel_x1 <- function(params_true, distr, n = 1000) {
-  g1 <- function(u) {
-    exp(u)
-  }
-
+dummy_xzdmodel_x1 <- function(params_true, distr, n = 1000, g1 = function(u) {exp(u)}) {
   x <- as.matrix(runif(n))
 
   model <- GLM.new(distr, g1)
@@ -75,11 +63,7 @@ dummy_xzdmodel_x1 <- function(params_true, distr, n = 1000) {
 #' @param distr distribution family used for the model
 #'
 #' @return `data.frame()` with columns `data` and `model`
-dummy_xzdmodel_x3 <- function(params_true, distr, n = 1000) {
-  g1 <- function(u) {
-    exp(u)
-  }
-
+dummy_xzdmodel_x3 <- function(params_true, distr, n = 1000, g1 = function(u) {exp(u)}) {
   x <- cbind(runif(n), runif(n), rnorm(n))
 
   model <- GLM.new(distr, g1)
